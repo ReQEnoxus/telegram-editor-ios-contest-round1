@@ -10,9 +10,16 @@
 		739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28B28F72920007C1929 /* AppDelegate.swift */; };
 		739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28D28F72920007C1929 /* SceneDelegate.swift */; };
 		739FB29028F72920007C1929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28F28F72920007C1929 /* ViewController.swift */; };
-		739FB29328F72920007C1929 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739FB29128F72920007C1929 /* Main.storyboard */; };
 		739FB29528F72920007C1929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 739FB29428F72920007C1929 /* Assets.xcassets */; };
 		739FB29828F72920007C1929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739FB29628F72920007C1929 /* LaunchScreen.storyboard */; };
+		739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A028F72BA1007C1929 /* FontCustomizationAccessoryView.swift */; };
+		739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */; };
+		739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A628F72EEA007C1929 /* FontItemCell.swift */; };
+		739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A828F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift */; };
+		739FB2AF28F72FCF007C1929 /* Consumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2AE28F72FCF007C1929 /* Consumer.swift */; };
+		739FB2B228F730A2007C1929 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B128F730A2007C1929 /* Configurable.swift */; };
+		739FB2B428F730F5007C1929 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */; };
+		739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B528F7310B007C1929 /* ReusableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +27,17 @@
 		739FB28B28F72920007C1929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		739FB28D28F72920007C1929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		739FB28F28F72920007C1929 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		739FB29228F72920007C1929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		739FB29428F72920007C1929 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		739FB29728F72920007C1929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		739FB29928F72920007C1929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		739FB2A028F72BA1007C1929 /* FontCustomizationAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontCustomizationAccessoryView.swift; sourceTree = "<group>"; };
+		739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoLayout+Extensions.swift"; sourceTree = "<group>"; };
+		739FB2A628F72EEA007C1929 /* FontItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontItemCell.swift; sourceTree = "<group>"; };
+		739FB2A828F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontCustomizationAccessoryViewConfiguration.swift; sourceTree = "<group>"; };
+		739FB2AE28F72FCF007C1929 /* Consumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consumer.swift; sourceTree = "<group>"; };
+		739FB2B128F730A2007C1929 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
+		739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		739FB2B528F7310B007C1929 /* ReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +70,70 @@
 		739FB28A28F72920007C1929 /* TelegramContestApp */ = {
 			isa = PBXGroup;
 			children = (
+				739FB2AC28F72FBF007C1929 /* Utils */,
+				739FB29F28F729B8007C1929 /* Components */,
 				739FB28B28F72920007C1929 /* AppDelegate.swift */,
 				739FB28D28F72920007C1929 /* SceneDelegate.swift */,
 				739FB28F28F72920007C1929 /* ViewController.swift */,
-				739FB29128F72920007C1929 /* Main.storyboard */,
 				739FB29428F72920007C1929 /* Assets.xcassets */,
 				739FB29628F72920007C1929 /* LaunchScreen.storyboard */,
 				739FB29928F72920007C1929 /* Info.plist */,
 			);
 			path = TelegramContestApp;
+			sourceTree = "<group>";
+		};
+		739FB29F28F729B8007C1929 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2A528F72E28007C1929 /* AccessoryView */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		739FB2A228F72CF9007C1929 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */,
+				739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		739FB2A528F72E28007C1929 /* AccessoryView */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2A028F72BA1007C1929 /* FontCustomizationAccessoryView.swift */,
+				739FB2A628F72EEA007C1929 /* FontItemCell.swift */,
+				739FB2A828F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift */,
+			);
+			path = AccessoryView;
+			sourceTree = "<group>";
+		};
+		739FB2AC28F72FBF007C1929 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2B028F73096007C1929 /* Protocols */,
+				739FB2AD28F72FC6007C1929 /* Types */,
+				739FB2A228F72CF9007C1929 /* Extensions */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		739FB2AD28F72FC6007C1929 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2AE28F72FCF007C1929 /* Consumer.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+		739FB2B028F73096007C1929 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				739FB2B128F730A2007C1929 /* Configurable.swift */,
+				739FB2B528F7310B007C1929 /* ReusableCell.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +196,6 @@
 			files = (
 				739FB29828F72920007C1929 /* LaunchScreen.storyboard in Resources */,
 				739FB29528F72920007C1929 /* Assets.xcassets in Resources */,
-				739FB29328F72920007C1929 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,7 +207,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
+				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
+				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
+				739FB2B428F730F5007C1929 /* UICollectionView+Extensions.swift in Sources */,
+				739FB2AF28F72FCF007C1929 /* Consumer.swift in Sources */,
+				739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */,
 				739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */,
+				739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */,
+				739FB2B228F730A2007C1929 /* Configurable.swift in Sources */,
+				739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */,
 				739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +223,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		739FB29128F72920007C1929 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				739FB29228F72920007C1929 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		739FB29628F72920007C1929 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -294,9 +362,9 @@
 				INFOPLIST_FILE = TelegramContestApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -322,9 +390,9 @@
 				INFOPLIST_FILE = TelegramContestApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
