@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7354972728F9EA760024F48B /* TimingFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972628F9EA760024F48B /* TimingFunction.swift */; };
+		7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972828F9EAB70024F48B /* UnitBezier.swift */; };
 		739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28B28F72920007C1929 /* AppDelegate.swift */; };
 		739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28D28F72920007C1929 /* SceneDelegate.swift */; };
 		739FB29028F72920007C1929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28F28F72920007C1929 /* ViewController.swift */; };
@@ -16,13 +18,27 @@
 		739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */; };
 		739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A628F72EEA007C1929 /* FontItemCell.swift */; };
 		739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A828F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift */; };
-		739FB2AF28F72FCF007C1929 /* Consumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2AE28F72FCF007C1929 /* Consumer.swift */; };
+		739FB2AF28F72FCF007C1929 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2AE28F72FCF007C1929 /* Functions.swift */; };
 		739FB2B228F730A2007C1929 /* Configurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B128F730A2007C1929 /* Configurable.swift */; };
 		739FB2B428F730F5007C1929 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */; };
 		739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2B528F7310B007C1929 /* ReusableCell.swift */; };
+		73B72C7328F87409006FD9B1 /* Snapshot+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72C7228F87409006FD9B1 /* Snapshot+Extensions.swift */; };
+		73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72C7528F87781006FD9B1 /* LabelTextView.swift */; };
+		73B72C7928F877DC006FD9B1 /* LabelTextViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72C7828F877DC006FD9B1 /* LabelTextViewConfiguration.swift */; };
+		73B72C8328F88362006FD9B1 /* NSRange+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B72C8228F88362006FD9B1 /* NSRange+Extensions.swift */; };
+		73E99B4328FA9EDC00D83487 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4228FA9EDC00D83487 /* Shape.swift */; };
+		73E99B4528FA9F3A00D83487 /* ShapeMorphingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4428FA9F3A00D83487 /* ShapeMorphingButton.swift */; };
+		73E99B4728FAA14800D83487 /* Durations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4628FAA14800D83487 /* Durations.swift */; };
+		73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4828FAA49A00D83487 /* TextAlignmentShape.swift */; };
+		73E99B4B28FAA4BD00D83487 /* TextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4A28FAA4BD00D83487 /* TextAlignment.swift */; };
+		73E99B4D28FAD97900D83487 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4C28FAD97900D83487 /* Animator.swift */; };
+		73E99B5028FAED3C00D83487 /* LabelTextViewLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */; };
+		73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7354972628F9EA760024F48B /* TimingFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingFunction.swift; sourceTree = "<group>"; };
+		7354972828F9EAB70024F48B /* UnitBezier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitBezier.swift; sourceTree = "<group>"; };
 		739FB28828F72920007C1929 /* TelegramContestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramContestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		739FB28B28F72920007C1929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		739FB28D28F72920007C1929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,10 +50,22 @@
 		739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoLayout+Extensions.swift"; sourceTree = "<group>"; };
 		739FB2A628F72EEA007C1929 /* FontItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontItemCell.swift; sourceTree = "<group>"; };
 		739FB2A828F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontCustomizationAccessoryViewConfiguration.swift; sourceTree = "<group>"; };
-		739FB2AE28F72FCF007C1929 /* Consumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Consumer.swift; sourceTree = "<group>"; };
+		739FB2AE28F72FCF007C1929 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		739FB2B128F730A2007C1929 /* Configurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configurable.swift; sourceTree = "<group>"; };
 		739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		739FB2B528F7310B007C1929 /* ReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCell.swift; sourceTree = "<group>"; };
+		73B72C7228F87409006FD9B1 /* Snapshot+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Snapshot+Extensions.swift"; sourceTree = "<group>"; };
+		73B72C7528F87781006FD9B1 /* LabelTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextView.swift; sourceTree = "<group>"; };
+		73B72C7828F877DC006FD9B1 /* LabelTextViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextViewConfiguration.swift; sourceTree = "<group>"; };
+		73B72C8228F88362006FD9B1 /* NSRange+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRange+Extensions.swift"; sourceTree = "<group>"; };
+		73E99B4228FA9EDC00D83487 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		73E99B4428FA9F3A00D83487 /* ShapeMorphingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeMorphingButton.swift; sourceTree = "<group>"; };
+		73E99B4628FAA14800D83487 /* Durations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durations.swift; sourceTree = "<group>"; };
+		73E99B4828FAA49A00D83487 /* TextAlignmentShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAlignmentShape.swift; sourceTree = "<group>"; };
+		73E99B4A28FAA4BD00D83487 /* TextAlignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextAlignment.swift; sourceTree = "<group>"; };
+		73E99B4C28FAD97900D83487 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
+		73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextViewLayoutManager.swift; sourceTree = "<group>"; };
+		73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedStringKey+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +79,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7354972528F9EA4B0024F48B /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				7354972628F9EA760024F48B /* TimingFunction.swift */,
+				7354972828F9EAB70024F48B /* UnitBezier.swift */,
+				73E99B4C28FAD97900D83487 /* Animator.swift */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 		739FB27F28F72920007C1929 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +123,8 @@
 		739FB29F28F729B8007C1929 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				73E99B4028FA9DB400D83487 /* ShapeMorphingButton */,
+				73B72C7428F8770B006FD9B1 /* LabelTextView */,
 				739FB2A528F72E28007C1929 /* AccessoryView */,
 			);
 			path = Components;
@@ -95,6 +135,9 @@
 			children = (
 				739FB2A328F72D09007C1929 /* AutoLayout+Extensions.swift */,
 				739FB2B328F730F5007C1929 /* UICollectionView+Extensions.swift */,
+				73B72C7228F87409006FD9B1 /* Snapshot+Extensions.swift */,
+				73B72C8228F88362006FD9B1 /* NSRange+Extensions.swift */,
+				73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -112,6 +155,7 @@
 		739FB2AC28F72FBF007C1929 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				7354972528F9EA4B0024F48B /* Animation */,
 				739FB2B028F73096007C1929 /* Protocols */,
 				739FB2AD28F72FC6007C1929 /* Types */,
 				739FB2A228F72CF9007C1929 /* Extensions */,
@@ -122,7 +166,9 @@
 		739FB2AD28F72FC6007C1929 /* Types */ = {
 			isa = PBXGroup;
 			children = (
-				739FB2AE28F72FCF007C1929 /* Consumer.swift */,
+				739FB2AE28F72FCF007C1929 /* Functions.swift */,
+				73E99B4628FAA14800D83487 /* Durations.swift */,
+				73E99B4A28FAA4BD00D83487 /* TextAlignment.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -134,6 +180,34 @@
 				739FB2B528F7310B007C1929 /* ReusableCell.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		73B72C7428F8770B006FD9B1 /* LabelTextView */ = {
+			isa = PBXGroup;
+			children = (
+				73E99B4E28FAED2F00D83487 /* Layout */,
+				73B72C7528F87781006FD9B1 /* LabelTextView.swift */,
+				73B72C7828F877DC006FD9B1 /* LabelTextViewConfiguration.swift */,
+			);
+			path = LabelTextView;
+			sourceTree = "<group>";
+		};
+		73E99B4028FA9DB400D83487 /* ShapeMorphingButton */ = {
+			isa = PBXGroup;
+			children = (
+				73E99B4228FA9EDC00D83487 /* Shape.swift */,
+				73E99B4428FA9F3A00D83487 /* ShapeMorphingButton.swift */,
+				73E99B4828FAA49A00D83487 /* TextAlignmentShape.swift */,
+			);
+			path = ShapeMorphingButton;
+			sourceTree = "<group>";
+		};
+		73E99B4E28FAED2F00D83487 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */,
+			);
+			path = Layout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,14 +280,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */,
+				73B72C8328F88362006FD9B1 /* NSRange+Extensions.swift in Sources */,
+				73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */,
+				73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */,
 				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
+				7354972728F9EA760024F48B /* TimingFunction.swift in Sources */,
 				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
+				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
 				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
+				73E99B4B28FAA4BD00D83487 /* TextAlignment.swift in Sources */,
+				73B72C7328F87409006FD9B1 /* Snapshot+Extensions.swift in Sources */,
+				73E99B4728FAA14800D83487 /* Durations.swift in Sources */,
 				739FB2B428F730F5007C1929 /* UICollectionView+Extensions.swift in Sources */,
-				739FB2AF28F72FCF007C1929 /* Consumer.swift in Sources */,
+				73E99B4D28FAD97900D83487 /* Animator.swift in Sources */,
+				73B72C7928F877DC006FD9B1 /* LabelTextViewConfiguration.swift in Sources */,
+				739FB2AF28F72FCF007C1929 /* Functions.swift in Sources */,
 				739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */,
 				739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */,
 				739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */,
+				73E99B4328FA9EDC00D83487 /* Shape.swift in Sources */,
+				73E99B4528FA9F3A00D83487 /* ShapeMorphingButton.swift in Sources */,
+				73E99B5028FAED3C00D83487 /* LabelTextViewLayoutManager.swift in Sources */,
 				739FB2B228F730A2007C1929 /* Configurable.swift in Sources */,
 				739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */,
 				739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */,

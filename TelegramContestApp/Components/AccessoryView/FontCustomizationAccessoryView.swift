@@ -7,10 +7,25 @@
 
 import UIKit
 
-final class FontCustomizationAccessoryView: UIView {
+protocol FontCustomizationAccessoryViewDelegate: AnyObject {
+    func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem)
+    func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment)
+}
+
+extension FontCustomizationAccessoryViewDelegate {
+    func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {}
+    func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {}
+}
+
+final class FontCustomizationAccessoryView: UIInputView {
     private enum Constants {
-        static var height: CGFloat = 64.0
+        static let height: CGFloat = 64.0
+        static let estimatedWidth: CGFloat = 50
+        
+        static let buttonSide: CGFloat = 36
     }
+    
+    weak var delegate: FontCustomizationAccessoryViewDelegate?
     
     private var configuration: FontCustomizationAccessoryViewConfiguration? {
         didSet {
@@ -18,11 +33,13 @@ final class FontCustomizationAccessoryView: UIView {
         }
     }
     
+    private var currentTextAlignment: TextAlignment = .left
+    
     private lazy var fontCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.estimatedItemSize = CGSize(
-            width: 50,
+            width: Constants.estimatedWidth,
             height: Constants.height - .xxsSpace
         )
         layout.minimumInteritemSpacing = .zero
@@ -33,7 +50,25 @@ final class FontCustomizationAccessoryView: UIView {
         collection.alwaysBounceHorizontal = true
         collection.register(FontItemCell.self)
         collection.delegate = self
+        collection.showsHorizontalScrollIndicator = false
+        collection.backgroundColor = .clear
         return collection.forAutoLayout()
+    }()
+    
+    private lazy var textAlignmentButton: ShapeMorphingButton<TextAlignment> = {
+        let button = ShapeMorphingButton<TextAlignment>(type: .system)
+        button.setShapes(
+            shapes: [
+                .left: TextAlignmentShape(alignment: .left),
+                .center: TextAlignmentShape(alignment: .center),
+                .right: TextAlignmentShape(alignment: .right)
+            ],
+            initial: .left
+        )
+        
+        button.addTarget(self, action: #selector(didTapTextAlignmentButton), for: .touchUpInside)
+        
+        return button.forAutoLayout()
     }()
     
     private lazy var dataSource: UICollectionViewDiffableDataSource<Int, FontCustomizationAccessoryViewConfiguration.FontItem> = {
@@ -42,8 +77,8 @@ final class FontCustomizationAccessoryView: UIView {
         }
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(frame: CGRect, inputViewStyle: UIInputView.Style) {
+        super.init(frame: frame, inputViewStyle: inputViewStyle)
         commonInit()
     }
     
@@ -59,7 +94,6 @@ final class FontCustomizationAccessoryView: UIView {
     }
     
     private func commonInit() {
-        backgroundColor = .black
         autoresizingMask = .flexibleHeight
         addSubviews()
         makeConstraints()
@@ -67,11 +101,17 @@ final class FontCustomizationAccessoryView: UIView {
     
     private func addSubviews() {
         addSubview(fontCollectionView)
+        addSubview(textAlignmentButton)
     }
     
     private func makeConstraints() {
         [
-            fontCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .xxlSpace),
+            textAlignmentButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sSpace),
+            textAlignmentButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            textAlignmentButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
+            textAlignmentButton.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
+
+            fontCollectionView.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .sSpace),
             fontCollectionView.topAnchor.constraint(equalTo: topAnchor),
             fontCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             fontCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -83,7 +123,17 @@ final class FontCustomizationAccessoryView: UIView {
         var snapshot = NSDiffableDataSourceSnapshot<Int, FontCustomizationAccessoryViewConfiguration.FontItem>()
         snapshot.appendSections([.zero])
         snapshot.appendItems(configuration.fontItems, toSection: .zero)
-        dataSource.apply(snapshot, animatingDifferences: false, completion: nil)
+        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
+        currentTextAlignment = configuration.textAlignment
+        textAlignmentButton.setShape(configuration.textAlignment, animated: false)
+    }
+    
+    @objc private func didTapTextAlignmentButton() {
+        guard let current = textAlignmentButton.currentShape else { return }
+        let nextAlignmentRawValue = (current.rawValue + 1) % TextAlignment.allCases.count
+        guard let nextAlignment = TextAlignment(rawValue: nextAlignmentRawValue) else { return }
+        textAlignmentButton.setShape(nextAlignment, animated: true)
+        delegate?.didChangeTextAlignment(from: currentTextAlignment, to: nextAlignment)
     }
 }
 
@@ -97,34 +147,10 @@ extension FontCustomizationAccessoryView: Configurable {
 extension FontCustomizationAccessoryView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let configuration = configuration else { return }
-        var snapshot = dataSource.snapshot()
-        let previouslySelectedItem = configuration.fontItems.first(where: { $0.isSelected })
-        if let previouslySelectedItem = previouslySelectedItem,
-           let previouslySelectedIndex = snapshot.indexOfItem(previouslySelectedItem),
-           previouslySelectedIndex != indexPath.row {
-            let newItem = FontCustomizationAccessoryViewConfiguration.FontItem(
-                font: previouslySelectedItem.font,
-                name: previouslySelectedItem.name,
-                isSelected: false
-            )
-            
-            snapshot.insertItems([newItem], afterItem: previouslySelectedItem)
-            snapshot.deleteItems([previouslySelectedItem])
-        }
-        
         let selectedItem = configuration.fontItems[indexPath.item]
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         if !selectedItem.isSelected {
-            let newItem = FontCustomizationAccessoryViewConfiguration.FontItem(
-                font: selectedItem.font,
-                name: selectedItem.name,
-                isSelected: true
-            )
-            
-            snapshot.insertItems([newItem], afterItem: selectedItem)
-            snapshot.deleteItems([selectedItem])
-            configuration.fontDidChange?(newItem)
+            delegate?.didChangeFont(selectedItem)
         }
-        
-        dataSource.apply(snapshot, animatingDifferences: true, completion: nil)
     }
 }

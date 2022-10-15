@@ -8,6 +8,9 @@
 import UIKit
 
 final class FontItemCell: UICollectionViewCell, ReusableCell {
+    private enum Constants {
+        static let fontSize: CGFloat = 18
+    }
     
     private let fontNameLabel: UILabel = UILabel().forAutoLayout()
     
@@ -35,9 +38,9 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     private func makeConstraints() {
         [
             fontNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .sSpace),
-            fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .xxsSpace),
             fontNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -.sSpace),
-            fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.xxsSpace)
+            fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .xxsSpace),
+            fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.xxsSpace),
         ].activate()
     }
     
@@ -60,7 +63,7 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     
     func configure(with object: Any) {
         guard let model = object as? FontCustomizationAccessoryViewConfiguration.FontItem else { return }
-        fontNameLabel.font = model.font
+        fontNameLabel.font = model.font.withSize(Constants.fontSize)
         fontNameLabel.text = model.name
         setupBorders(for: model.isSelected)
     }

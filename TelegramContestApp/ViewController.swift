@@ -8,11 +8,9 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    lazy var keyboardAccessoryView: FontCustomizationAccessoryView = FontCustomizationAccessoryView()
-    
-    lazy var textView: UITextView = {
-        let textView = UITextView()
+        
+    lazy var textView: LabelTextView = {
+        let textView = LabelTextView(frame: .zero)
         textView.isScrollEnabled = false
         textView.textContainerInset = .zero
         textView.showsVerticalScrollIndicator = false
@@ -22,7 +20,7 @@ class ViewController: UIViewController {
         textView.textDragInteraction?.isEnabled = false
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.keyboardAppearance = .dark
-        textView.inputAccessoryView = keyboardAccessoryView
+        textView.text = "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона"
         
         return textView
     }()
@@ -40,23 +38,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
         
-        keyboardAccessoryView.configure(
-            with: FontCustomizationAccessoryViewConfiguration(
-                fontItems: [
-                    FontCustomizationAccessoryViewConfiguration.FontItem(
-                        font: .systemFont(ofSize: 17, weight: .regular),
-                        name: "System Regular",
-                        isSelected: false
-                    ),
-                    FontCustomizationAccessoryViewConfiguration.FontItem(
-                        font: .systemFont(ofSize: 17, weight: .bold),
-                        name: "System Bold",
-                        isSelected: false
-                    )
-                ],
-                fontDidChange: { font in
-                    print("!! \(font.name) selected")
-                }
+        textView.configure(
+            with: LabelTextViewConfiguration(
+                supportedFonts: [
+                    textView.font ?? .systemFont(ofSize: 14),
+                    .systemFont(ofSize: 20, weight: .thin),
+                    .systemFont(ofSize: 25, weight: .bold)
+                ]
             )
         )
     }
