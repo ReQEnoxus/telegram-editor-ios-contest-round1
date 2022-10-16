@@ -34,6 +34,13 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     private var currentTextAlignment: TextAlignment = .left
+    private var outlines: [OutlineMode] = [
+        .none,
+        .solid(.white),
+        .transparent(.white),
+        .text(.black)
+    ]
+    private var currentOutlineIndex: Int = .zero
     
     private lazy var fontCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -58,17 +65,87 @@ final class FontCustomizationAccessoryView: UIInputView {
     private lazy var textAlignmentButton: ShapeMorphingButton<TextAlignment> = {
         let button = ShapeMorphingButton<TextAlignment>(type: .system)
         button.setShapes(
-            shapes: [
-                .left: TextAlignmentShape(alignment: .left),
-                .center: TextAlignmentShape(alignment: .center),
-                .right: TextAlignmentShape(alignment: .right)
-            ],
+            shapes: Dictionary(uniqueKeysWithValues: TextAlignment.allCases.map { ($0, [TextAlignmentShape(alignment: $0)]) }),
             initial: .left
         )
         
         button.addTarget(self, action: #selector(didTapTextAlignmentButton), for: .touchUpInside)
         
         return button.forAutoLayout()
+    }()
+    
+    private lazy var textOutlineButton: ShapeMorphingButton<OutlineMode> = {
+        let button = ShapeMorphingButton<OutlineMode>(type: .system)
+        button.setShapes(
+            shapes: [
+                outlines[0]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[0]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[0]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[0]
+                    )
+                ],
+                outlines[1]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[1]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[1]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[1]
+                    )
+                ],
+                outlines[2]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[2]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[2]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[2]
+                    )
+                ],
+                outlines[3]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[3]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .outline,
+                        outlineMode: outlines[3]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[3]
+                    )
+                ]
+            ],
+            initial: outlines[0]
+        )
+        
+        button.addTarget(self, action: #selector(didTapTextOutlineButton), for: .touchUpInside)
+        
+        return button.forAutoLayout()
+    }()
+    
+    private lazy var buttonsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fill
+        stackView.spacing = .sSpace
+        
+        return stackView.forAutoLayout()
     }()
     
     private lazy var dataSource: UICollectionViewDiffableDataSource<Int, FontCustomizationAccessoryViewConfiguration.FontItem> = {
@@ -100,16 +177,20 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     private func addSubviews() {
+        addSubview(buttonsStackView)
         addSubview(fontCollectionView)
-        addSubview(textAlignmentButton)
+        buttonsStackView.addArrangedSubview(textOutlineButton)
+        buttonsStackView.addArrangedSubview(textAlignmentButton)
     }
     
     private func makeConstraints() {
         [
-            textAlignmentButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sSpace),
-            textAlignmentButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sSpace),
+            buttonsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
+            
+            textOutlineButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
             textAlignmentButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
-            textAlignmentButton.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
 
             fontCollectionView.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .sSpace),
             fontCollectionView.topAnchor.constraint(equalTo: topAnchor),
@@ -134,6 +215,13 @@ final class FontCustomizationAccessoryView: UIInputView {
         guard let nextAlignment = TextAlignment(rawValue: nextAlignmentRawValue) else { return }
         textAlignmentButton.setShape(nextAlignment, animated: true)
         delegate?.didChangeTextAlignment(from: currentTextAlignment, to: nextAlignment)
+    }
+    
+    @objc private func didTapTextOutlineButton() {
+        let nextIndex = (currentOutlineIndex + 1) % outlines.count
+        let nextOutline = outlines[nextIndex]
+        textOutlineButton.setShape(nextOutline, animated: true)
+        currentOutlineIndex = nextIndex
     }
 }
 

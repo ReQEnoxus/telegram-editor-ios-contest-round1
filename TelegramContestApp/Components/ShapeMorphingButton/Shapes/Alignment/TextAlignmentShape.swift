@@ -18,6 +18,18 @@ struct TextAlignmentShape: Shape {
     
     let alignment: TextAlignment
     
+    var fillColor: CGColor? {
+        return nil
+    }
+    
+    var strokeColor: CGColor? {
+        return UIColor.white.cgColor
+    }
+    
+    var lineCap: CAShapeLayerLineCap {
+        return .round
+    }
+    
     func lineWidth(for bounds: CGRect) -> CGFloat {
         return Constants.lineHeightMultiplier * bounds.height
     }
