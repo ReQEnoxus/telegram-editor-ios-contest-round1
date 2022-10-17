@@ -10,7 +10,7 @@ import UIKit
 
 enum OutlineMode: Hashable {
     case solid(UIColor)
-    case transparent(UIColor)
+    case transparent(UIColor, alphaComponent: CGFloat = 0.4)
     case text(UIColor)
     case none
 }

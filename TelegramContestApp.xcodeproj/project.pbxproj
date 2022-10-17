@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		7354972728F9EA760024F48B /* TimingFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972628F9EA760024F48B /* TimingFunction.swift */; };
 		7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972828F9EAB70024F48B /* UnitBezier.swift */; };
+		737FF95C28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */; };
+		737FF95E28FDB3080027F73A /* OutlineLinesShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF95D28FDB3080027F73A /* OutlineLinesShape.swift */; };
+		737FF96028FDC29F0027F73A /* LabelInputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF95F28FDC29F0027F73A /* LabelInputContainerView.swift */; };
+		737FF96228FDCD0C0027F73A /* LabelContainerViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */; };
 		739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28B28F72920007C1929 /* AppDelegate.swift */; };
 		739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28D28F72920007C1929 /* SceneDelegate.swift */; };
 		739FB29028F72920007C1929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28F28F72920007C1929 /* ViewController.swift */; };
@@ -44,6 +48,10 @@
 /* Begin PBXFileReference section */
 		7354972628F9EA760024F48B /* TimingFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingFunction.swift; sourceTree = "<group>"; };
 		7354972828F9EAB70024F48B /* UnitBezier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitBezier.swift; sourceTree = "<group>"; };
+		737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+Extensions.swift"; sourceTree = "<group>"; };
+		737FF95D28FDB3080027F73A /* OutlineLinesShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineLinesShape.swift; sourceTree = "<group>"; };
+		737FF95F28FDC29F0027F73A /* LabelInputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelInputContainerView.swift; sourceTree = "<group>"; };
+		737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContainerViewConfiguration.swift; sourceTree = "<group>"; };
 		739FB28828F72920007C1929 /* TelegramContestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramContestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		739FB28B28F72920007C1929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		739FB28D28F72920007C1929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +158,7 @@
 				73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */,
 				73D31DBD28FC4AD900A6969D /* Collection+Extensions.swift */,
 				73D31DC728FC68BD00A6969D /* UIColor+Extensions.swift */,
+				737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -201,6 +210,8 @@
 				73E99B4E28FAED2F00D83487 /* Layout */,
 				73B72C7528F87781006FD9B1 /* LabelTextView.swift */,
 				73B72C7828F877DC006FD9B1 /* LabelTextViewConfiguration.swift */,
+				737FF95F28FDC29F0027F73A /* LabelInputContainerView.swift */,
+				737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */,
 			);
 			path = LabelTextView;
 			sourceTree = "<group>";
@@ -228,6 +239,7 @@
 			children = (
 				73D31DC128FC55A700A6969D /* OutlineLetterShape.swift */,
 				73D31DC328FC55B200A6969D /* OutlineBackgroundShape.swift */,
+				737FF95D28FDB3080027F73A /* OutlineLinesShape.swift */,
 			);
 			path = Outline;
 			sourceTree = "<group>";
@@ -333,13 +345,16 @@
 				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
 				73D31DC028FC553F00A6969D /* OutlineMode.swift in Sources */,
 				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
+				737FF96228FDCD0C0027F73A /* LabelContainerViewConfiguration.swift in Sources */,
 				73E99B4B28FAA4BD00D83487 /* TextAlignment.swift in Sources */,
 				73B72C7328F87409006FD9B1 /* Snapshot+Extensions.swift in Sources */,
 				73E99B4728FAA14800D83487 /* Durations.swift in Sources */,
+				737FF96028FDC29F0027F73A /* LabelInputContainerView.swift in Sources */,
 				739FB2B428F730F5007C1929 /* UICollectionView+Extensions.swift in Sources */,
 				73E99B4D28FAD97900D83487 /* Animator.swift in Sources */,
 				73B72C7928F877DC006FD9B1 /* LabelTextViewConfiguration.swift in Sources */,
 				739FB2AF28F72FCF007C1929 /* Functions.swift in Sources */,
+				737FF95C28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift in Sources */,
 				739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */,
 				739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */,
 				739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */,
@@ -348,6 +363,7 @@
 				73E99B5028FAED3C00D83487 /* LabelTextViewLayoutManager.swift in Sources */,
 				739FB2B228F730A2007C1929 /* Configurable.swift in Sources */,
 				739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */,
+				737FF95E28FDB3080027F73A /* OutlineLinesShape.swift in Sources */,
 				739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

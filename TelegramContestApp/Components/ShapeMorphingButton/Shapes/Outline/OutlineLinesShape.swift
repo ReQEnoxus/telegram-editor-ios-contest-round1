@@ -1,17 +1,14 @@
 //
-//  OutlineBackgroundShape.swift
+//  OutlineLinesShape.swift
 //  TelegramContestApp
 //
-//  Created by Никита Афанасьев on 16.10.2022.
+//  Created by Никита Афанасьев on 17.10.2022.
 //
 
 import UIKit
 
-struct OutlineBackgroundShape: Shape {
-    private enum Constants {
-        static let cornerRadius: CGFloat = 10
-    }
-    
+struct OutlineLinesShape: Shape {
+    let lineInfo: LabelTextView.LineInfo
     let outlineMode: OutlineMode
     
     var strokeColor: CGColor? {
@@ -34,7 +31,12 @@ struct OutlineBackgroundShape: Shape {
     }
     
     func draw(in bounds: CGRect) -> UIBezierPath {
-        let path = UIBezierPath(roundedRect: bounds, cornerRadius: Constants.cornerRadius)
+        let path = UIBezierPath()
+        lineInfo.lines.forEach {
+            path.move(to: $0.rect.origin)
+            path.append(UIBezierPath(rect: $0.rect))
+        }
+        
         return path
     }
     

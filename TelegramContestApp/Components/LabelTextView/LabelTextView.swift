@@ -8,6 +8,16 @@
 import Foundation
 import UIKit
 
+protocol OutlineLabelDelegate: AnyObject {
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
+    func didChangeLineInfo(to new: LabelTextView.LineInfo)
+}
+
+extension OutlineLabelDelegate {
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {}
+    func didChangeLineInfo(to new: LabelTextView.LineInfo) {}
+}
+
 final class LabelTextView: UITextView {
     struct LineInfo {
         struct Line {
@@ -30,6 +40,7 @@ final class LabelTextView: UITextView {
         }
     }
     
+    weak var outlineDelegate: OutlineLabelDelegate?
     private var configuration: LabelTextViewConfiguration?
     private weak var customizationView: FontCustomizationAccessoryView?
     private var animator = Animator()
@@ -48,7 +59,7 @@ final class LabelTextView: UITextView {
         return NSRange(location: .zero, length: attributedText.string.count)
     }
     
-    init(frame: CGRect) {
+    init(frame: CGRect = .zero) {
         let layoutManager = LabelTextViewLayoutManager()
         let textStorage = NSTextStorage()
         textStorage.addLayoutManager(layoutManager)
@@ -57,13 +68,27 @@ final class LabelTextView: UITextView {
         textContainer.widthTracksTextView = true
         layoutManager.addTextContainer(textContainer)
         super.init(frame: frame, textContainer: textContainer)
-        updateLayoutManager()
-        delegate = self
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        updateLayoutManager()
         delegate = self
+        backgroundColor = .clear
+        isScrollEnabled = false
+        textContainerInset = .zero
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+        textContainer.lineFragmentPadding = .zero
+        contentMode = .topLeft
+        textDragInteraction?.isEnabled = false
+        translatesAutoresizingMaskIntoConstraints = false
+        keyboardAppearance = .dark
     }
     
     private func updateCustomizationViewConfiguration() {
@@ -115,7 +140,7 @@ final class LabelTextView: UITextView {
         attributedText = mutableString
     }
     
-    private func getLineInfo() -> LineInfo {
+    func getLineInfo() -> LineInfo {
         var size: CGSize = .zero
         var lines: [LineInfo.Line] = []
         
@@ -130,7 +155,9 @@ final class LabelTextView: UITextView {
         }
         
         lines = lines.enumerated().map { index, line in
-            guard index != lines.endIndex else { return line }
+            guard index != lines.endIndex - 1 else {
+                return line
+            }
             let strippedRange = NSRange(location: line.range.location, length: line.range.length - 1)
             let lineSize = self.attributedText.attributedSubstring(from: strippedRange).boundingRect(
                 with: CGSize(width: .greatestFiniteMagnitude, height: self.bounds.height),
@@ -206,6 +233,23 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
             guard let spacing = relativeSpacing(from: old, to: new, line: line, containerSize: lineInfo.containerSize) else { return nil }
             return AttributeInfo<CGFloat>(key: .customSpacing, value: spacing, range: line.range)
         }
+        if let outlineDelegate = outlineDelegate {
+            let targetLineInfo = LineInfo(
+                containerSize: lineInfo.containerSize,
+                lines: lineInfo.lines.enumerated().map { index, line in
+                    return LineInfo.Line(
+                        rect: CGRect(
+                            x: line.rect.origin.x + spacingValues[index].value,
+                            y: line.rect.origin.y,
+                            width: line.rect.width,
+                            height: line.rect.height
+                        ),
+                        range: line.range
+                    )
+                }
+            )
+            outlineDelegate.didChangeLineInfo(to: targetLineInfo)
+        }
         let currentSpacingAttributes: [AttributeInfo<CGFloat>] = getAttributes(for: .customSpacing, in: fullRange)
         let currentValues: [AttributeInfo<CGFloat>]
         if currentSpacingAttributes.isEmpty {
@@ -237,6 +281,10 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
             self.updateCustomizationViewConfiguration()
             
         }
+    }
+    
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
+        outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
     }
     
     private func relativeSpacing(from old: TextAlignment, to new: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat? {

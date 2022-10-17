@@ -9,20 +9,12 @@ import UIKit
 
 class ViewController: UIViewController {
         
-    lazy var textView: LabelTextView = {
-        let textView = LabelTextView(frame: .zero)
-        textView.isScrollEnabled = false
-        textView.textContainerInset = .zero
-        textView.showsVerticalScrollIndicator = false
-        textView.showsHorizontalScrollIndicator = false
-        textView.textContainer.lineFragmentPadding = .zero
-        textView.contentMode = .topLeft
-        textView.textDragInteraction?.isEnabled = false
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.keyboardAppearance = .dark
-        textView.text = "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона"
+    lazy var textView: LabelInputContainerView = {
+        let container = LabelInputContainerView()
         
-        return textView
+        container.labelTextView.text = "Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться. Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона"
+        
+        return container.forAutoLayout()
     }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -39,12 +31,15 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemGray5
         
         textView.configure(
-            with: LabelTextViewConfiguration(
-                supportedFonts: [
-                    textView.font ?? .systemFont(ofSize: 14),
-                    .systemFont(ofSize: 20, weight: .thin),
-                    .systemFont(ofSize: 25, weight: .bold)
-                ]
+            with: LabelContainerViewConfiguration(
+                labelConfiguration: LabelTextViewConfiguration(
+                    supportedFonts: [
+                        textView.labelTextView.font ?? .systemFont(ofSize: 14),
+                        .systemFont(ofSize: 20, weight: .thin),
+                        .systemFont(ofSize: 25, weight: .bold)
+                    ]
+                ),
+                outlineInset: 16
             )
         )
     }
