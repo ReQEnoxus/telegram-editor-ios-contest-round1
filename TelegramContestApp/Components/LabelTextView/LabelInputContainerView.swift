@@ -106,11 +106,11 @@ extension LabelInputContainerView: Configurable {
 }
 
 extension LabelInputContainerView: OutlineLabelDelegate {
-//    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
-//        morph(from: outline, to: targetOutline, animated: true)
-//    }
-//    
-//    func didChangeLineInfo(to new: LabelTextView.LineInfo) {
-//        morph(from: currentOutlineMode, to: currentOutlineMode, customLineInfo: new, animated: true)
-//    }
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
+        morph(from: outline, to: targetOutline, animated: true)
+    }
+    
+    func didChangeLineInfo(to new: LabelTextView.LineInfo) {
+        morph(from: currentOutlineMode, to: currentOutlineMode, customLineInfo: new, animated: true)
+    }
 }

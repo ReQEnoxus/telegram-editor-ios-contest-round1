@@ -59,7 +59,7 @@ final class ShapeMorphingButton<ShapeKey: Hashable>: UIButton {
             }
             layer.isHidden = false
             
-            layer.morph(from: currentShapes[safe: index], to: shape)
+            layer.morph(from: currentShapes[safe: index], to: shape, animated: animated)
         }
     }
 }
