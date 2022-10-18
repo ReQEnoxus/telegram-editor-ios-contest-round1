@@ -53,6 +53,12 @@ final class LabelTextView: UITextView {
         }
     }
     
+    private var currentExclusionRects: [CGRect] = [] {
+        didSet {
+            textContainer.exclusionPaths = currentExclusionRects.map { UIBezierPath(rect: $0) }
+        }
+    }
+    
     private var animatableTextAlignment: TextAlignment = .left
     
     private var fullRange: NSRange {
@@ -229,62 +235,153 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
         let lineInfo = getLineInfo()
-        let spacingValues: [AttributeInfo<CGFloat>] = lineInfo.lines.compactMap { line in
-            guard let spacing = relativeSpacing(from: old, to: new, line: line, containerSize: lineInfo.containerSize) else { return nil }
-            return AttributeInfo<CGFloat>(key: .customSpacing, value: spacing, range: line.range)
-        }
-        if let outlineDelegate = outlineDelegate {
-            let targetLineInfo = LineInfo(
-                containerSize: lineInfo.containerSize,
-                lines: lineInfo.lines.enumerated().map { index, line in
-                    return LineInfo.Line(
-                        rect: CGRect(
-                            x: line.rect.origin.x + spacingValues[index].value,
-                            y: line.rect.origin.y,
-                            width: line.rect.width,
-                            height: line.rect.height
-                        ),
-                        range: line.range
-                    )
-                }
-            )
-            outlineDelegate.didChangeLineInfo(to: targetLineInfo)
-        }
-        let currentSpacingAttributes: [AttributeInfo<CGFloat>] = getAttributes(for: .customSpacing, in: fullRange)
-        let currentValues: [AttributeInfo<CGFloat>]
-        if currentSpacingAttributes.isEmpty {
-            currentValues = spacingValues.map { AttributeInfo<CGFloat>(key: .customSpacing, value: .zero, range: $0.range) }
-        } else {
-            // Если нашлись значения, то анимация сейчас уже в процессе, интерполировать нужно не от нуля, а от текущих значений
-            currentValues = currentSpacingAttributes
-        }
+//        let spacingValues: [AttributeInfo<CGFloat>] = lineInfo.lines.compactMap { line in
+//            guard let spacing = relativeSpacing(from: old, to: new, line: line, containerSize: lineInfo.containerSize) else { return nil }
+//            return AttributeInfo<CGFloat>(key: .customSpacing, value: spacing, range: line.range)
+//        }
+//        if let outlineDelegate = outlineDelegate {
+//            let targetLineInfo = LineInfo(
+//                containerSize: lineInfo.containerSize,
+//                lines: lineInfo.lines.enumerated().map { index, line in
+//                    return LineInfo.Line(
+//                        rect: CGRect(
+//                            x: line.rect.origin.x + spacingValues[index].value,
+//                            y: line.rect.origin.y,
+//                            width: line.rect.width,
+//                            height: line.rect.height
+//                        ),
+//                        range: line.range
+//                    )
+//                }
+//            )
+//            outlineDelegate.didChangeLineInfo(to: targetLineInfo)
+//        }
+        
+//        let currentValues: [AttributeInfo<CGFloat>]
+//        if currentSpacingAttributes.isEmpty {
+//            currentValues = spacingValues.map { AttributeInfo<CGFloat>(key: .customSpacing, value: .zero, range: $0.range) }
+//        } else {
+//            // Если нашлись значения, то анимация сейчас уже в процессе, интерполировать нужно не от нуля, а от текущих значений
+//            currentValues = currentSpacingAttributes
+//        }
         let oldTintColor = tintColor
         tintColor = .clear
+        
+        CATransaction.begin()
+        if currentExclusionRects.isEmpty {
+            // Анимация еще не идет, начинаем
+            currentExclusionRects = initialExclusionPaths(for: TextAlignment.from(nsTextAlignment: self.textAlignment), lineInfo: lineInfo)
+            textAlignment = .left
+        }
+        CATransaction.commit()
+        let targetValues = initialExclusionPaths(for: new, lineInfo: lineInfo)
+        
+        print("!! current = \(currentExclusionRects)")
+        print("!! target = \(targetValues)")
+       
         animator.animateProgress(
-            duration: Durations.third
+            duration: 1
         ) { [weak self] progress in
             guard let self = self else { return }
-            let adjustedSpacingValues = spacingValues.enumerated().map { index, attr -> AttributeInfo<CGFloat> in
-                let diff = attr.value - currentValues[index].value
-                let resultSpacing = currentValues[index].value + diff * progress
-                return AttributeInfo<CGFloat>(key: .customSpacing, value: resultSpacing, range: attr.range)
+            let adjustedSpacingValues = targetValues.enumerated().map { index, targetValue -> CGRect in
+                let diff = targetValue.width - self.currentExclusionRects[index].width
+                let resultSpacing = self.currentExclusionRects[index].width + diff * progress
+                return CGRect(
+                    x: .zero,
+                    y: targetValue.origin.y,
+                    width: resultSpacing,
+                    height: targetValue.height
+                )
             }
-            adjustedSpacingValues.forEach {
-                self.addAttribute(attr: $0.value, for: $0.key, in: $0.range)
-            }
+            self.currentExclusionRects = adjustedSpacingValues
+//            print("!! path for 0 line: \(self.textContainer.exclusionPaths[0])")
+//            adjustedSpacingValues.forEach {
+//                (self.textContainer as! LabelTextViewTextContainer).customInsets[$0.range.location] = $0.value
+//                self.layoutManager.invalidateLayout(forCharacterRange: $0.range, actualCharacterRange: nil)
+////                self.addAttribute(attr: $0.value, for: $0.key, in: $0.range)
+//            }
         } completion: { [weak self] in
             guard let self = self else { return }
-            let spacingAttributes: [AttributeInfo<CGFloat>] = self.getAttributes(for: .customSpacing, in: self.fullRange)
-            self.removeAttributes(attrs: spacingAttributes)
+//            let spacingAttributes: [AttributeInfo<CGFloat>] = self.getAttributes(for: .customSpacing, in: self.fullRange)
+//            self.removeAttributes(attrs: spacingAttributes)
+//            (self.textContainer as! LabelTextViewTextContainer).customInsets = [:]
+            self.currentExclusionRects = []
             self.textAlignment = new.nsTextAlignment
+//            self.layoutManager.invalidateLayout(forCharacterRange: self.fullRange, actualCharacterRange: nil)
+            print("!! COMPLETED !!")
+            
             self.tintColor = oldTintColor
             self.updateCustomizationViewConfiguration()
             
+        }
+//        animator.animateProgress(
+//            duration: 1
+//        ) { [weak self] progress in
+//            guard let self = self else { return }
+//            let adjustedSpacingValues = spacingValues.enumerated().map { index, attr -> AttributeInfo<CGFloat> in
+//                let diff = attr.value - currentValues[index].value
+//                let resultSpacing = currentValues[index].value + diff * progress
+//                return AttributeInfo<CGFloat>(key: .customSpacing, value: resultSpacing, range: attr.range)
+//            }
+//            adjustedSpacingValues.forEach {
+//                self.addAttribute(attr: $0.value, for: $0.key, in: $0.range)
+//            }
+//        } completion: { [weak self] in
+//            guard let self = self else { return }
+//            let spacingAttributes: [AttributeInfo<CGFloat>] = self.getAttributes(for: .customSpacing, in: self.fullRange)
+//            self.removeAttributes(attrs: spacingAttributes)
+//            self.textAlignment = new.nsTextAlignment
+//            self.tintColor = oldTintColor
+//            self.updateCustomizationViewConfiguration()
+//
+//        }
+    }
+    
+    private func initialExclusionPaths(for alignment: TextAlignment, lineInfo: LineInfo) -> [CGRect] {
+        switch alignment {
+        case .left:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: .zero,
+                    height: line.rect.height
+                )
+            }
+        case .right:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: targetSpacing(for: .right, line: line, containerSize: lineInfo.containerSize),
+                    height: line.rect.height
+                )
+            }
+        case .center:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: targetSpacing(for: .center, line: line, containerSize: lineInfo.containerSize),
+                    height: line.rect.height
+                )
+            }
         }
     }
     
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
         outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
+    }
+    
+    private func targetSpacing(for textAlignment: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat {
+        switch textAlignment {
+        case .left:
+            return .zero
+        case .center:
+            return (containerSize.width - line.rect.width) / 2
+        case .right:
+            return containerSize.width - line.rect.width
+        }
     }
     
     private func relativeSpacing(from old: TextAlignment, to new: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat? {

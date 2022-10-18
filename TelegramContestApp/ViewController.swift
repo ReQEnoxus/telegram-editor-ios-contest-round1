@@ -30,13 +30,13 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemGray5
         
+        textView.labelTextView.font = .systemFont(ofSize: 25, weight: .bold)
         textView.configure(
             with: LabelContainerViewConfiguration(
                 labelConfiguration: LabelTextViewConfiguration(
                     supportedFonts: [
                         textView.labelTextView.font ?? .systemFont(ofSize: 14),
                         .systemFont(ofSize: 20, weight: .thin),
-                        .systemFont(ofSize: 25, weight: .bold)
                     ]
                 ),
                 outlineInset: 16
@@ -56,10 +56,12 @@ class ViewController: UIViewController {
     private func makeConstraints() {
         NSLayoutConstraint.activate(
             [
+                textView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                textView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
                 textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-                textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+//                textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
                 textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-                textView.heightAnchor.constraint(equalToConstant: 60)
+//                textView.heightAnchor.constraint(equalToConstant: 60)
             ]
         )
     }

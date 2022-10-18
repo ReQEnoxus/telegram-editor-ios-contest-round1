@@ -43,6 +43,7 @@
 		73E99B4D28FAD97900D83487 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4C28FAD97900D83487 /* Animator.swift */; };
 		73E99B5028FAED3C00D83487 /* LabelTextViewLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */; };
 		73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */; };
+		73EB3E1328FF251E0018A073 /* LabelTextViewTextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73EB3E1228FF251E0018A073 /* LabelTextViewTextContainer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		73E99B4C28FAD97900D83487 /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextViewLayoutManager.swift; sourceTree = "<group>"; };
 		73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedStringKey+Extensions.swift"; sourceTree = "<group>"; };
+		73EB3E1228FF251E0018A073 /* LabelTextViewTextContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTextViewTextContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				73E99B4F28FAED3C00D83487 /* LabelTextViewLayoutManager.swift */,
+				73EB3E1228FF251E0018A073 /* LabelTextViewTextContainer.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */,
 				73D31DC228FC55A700A6969D /* OutlineLetterShape.swift in Sources */,
 				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
+				73EB3E1328FF251E0018A073 /* LabelTextViewTextContainer.swift in Sources */,
 				73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */,
 				7354972728F9EA760024F48B /* TimingFunction.swift in Sources */,
 				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
