@@ -91,7 +91,7 @@ final class LabelInputContainerView: UIView {
     
     private func morph(from currentShape: OutlineMode?, to targetOutline: OutlineMode, customLineInfo: LabelTextView.LineInfo? = nil, animated: Bool) {
         let lineInfo = customLineInfo ?? labelTextView.getLineInfo()
-        let shape = OutlineLinesShape(lineInfo: lineInfo, outlineMode: targetOutline)
+        let shape = OutlineLinesShape(lineInfo: lineInfo, outlineMode: targetOutline, inset: configuration?.outlineInset ?? .zero)
         currentOutlineShape = shape
         currentOutlineMode = targetOutline
         outlineLayer.morph(from: currentOutlineShape, to: shape, animated: animated)

@@ -40,7 +40,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         .none,
         .solid(.white),
         .transparent(.white),
-        .text(.black)
+        .text(.red)
     ]
     private var currentOutlineIndex: Int = .zero
     

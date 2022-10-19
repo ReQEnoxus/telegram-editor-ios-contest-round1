@@ -36,7 +36,7 @@ class ViewController: UIViewController {
                 labelConfiguration: LabelTextViewConfiguration(
                     supportedFonts: [
                         textView.labelTextView.font ?? .systemFont(ofSize: 14),
-                        .systemFont(ofSize: 20, weight: .thin),
+                        .systemFont(ofSize: 25, weight: .thin),
                     ]
                 ),
                 outlineInset: 16

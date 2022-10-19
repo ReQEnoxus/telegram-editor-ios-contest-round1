@@ -10,6 +10,7 @@ import UIKit
 struct OutlineLinesShape: Shape {
     let lineInfo: LabelTextView.LineInfo
     let outlineMode: OutlineMode
+    let inset: CGFloat
     
     var strokeColor: CGColor? {
         return nil
@@ -34,7 +35,7 @@ struct OutlineLinesShape: Shape {
         let path = UIBezierPath()
         lineInfo.lines.forEach {
             path.move(to: $0.rect.origin)
-            path.append(UIBezierPath(rect: $0.rect))
+            path.append(UIBezierPath(rect: $0.rect.expanded(by: inset)))
         }
         
         return path
@@ -42,5 +43,16 @@ struct OutlineLinesShape: Shape {
     
     func lineWidth(for bounds: CGRect) -> CGFloat {
         return .zero
+    }
+}
+
+private extension CGRect {
+    func expanded(by inset: CGFloat) -> CGRect {
+        return CGRect(
+            x: origin.x - inset / 2,
+            y: origin.y - inset / 2,
+            width: width + inset,
+            height: height + inset
+        )
     }
 }
