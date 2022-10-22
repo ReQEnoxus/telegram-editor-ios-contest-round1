@@ -10,7 +10,7 @@ import UIKit
 
 protocol OutlineLabelDelegate: AnyObject {
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
-    func didChangeLineInfo(to new: LabelTextView.LineInfo)
+    func didChangeLineInfo(to new: LabelTextView.LineInfo, alignment: TextAlignment?, shouldAnimate: Bool)
 }
 
 extension OutlineLabelDelegate {
@@ -79,6 +79,13 @@ final class LabelTextView: UITextView {
         textDragInteraction?.isEnabled = false
         translatesAutoresizingMaskIntoConstraints = false
         keyboardAppearance = .dark
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineHeightMultiple = 1.2
+        
+        typingAttributes = [
+            .paragraphStyle: paragraph
+        ]
+        
     }
     
     private func updateCustomizationViewConfiguration() {
@@ -145,13 +152,10 @@ final class LabelTextView: UITextView {
         }
         
         lines = lines.enumerated().map { index, line in
-            guard index != lines.endIndex - 1 else {
-                return line
-            }
-            let strippedRange = NSRange(location: line.range.location, length: line.range.length - 1)
-            let lineSize = self.attributedText.attributedSubstring(from: strippedRange).boundingRect(
+            let lineString = self.attributedText.attributedSubstring(from: line.range).withTrimmedWhitespaces
+            let lineSize = lineString.boundingRect(
                 with: CGSize(width: .greatestFiniteMagnitude, height: self.bounds.height),
-                options: [.usesFontLeading, .usesLineFragmentOrigin],
+                options: [.usesFontLeading],
                 context: nil
             ).size
             return LineInfo.Line(
@@ -188,6 +192,13 @@ extension LabelTextView: Configurable {
 extension LabelTextView: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         updateCustomizationViewConfiguration()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.hasSuffix("\n") {
+            textView.text = textView.text.trailingNewlinesTrimmed + "\n"
+        }
+        outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
     }
 }
 
@@ -239,16 +250,17 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
                     )
                 }
             )
-            outlineDelegate.didChangeLineInfo(to: targetLineInfo)
+            outlineDelegate.didChangeLineInfo(to: targetLineInfo, alignment: new, shouldAnimate: true)
         }
        
+        let currentExclusionRectsCopy = currentExclusionRects
         animator.animateProgress(
             duration: Durations.half
         ) { [weak self] progress in
             guard let self = self else { return }
             let adjustedSpacingValues = targetValues.enumerated().map { index, targetValue -> CGRect in
-                let diff = targetValue.width - self.currentExclusionRects[index].width
-                let resultSpacing = self.currentExclusionRects[index].width + diff * progress
+                let diff = targetValue.width - currentExclusionRectsCopy[index].width
+                let resultSpacing = currentExclusionRectsCopy[index].width + diff * progress
                 return CGRect(
                     x: .zero,
                     y: targetValue.origin.y,
@@ -263,7 +275,6 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
             self.textAlignment = new.nsTextAlignment
             self.tintColor = oldTintColor
             self.updateCustomizationViewConfiguration()
-            
         }
     }
     
@@ -280,6 +291,7 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
             let mutableString = NSMutableAttributedString(attributedString: attributedText)
             mutableString.removeAttribute(.strokeColor, range: fullRange)
             mutableString.removeAttribute(.strokeWidth, range: fullRange)
+            attributedText = mutableString
         }
         outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
     }

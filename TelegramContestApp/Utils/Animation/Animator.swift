@@ -51,9 +51,10 @@ final class Animator {
               let progressBlock = progressBlock,
               let duration = duration
         else { return }
-
         currentProgress += displayLink.duration / duration
+        print("!! progress: \(currentProgress)")
         let interpolatedProgress = timingFunction.progress(at: currentProgress)
+        print("!! interpolatedProgress: \(interpolatedProgress)")
         progressBlock(interpolatedProgress)
     }
 }

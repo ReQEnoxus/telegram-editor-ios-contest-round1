@@ -24,7 +24,7 @@ final class LabelInputContainerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         outlineLayer.frame = bounds
-        morph(from: currentOutlineMode, to: currentOutlineMode, animated: false)
+        morph(from: currentOutlineMode, to: currentOutlineMode, alignment: TextAlignment.from(nsTextAlignment: labelTextView.textAlignment), animated: false)
     }
     
     override init(frame: CGRect) {
@@ -42,6 +42,7 @@ final class LabelInputContainerView: UIView {
         addSubviews()
         makeConstraints()
         labelTextView.outlineDelegate = self
+        outlineLayer.fillRule = .evenOdd
     }
     
     private func addSubviews() {
@@ -89,12 +90,12 @@ final class LabelInputContainerView: UIView {
         setNeedsLayout()
     }
     
-    private func morph(from currentShape: OutlineMode?, to targetOutline: OutlineMode, customLineInfo: LabelTextView.LineInfo? = nil, animated: Bool) {
+    private func morph(from currentShape: OutlineMode?, to targetOutline: OutlineMode, customLineInfo: LabelTextView.LineInfo? = nil, alignment: TextAlignment? = nil, animated: Bool) {
         let lineInfo = customLineInfo ?? labelTextView.getLineInfo()
-        let shape = OutlineLinesShape(lineInfo: lineInfo, outlineMode: targetOutline, inset: configuration?.outlineInset ?? .zero)
+        let shape = OutlineLinesShape(lineInfo: lineInfo, outlineMode: targetOutline, inset: configuration?.outlineInset ?? .zero, alignment: alignment)
         currentOutlineShape = shape
         currentOutlineMode = targetOutline
-        outlineLayer.morph(from: currentOutlineShape, to: shape, animated: animated)
+        outlineLayer.morph(from: currentOutlineShape, to: shape, animated: animated, duration: Durations.half)
     }
 }
 
@@ -107,10 +108,10 @@ extension LabelInputContainerView: Configurable {
 
 extension LabelInputContainerView: OutlineLabelDelegate {
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
-        morph(from: outline, to: targetOutline, animated: true)
+        morph(from: outline, to: targetOutline, alignment: TextAlignment.from(nsTextAlignment: labelTextView.textAlignment), animated: true)
     }
     
-    func didChangeLineInfo(to new: LabelTextView.LineInfo) {
-        morph(from: currentOutlineMode, to: currentOutlineMode, customLineInfo: new, animated: true)
+    func didChangeLineInfo(to new: LabelTextView.LineInfo, alignment: TextAlignment?, shouldAnimate: Bool) {
+        morph(from: currentOutlineMode, to: currentOutlineMode, customLineInfo: new, alignment: alignment, animated: shouldAnimate)
     }
 }

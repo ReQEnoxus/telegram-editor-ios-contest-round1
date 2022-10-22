@@ -48,7 +48,7 @@ final class ShapeMorphingButton<ShapeKey: Hashable>: UIButton {
         shapeLayers.forEach { $0.path = nil }
     }
     
-    private func morph(to key: ShapeKey, animated: Bool) {
+    private func morph(to key: ShapeKey, animated: Bool, animationDuration: TimeInterval = Durations.half) {
         guard let currentKey = currentShape,
               let currentShapes = shapes[currentKey],
               let targetShapes = shapes[key] else { return }

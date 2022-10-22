@@ -39,7 +39,7 @@ class ViewController: UIViewController {
                         .systemFont(ofSize: 25, weight: .thin),
                     ]
                 ),
-                outlineInset: 16
+                outlineInset: 24
             )
         )
     }
