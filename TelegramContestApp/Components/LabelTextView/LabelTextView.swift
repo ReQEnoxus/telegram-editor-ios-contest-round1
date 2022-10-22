@@ -8,6 +8,16 @@
 import Foundation
 import UIKit
 
+protocol OutlineLabelDelegate: AnyObject {
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
+    func didChangeLineInfo(to new: LabelTextView.LineInfo, alignment: TextAlignment?, shouldAnimate: Bool)
+}
+
+extension OutlineLabelDelegate {
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {}
+    func didChangeLineInfo(to new: LabelTextView.LineInfo) {}
+}
+
 final class LabelTextView: UITextView {
     struct LineInfo {
         struct Line {
@@ -24,12 +34,7 @@ final class LabelTextView: UITextView {
         let range: NSRange
     }
     
-    override var textContainerInset: UIEdgeInsets {
-        didSet {
-            updateLayoutManager()
-        }
-    }
-    
+    weak var outlineDelegate: OutlineLabelDelegate?
     private var configuration: LabelTextViewConfiguration?
     private weak var customizationView: FontCustomizationAccessoryView?
     private var animator = Animator()
@@ -42,28 +47,45 @@ final class LabelTextView: UITextView {
         }
     }
     
-    private var animatableTextAlignment: TextAlignment = .left
+    private var currentExclusionRects: [CGRect] = [] {
+        didSet {
+            textContainer.exclusionPaths = currentExclusionRects.map { UIBezierPath(rect: $0) }
+        }
+    }
     
     private var fullRange: NSRange {
         return NSRange(location: .zero, length: attributedText.string.count)
     }
     
-    init(frame: CGRect) {
-        let layoutManager = LabelTextViewLayoutManager()
-        let textStorage = NSTextStorage()
-        textStorage.addLayoutManager(layoutManager)
-        let textContainer = NSTextContainer()
-        textContainer.heightTracksTextView = true
-        textContainer.widthTracksTextView = true
-        layoutManager.addTextContainer(textContainer)
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
-        updateLayoutManager()
-        delegate = self
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        commonInit()
+    }
+    
+    private func commonInit() {
         delegate = self
+        backgroundColor = .clear
+        isScrollEnabled = false
+        textContainerInset = .zero
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
+        textContainer.lineFragmentPadding = .zero
+        contentMode = .topLeft
+        textDragInteraction?.isEnabled = false
+        translatesAutoresizingMaskIntoConstraints = false
+        keyboardAppearance = .dark
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineHeightMultiple = 1.2
+        
+        typingAttributes = [
+            .paragraphStyle: paragraph
+        ]
+        
     }
     
     private func updateCustomizationViewConfiguration() {
@@ -115,7 +137,7 @@ final class LabelTextView: UITextView {
         attributedText = mutableString
     }
     
-    private func getLineInfo() -> LineInfo {
+    func getLineInfo() -> LineInfo {
         var size: CGSize = .zero
         var lines: [LineInfo.Line] = []
         
@@ -130,11 +152,10 @@ final class LabelTextView: UITextView {
         }
         
         lines = lines.enumerated().map { index, line in
-            guard index != lines.endIndex else { return line }
-            let strippedRange = NSRange(location: line.range.location, length: line.range.length - 1)
-            let lineSize = self.attributedText.attributedSubstring(from: strippedRange).boundingRect(
+            let lineString = self.attributedText.attributedSubstring(from: line.range).withTrimmedWhitespaces
+            let lineSize = lineString.boundingRect(
                 with: CGSize(width: .greatestFiniteMagnitude, height: self.bounds.height),
-                options: [.usesFontLeading, .usesLineFragmentOrigin],
+                options: [.usesFontLeading],
                 context: nil
             ).size
             return LineInfo.Line(
@@ -150,12 +171,6 @@ final class LabelTextView: UITextView {
             containerSize: size,
             lines: lines
         )
-    }
-    
-    private func updateLayoutManager() {
-        guard let layoutManager = layoutManager as? LabelTextViewLayoutManager else { return }
-        layoutManager.textContainerOriginOffset = CGSize(width: textContainerInset.left, height: textContainerInset.top)
-        layoutManager.invalidateDisplay(forCharacterRange: NSRange(location: 0, length: attributedText.length))
     }
 }
 
@@ -177,6 +192,13 @@ extension LabelTextView: Configurable {
 extension LabelTextView: UITextViewDelegate {
     func textViewDidChangeSelection(_ textView: UITextView) {
         updateCustomizationViewConfiguration()
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.hasSuffix("\n") {
+            textView.text = textView.text.trailingNewlinesTrimmed + "\n"
+        }
+        outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
     }
 }
 
@@ -202,59 +224,118 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
         let lineInfo = getLineInfo()
-        let spacingValues: [AttributeInfo<CGFloat>] = lineInfo.lines.compactMap { line in
-            guard let spacing = relativeSpacing(from: old, to: new, line: line, containerSize: lineInfo.containerSize) else { return nil }
-            return AttributeInfo<CGFloat>(key: .customSpacing, value: spacing, range: line.range)
-        }
-        let currentSpacingAttributes: [AttributeInfo<CGFloat>] = getAttributes(for: .customSpacing, in: fullRange)
-        let currentValues: [AttributeInfo<CGFloat>]
-        if currentSpacingAttributes.isEmpty {
-            currentValues = spacingValues.map { AttributeInfo<CGFloat>(key: .customSpacing, value: .zero, range: $0.range) }
-        } else {
-            // Если нашлись значения, то анимация сейчас уже в процессе, интерполировать нужно не от нуля, а от текущих значений
-            currentValues = currentSpacingAttributes
-        }
         let oldTintColor = tintColor
         tintColor = .clear
+        
+        if currentExclusionRects.isEmpty {
+            // Анимация еще не идет, начинаем
+            currentExclusionRects = initialExclusionPaths(for: TextAlignment.from(nsTextAlignment: self.textAlignment), lineInfo: lineInfo)
+            textAlignment = .left
+        }
+        
+        let targetValues = initialExclusionPaths(for: new, lineInfo: lineInfo)
+        
+        if let outlineDelegate = outlineDelegate {
+            let targetLineInfo = LineInfo(
+                containerSize: lineInfo.containerSize,
+                lines: lineInfo.lines.enumerated().map { index, line in
+                    return LineInfo.Line(
+                        rect: CGRect(
+                            x: targetValues[index].width,
+                            y: line.rect.origin.y,
+                            width: line.rect.width,
+                            height: line.rect.height
+                        ),
+                        range: line.range
+                    )
+                }
+            )
+            outlineDelegate.didChangeLineInfo(to: targetLineInfo, alignment: new, shouldAnimate: true)
+        }
+       
+        let currentExclusionRectsCopy = currentExclusionRects
         animator.animateProgress(
-            duration: Durations.third
+            duration: Durations.half
         ) { [weak self] progress in
             guard let self = self else { return }
-            let adjustedSpacingValues = spacingValues.enumerated().map { index, attr -> AttributeInfo<CGFloat> in
-                let diff = attr.value - currentValues[index].value
-                let resultSpacing = currentValues[index].value + diff * progress
-                return AttributeInfo<CGFloat>(key: .customSpacing, value: resultSpacing, range: attr.range)
+            let adjustedSpacingValues = targetValues.enumerated().map { index, targetValue -> CGRect in
+                let diff = targetValue.width - currentExclusionRectsCopy[index].width
+                let resultSpacing = currentExclusionRectsCopy[index].width + diff * progress
+                return CGRect(
+                    x: .zero,
+                    y: targetValue.origin.y,
+                    width: resultSpacing,
+                    height: targetValue.height
+                )
             }
-            adjustedSpacingValues.forEach {
-                self.addAttribute(attr: $0.value, for: $0.key, in: $0.range)
-            }
+            self.currentExclusionRects = adjustedSpacingValues
         } completion: { [weak self] in
             guard let self = self else { return }
-            let spacingAttributes: [AttributeInfo<CGFloat>] = self.getAttributes(for: .customSpacing, in: self.fullRange)
-            self.removeAttributes(attrs: spacingAttributes)
+            self.currentExclusionRects = []
             self.textAlignment = new.nsTextAlignment
             self.tintColor = oldTintColor
             self.updateCustomizationViewConfiguration()
-            
         }
     }
     
-    private func relativeSpacing(from old: TextAlignment, to new: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat? {
-        switch (old, new) {
-        case (.left, .right):
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
+        if case .text(let color) = targetOutline {
+            let attrs: [NSAttributedString.Key: Any] = [
+                .strokeColor: color,
+                .strokeWidth: -5
+            ]
+            attrs.forEach {
+                addAttribute(attr: $0.value, for: $0.key, in: fullRange)
+            }
+        } else {
+            let mutableString = NSMutableAttributedString(attributedString: attributedText)
+            mutableString.removeAttribute(.strokeColor, range: fullRange)
+            mutableString.removeAttribute(.strokeWidth, range: fullRange)
+            attributedText = mutableString
+        }
+        outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
+    }
+    
+    private func targetSpacing(for textAlignment: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat {
+        switch textAlignment {
+        case .left:
+            return .zero
+        case .center:
+            return (containerSize.width - line.rect.width) / 2
+        case .right:
             return containerSize.width - line.rect.width
-        case (.left, .center):
-            return (containerSize.width - line.rect.width) / 2
-        case (.right, .left):
-            return -(containerSize.width - line.rect.width)
-        case (.right, .center):
-            return -(containerSize.width - line.rect.width) / 2
-        case (.center, .left):
-            return -(containerSize.width - line.rect.width) / 2
-        case (.center, .right):
-            return (containerSize.width - line.rect.width) / 2
-        default:
-            return nil
+        }
+    }
+    
+    private func initialExclusionPaths(for alignment: TextAlignment, lineInfo: LineInfo) -> [CGRect] {
+        switch alignment {
+        case .left:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: .zero,
+                    height: line.rect.height
+                )
+            }
+        case .right:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: targetSpacing(for: .right, line: line, containerSize: lineInfo.containerSize),
+                    height: line.rect.height
+                )
+            }
+        case .center:
+            return lineInfo.lines.map { line in
+                CGRect(
+                    x: .zero,
+                    y: line.rect.origin.y,
+                    width: targetSpacing(for: .center, line: line, containerSize: lineInfo.containerSize),
+                    height: line.rect.height
+                )
+            }
         }
     }
 }

@@ -10,7 +10,6 @@ import UIKit
 struct OutlineBackgroundShape: Shape {
     private enum Constants {
         static let cornerRadius: CGFloat = 10
-        static let transparencyFactor: CGFloat = 0.4
     }
     
     let outlineMode: OutlineMode
@@ -22,9 +21,9 @@ struct OutlineBackgroundShape: Shape {
     var fillColor: CGColor? {
         switch outlineMode {
         case .solid(let color):
-            return color.cgColor
-        case .transparent(let color):
-            return color.withAlphaComponent(Constants.transparencyFactor).cgColor
+            return color.withAlphaComponent(.one).cgColor
+        case .transparent(let color, let alphaComponent):
+            return color.withAlphaComponent(alphaComponent).cgColor
         case .text, .none:
             return UIColor.clear.cgColor
         }

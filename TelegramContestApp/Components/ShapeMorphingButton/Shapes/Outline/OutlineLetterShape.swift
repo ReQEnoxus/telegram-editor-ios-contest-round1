@@ -26,9 +26,9 @@ struct OutlineLetterShape: Shape {
     var strokeColor: CGColor? {
         switch outlineMode {
         case .solid(let color):
-            return textColor(for: color).cgColor
-        case .transparent(let color):
-            return textColor(for: color.withAlphaComponent(0.4)).cgColor
+            return textColor(for: color.withAlphaComponent(.one)).cgColor
+        case .transparent(let color, let alphaComponent):
+            return textColor(for: color.withAlphaComponent(alphaComponent)).cgColor
         case .text(let color):
             switch widthMultiplier {
             case .text:

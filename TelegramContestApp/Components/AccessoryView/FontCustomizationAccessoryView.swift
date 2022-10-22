@@ -10,11 +10,13 @@ import UIKit
 protocol FontCustomizationAccessoryViewDelegate: AnyObject {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem)
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment)
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
 }
 
 extension FontCustomizationAccessoryViewDelegate {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {}
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {}
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {}
 }
 
 final class FontCustomizationAccessoryView: UIInputView {
@@ -38,7 +40,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         .none,
         .solid(.white),
         .transparent(.white),
-        .text(.black)
+        .text(.red)
     ]
     private var currentOutlineIndex: Int = .zero
     
@@ -218,10 +220,12 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     @objc private func didTapTextOutlineButton() {
+        guard let current = textOutlineButton.currentShape else { return }
         let nextIndex = (currentOutlineIndex + 1) % outlines.count
         let nextOutline = outlines[nextIndex]
         textOutlineButton.setShape(nextOutline, animated: true)
         currentOutlineIndex = nextIndex
+        delegate?.didChangeOutlineMode(from: current, to: nextOutline)
     }
 }
 

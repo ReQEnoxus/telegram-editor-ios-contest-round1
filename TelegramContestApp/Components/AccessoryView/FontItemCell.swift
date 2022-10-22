@@ -50,7 +50,7 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     
     private func setupContentBorders() {
         contentView.layer.borderWidth = .one
-        contentView.layer.cornerRadius = .xxsSpace
+        contentView.layer.cornerRadius = .xsSpace
     }
     
     private func setupBorders(for selected: Bool) {
