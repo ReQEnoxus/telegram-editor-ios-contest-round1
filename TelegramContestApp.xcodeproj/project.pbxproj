@@ -44,6 +44,7 @@
 		73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */; };
 		73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA22903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift */; };
 		73F02EA52903FBC500A81A68 /* StringProtocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA42903FBC500A81A68 /* StringProtocol+Extensions.swift */; };
+		73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA6290459F000A81A68 /* CustomOutlineLayoutManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		73E99B5228FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedStringKey+Extensions.swift"; sourceTree = "<group>"; };
 		73F02EA22903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		73F02EA42903FBC500A81A68 /* StringProtocol+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringProtocol+Extensions.swift"; sourceTree = "<group>"; };
+		73F02EA6290459F000A81A68 /* CustomOutlineLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOutlineLayoutManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 				73B72C7828F877DC006FD9B1 /* LabelTextViewConfiguration.swift */,
 				737FF95F28FDC29F0027F73A /* LabelInputContainerView.swift */,
 				737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */,
+				73F02EA6290459F000A81A68 /* CustomOutlineLayoutManager.swift */,
 			);
 			path = LabelTextView;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */,
 				73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */,
 				73D31DC228FC55A700A6969D /* OutlineLetterShape.swift in Sources */,
+				73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */,
 				73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
 				73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */,

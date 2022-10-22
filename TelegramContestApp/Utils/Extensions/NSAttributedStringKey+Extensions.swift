@@ -8,6 +8,6 @@
 import Foundation
 
 extension NSAttributedString.Key {
-    /// Adds specified spacing to leading edge of a given range
-    static let customSpacing = NSAttributedString.Key(rawValue: "customSpacing")
+    /// Adds outline with specified color to a given range
+    static let customOutline = NSAttributedString.Key(rawValue: "customOutline")
 }

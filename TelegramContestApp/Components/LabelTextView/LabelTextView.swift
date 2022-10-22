@@ -38,6 +38,7 @@ final class LabelTextView: UITextView {
     private var configuration: LabelTextViewConfiguration?
     private weak var customizationView: FontCustomizationAccessoryView?
     private var animator = Animator()
+    private var currentTextOutlineAttribute: AttributeInfo<UIColor>?
     
     private var currentAttributeRange: NSRange {
         if selectedRange.length == .zero {
@@ -58,6 +59,13 @@ final class LabelTextView: UITextView {
     }
     
     override init(frame: CGRect, textContainer: NSTextContainer?) {
+        let layoutManager = CustomOutlineLayoutManager()
+        let textStorage = NSTextStorage()
+        textStorage.addLayoutManager(layoutManager)
+        let textContainer = NSTextContainer()
+        textContainer.heightTracksTextView = true
+        textContainer.widthTracksTextView = true
+        layoutManager.addTextContainer(textContainer)
         super.init(frame: frame, textContainer: textContainer)
         commonInit()
     }
@@ -71,7 +79,7 @@ final class LabelTextView: UITextView {
         delegate = self
         backgroundColor = .clear
         isScrollEnabled = false
-        textContainerInset = .zero
+        textContainerInset = UIEdgeInsets(top: .zero, left: 4, bottom: .zero, right: 4)
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         textContainer.lineFragmentPadding = .zero
@@ -97,7 +105,7 @@ final class LabelTextView: UITextView {
                     FontCustomizationAccessoryViewConfiguration.FontItem(
                         font: font,
                         name: font.fontName,
-                        isSelected: contains(font: font, in: currentAttributeRange, exclusively: true)
+                        isSelected: (typingAttributes[.font] as? UIFont) == font
                     )
                 },
                 textAlignment: TextAlignment.from(nsTextAlignment: textAlignment)
@@ -123,10 +131,18 @@ final class LabelTextView: UITextView {
         return attrs
     }
     
+    private func addAttribute<T>(attr: AttributeInfo<T>) {
+        preservingSelection {
+            addAttribute(attr: attr.value, for: attr.key, in: attr.range)
+        }
+    }
+    
     private func addAttribute(attr: Any, for key: NSAttributedString.Key, in range: NSRange) {
-        let mutableString = NSMutableAttributedString(attributedString: attributedText)
-        mutableString.addAttribute(key, value: attr, range: range)
-        attributedText = mutableString
+        preservingSelection {
+            let mutableString = NSMutableAttributedString(attributedString: attributedText)
+            mutableString.addAttribute(key, value: attr, range: range)
+            attributedText = mutableString
+        }
     }
     
     private func removeAttributes<T>(attrs: [AttributeInfo<T>]) {
@@ -198,6 +214,9 @@ extension LabelTextView: UITextViewDelegate {
         if textView.text.hasSuffix("\n") {
             textView.text = textView.text.trailingNewlinesTrimmed + "\n"
         }
+        if let currentOutline = currentTextOutlineAttribute {
+            addAttribute(attr: currentOutline)
+        }
         outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
     }
 }
@@ -219,6 +238,8 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
         if lastSelectedRange != fullRange {
             selectedRange = lastSelectedRange
         }
+        typingAttributes[.font] = newFont.font
+        outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
         updateCustomizationViewConfiguration()
     }
     
@@ -279,21 +300,30 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     }
     
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
-        if case .text(let color) = targetOutline {
-            let attrs: [NSAttributedString.Key: Any] = [
-                .strokeColor: color,
-                .strokeWidth: -5
-            ]
-            attrs.forEach {
-                addAttribute(attr: $0.value, for: $0.key, in: fullRange)
-            }
-        } else {
-            let mutableString = NSMutableAttributedString(attributedString: attributedText)
-            mutableString.removeAttribute(.strokeColor, range: fullRange)
-            mutableString.removeAttribute(.strokeWidth, range: fullRange)
-            attributedText = mutableString
+        if case .text = targetOutline {
+            handleTextOutlineChange(to: targetOutline)
+        } else if case .text = outline {
+            handleTextOutlineChange(to: targetOutline)
         }
+        
         outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
+    }
+    
+    private func handleTextOutlineChange(to newMode: OutlineMode) {
+        if case .text(let color) = newMode {
+            let attribute = AttributeInfo<UIColor>(key: .customOutline, value: color, range: fullRange)
+            UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+                self.addAttribute(attr: attribute)
+            } completion: { _ in }
+        } else {
+            UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+                self.preservingSelection {
+                    let mutableString = NSMutableAttributedString(attributedString: self.attributedText)
+                    mutableString.removeAttribute(.customOutline, range: self.fullRange)
+                    self.attributedText = mutableString
+                }
+            } completion: { _ in }
+        }
     }
     
     private func targetSpacing(for textAlignment: TextAlignment, line: LineInfo.Line, containerSize: CGSize) -> CGFloat {
@@ -337,5 +367,11 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
                 )
             }
         }
+    }
+    
+    private func preservingSelection(perform action: () -> Void) {
+        let currentSelection = selectedRange
+        action()
+        selectedRange = currentSelection
     }
 }
