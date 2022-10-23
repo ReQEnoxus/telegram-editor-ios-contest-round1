@@ -37,10 +37,10 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     
     private func makeConstraints() {
         [
-            fontNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .sSpace),
-            fontNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -.sSpace),
-            fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .xxsSpace),
-            fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.xxsSpace),
+            fontNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .s),
+            fontNameLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -.s),
+            fontNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .xxs),
+            fontNameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.xxs),
         ].activate()
     }
     
@@ -50,7 +50,7 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     
     private func setupContentBorders() {
         contentView.layer.borderWidth = .one
-        contentView.layer.cornerRadius = .xsSpace
+        contentView.layer.cornerRadius = .xs
     }
     
     private func setupBorders(for selected: Bool) {

@@ -49,11 +49,11 @@ final class FontCustomizationAccessoryView: UIInputView {
         layout.scrollDirection = .horizontal
         layout.estimatedItemSize = CGSize(
             width: Constants.estimatedWidth,
-            height: Constants.height - .xxsSpace
+            height: Constants.height - .xxs
         )
         layout.minimumInteritemSpacing = .zero
         layout.sectionInset = .zero
-        layout.minimumLineSpacing = .xxsSpace
+        layout.minimumLineSpacing = .xxs
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collection.alwaysBounceHorizontal = true
@@ -145,7 +145,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fill
-        stackView.spacing = .sSpace
+        stackView.spacing = .s
         
         return stackView.forAutoLayout()
     }()
@@ -187,14 +187,14 @@ final class FontCustomizationAccessoryView: UIInputView {
     
     private func makeConstraints() {
         [
-            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .sSpace),
+            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .s),
             buttonsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
             
             textOutlineButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
             textAlignmentButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
 
-            fontCollectionView.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .sSpace),
+            fontCollectionView.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .s),
             fontCollectionView.topAnchor.constraint(equalTo: topAnchor),
             fontCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
             fontCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
