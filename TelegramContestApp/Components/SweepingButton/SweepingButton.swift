@@ -22,9 +22,19 @@ final class SweepingButton: UIButton {
         static let middleStep: Double = 0.55
         static let lastStep: Double = 0.65
         
+        static let highlightedAlpha: CGFloat = 0.9
+        
         static let animationKey = "sweepAnimation"
     }
     private let gradientLayer = CAGradientLayer()
+    
+    override var isHighlighted: Bool {
+        didSet {
+            UIView.animate(withDuration: Durations.third) {
+                self.backgroundColor = self.isHighlighted ? self.backgroundColor?.withAlphaComponent(Constants.highlightedAlpha) : self.backgroundColor?.withAlphaComponent(.one)
+            }
+        }
+    }
     
     override func layoutSubviews() {
         super.layoutSubviews()

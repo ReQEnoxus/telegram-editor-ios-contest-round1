@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  TelegramContestApp
+
+  Created by Никита Афанасьев on 23.10.2022.
+  
+*/
+
+"Screens.Permissions.accessPhotosAndVideos" = "Access Your Photos and Videos";
+"Screens.Permissions.accessButtonTitle" = "Allow Access";

@@ -36,6 +36,20 @@
 		73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D31DC328FC55B200A6969D /* OutlineBackgroundShape.swift */; };
 		73D31DC828FC68BD00A6969D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D31DC728FC68BD00A6969D /* UIColor+Extensions.swift */; };
 		73DBB33B290529280035EDF5 /* SweepingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB33A290529280035EDF5 /* SweepingButton.swift */; };
+		73DBB34029053EDC0035EDF5 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB33F29053EDC0035EDF5 /* PermissionsView.swift */; };
+		73DBB34429053F450035EDF5 /* duck.json in Resources */ = {isa = PBXBuildFile; fileRef = 73DBB34329053F450035EDF5 /* duck.json */; };
+		73DBB3462905405C0035EDF5 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 73DBB3452905405C0035EDF5 /* swiftgen.yml */; };
+		73DBB348290540880035EDF5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73DBB347290540880035EDF5 /* Localizable.strings */; };
+		73DBB34D2905416D0035EDF5 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB34C2905416D0035EDF5 /* Strings.swift */; };
+		73DBB350290547020035EDF5 /* PickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB34F290547020035EDF5 /* PickerViewController.swift */; };
+		73DBB353290552120035EDF5 /* LibraryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB352290552120035EDF5 /* LibraryService.swift */; };
+		73DBB3552905522C0035EDF5 /* PermissionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB3542905522C0035EDF5 /* PermissionStatus.swift */; };
+		73DBB35A290563240035EDF5 /* RevealingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB359290563240035EDF5 /* RevealingView.swift */; };
+		73DBB35C2905684B0035EDF5 /* RevealConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB35B2905684B0035EDF5 /* RevealConfiguration.swift */; };
+		73DBB35F29056E910035EDF5 /* PickerModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB35E29056E910035EDF5 /* PickerModuleAssembly.swift */; };
+		73DBB361290577D40035EDF5 /* MediaCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB360290577D40035EDF5 /* MediaCollectionView.swift */; };
+		73DBB3632905861B0035EDF5 /* AssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB3622905861B0035EDF5 /* AssetCell.swift */; };
+		73DBB3652905AE960035EDF5 /* LoadedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB3642905AE960035EDF5 /* LoadedAsset.swift */; };
 		73E99B4328FA9EDC00D83487 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4228FA9EDC00D83487 /* Shape.swift */; };
 		73E99B4528FA9F3A00D83487 /* ShapeMorphingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4428FA9F3A00D83487 /* ShapeMorphingButton.swift */; };
 		73E99B4728FAA14800D83487 /* Durations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E99B4628FAA14800D83487 /* Durations.swift */; };
@@ -46,9 +60,12 @@
 		73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA22903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift */; };
 		73F02EA52903FBC500A81A68 /* StringProtocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA42903FBC500A81A68 /* StringProtocol+Extensions.swift */; };
 		73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F02EA6290459F000A81A68 /* CustomOutlineLayoutManager.swift */; };
+		C75A515239F67543E075FB5F /* Pods_TelegramContestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.release.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.release.xcconfig"; sourceTree = "<group>"; };
+		29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.debug.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		7354972628F9EA760024F48B /* TimingFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingFunction.swift; sourceTree = "<group>"; };
 		7354972828F9EAB70024F48B /* UnitBezier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitBezier.swift; sourceTree = "<group>"; };
 		737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+Extensions.swift"; sourceTree = "<group>"; };
@@ -80,6 +97,20 @@
 		73D31DC328FC55B200A6969D /* OutlineBackgroundShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineBackgroundShape.swift; sourceTree = "<group>"; };
 		73D31DC728FC68BD00A6969D /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		73DBB33A290529280035EDF5 /* SweepingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweepingButton.swift; sourceTree = "<group>"; };
+		73DBB33F29053EDC0035EDF5 /* PermissionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsView.swift; sourceTree = "<group>"; };
+		73DBB34329053F450035EDF5 /* duck.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = duck.json; sourceTree = "<group>"; };
+		73DBB3452905405C0035EDF5 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
+		73DBB347290540880035EDF5 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		73DBB34C2905416D0035EDF5 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		73DBB34F290547020035EDF5 /* PickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerViewController.swift; sourceTree = "<group>"; };
+		73DBB352290552120035EDF5 /* LibraryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryService.swift; sourceTree = "<group>"; };
+		73DBB3542905522C0035EDF5 /* PermissionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionStatus.swift; sourceTree = "<group>"; };
+		73DBB359290563240035EDF5 /* RevealingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevealingView.swift; sourceTree = "<group>"; };
+		73DBB35B2905684B0035EDF5 /* RevealConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RevealConfiguration.swift; sourceTree = "<group>"; };
+		73DBB35E29056E910035EDF5 /* PickerModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerModuleAssembly.swift; sourceTree = "<group>"; };
+		73DBB360290577D40035EDF5 /* MediaCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionView.swift; sourceTree = "<group>"; };
+		73DBB3622905861B0035EDF5 /* AssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCell.swift; sourceTree = "<group>"; };
+		73DBB3642905AE960035EDF5 /* LoadedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadedAsset.swift; sourceTree = "<group>"; };
 		73E99B4228FA9EDC00D83487 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		73E99B4428FA9F3A00D83487 /* ShapeMorphingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeMorphingButton.swift; sourceTree = "<group>"; };
 		73E99B4628FAA14800D83487 /* Durations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Durations.swift; sourceTree = "<group>"; };
@@ -90,6 +121,7 @@
 		73F02EA22903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		73F02EA42903FBC500A81A68 /* StringProtocol+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringProtocol+Extensions.swift"; sourceTree = "<group>"; };
 		73F02EA6290459F000A81A68 /* CustomOutlineLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOutlineLayoutManager.swift; sourceTree = "<group>"; };
+		76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelegramContestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,12 +129,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C75A515239F67543E075FB5F /* Pods_TelegramContestApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C0F704D929FDAEFA54CA0E7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */,
+				01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		7354972528F9EA4B0024F48B /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +160,8 @@
 			children = (
 				739FB28A28F72920007C1929 /* TelegramContestApp */,
 				739FB28928F72920007C1929 /* Products */,
+				3C0F704D929FDAEFA54CA0E7 /* Pods */,
+				A4046CF31CA13C95E72F7EDF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,14 +176,14 @@
 		739FB28A28F72920007C1929 /* TelegramContestApp */ = {
 			isa = PBXGroup;
 			children = (
+				73DBB3562905523A0035EDF5 /* Service */,
+				73DBB34129053F1D0035EDF5 /* Resources */,
 				73DBB33C29053C730035EDF5 /* Modules */,
 				739FB2AC28F72FBF007C1929 /* Utils */,
 				739FB29F28F729B8007C1929 /* Components */,
 				739FB28B28F72920007C1929 /* AppDelegate.swift */,
 				739FB28D28F72920007C1929 /* SceneDelegate.swift */,
 				739FB28F28F72920007C1929 /* ViewController.swift */,
-				739FB29428F72920007C1929 /* Assets.xcassets */,
-				739FB29628F72920007C1929 /* LaunchScreen.storyboard */,
 				739FB29928F72920007C1929 /* Info.plist */,
 			);
 			path = TelegramContestApp;
@@ -148,6 +192,7 @@
 		739FB29F28F729B8007C1929 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				73DBB358290562F80035EDF5 /* RevealingView */,
 				73DBB3392905291B0035EDF5 /* SweepingButton */,
 				73E99B4028FA9DB400D83487 /* ShapeMorphingButton */,
 				73B72C7428F8770B006FD9B1 /* LabelTextView */,
@@ -273,8 +318,93 @@
 		73DBB33D29053CE30035EDF5 /* Picker */ = {
 			isa = PBXGroup;
 			children = (
+				73DBB35D29056E840035EDF5 /* Assembly */,
+				73DBB34E290546F40035EDF5 /* Controller */,
+				73DBB33E29053ED20035EDF5 /* View */,
 			);
 			path = Picker;
+			sourceTree = "<group>";
+		};
+		73DBB33E29053ED20035EDF5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB33F29053EDC0035EDF5 /* PermissionsView.swift */,
+				73DBB360290577D40035EDF5 /* MediaCollectionView.swift */,
+				73DBB3622905861B0035EDF5 /* AssetCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		73DBB34129053F1D0035EDF5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB34B2905415D0035EDF5 /* Generated */,
+				73DBB349290540920035EDF5 /* Localization */,
+				73DBB34229053F380035EDF5 /* Animation */,
+				739FB29428F72920007C1929 /* Assets.xcassets */,
+				739FB29628F72920007C1929 /* LaunchScreen.storyboard */,
+				73DBB3452905405C0035EDF5 /* swiftgen.yml */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		73DBB34229053F380035EDF5 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB34329053F450035EDF5 /* duck.json */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
+		73DBB349290540920035EDF5 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB347290540880035EDF5 /* Localizable.strings */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+		73DBB34B2905415D0035EDF5 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB34C2905416D0035EDF5 /* Strings.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
+		73DBB34E290546F40035EDF5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB34F290547020035EDF5 /* PickerViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		73DBB3562905523A0035EDF5 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB352290552120035EDF5 /* LibraryService.swift */,
+				73DBB3542905522C0035EDF5 /* PermissionStatus.swift */,
+				73DBB3642905AE960035EDF5 /* LoadedAsset.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		73DBB358290562F80035EDF5 /* RevealingView */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB359290563240035EDF5 /* RevealingView.swift */,
+				73DBB35B2905684B0035EDF5 /* RevealConfiguration.swift */,
+			);
+			path = RevealingView;
+			sourceTree = "<group>";
+		};
+		73DBB35D29056E840035EDF5 /* Assembly */ = {
+			isa = PBXGroup;
+			children = (
+				73DBB35E29056E910035EDF5 /* PickerModuleAssembly.swift */,
+			);
+			path = Assembly;
 			sourceTree = "<group>";
 		};
 		73E99B4028FA9DB400D83487 /* ShapeMorphingButton */ = {
@@ -286,6 +416,14 @@
 			path = ShapeMorphingButton;
 			sourceTree = "<group>";
 		};
+		A4046CF31CA13C95E72F7EDF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -293,9 +431,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 739FB29C28F72920007C1929 /* Build configuration list for PBXNativeTarget "TelegramContestApp" */;
 			buildPhases = (
+				88BC56CE9C64D88844D058E7 /* [CP] Check Pods Manifest.lock */,
 				739FB28428F72920007C1929 /* Sources */,
 				739FB28528F72920007C1929 /* Frameworks */,
 				739FB28628F72920007C1929 /* Resources */,
+				86A1342B1284E7F9E19F2BC7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -344,12 +484,57 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73DBB348290540880035EDF5 /* Localizable.strings in Resources */,
 				739FB29828F72920007C1929 /* LaunchScreen.storyboard in Resources */,
+				73DBB34429053F450035EDF5 /* duck.json in Resources */,
 				739FB29528F72920007C1929 /* Assets.xcassets in Resources */,
+				73DBB3462905405C0035EDF5 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		86A1342B1284E7F9E19F2BC7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88BC56CE9C64D88844D058E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TelegramContestApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		739FB28428F72920007C1929 /* Sources */ = {
@@ -358,23 +543,31 @@
 			files = (
 				7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */,
 				73D31DC828FC68BD00A6969D /* UIColor+Extensions.swift in Sources */,
+				73DBB3552905522C0035EDF5 /* PermissionStatus.swift in Sources */,
 				73B72C8328F88362006FD9B1 /* NSRange+Extensions.swift in Sources */,
+				73DBB34029053EDC0035EDF5 /* PermissionsView.swift in Sources */,
 				73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */,
 				73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */,
 				73D31DC228FC55A700A6969D /* OutlineLetterShape.swift in Sources */,
+				73DBB34D2905416D0035EDF5 /* Strings.swift in Sources */,
 				73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */,
 				73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */,
+				73DBB350290547020035EDF5 /* PickerViewController.swift in Sources */,
 				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
 				73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */,
 				7354972728F9EA760024F48B /* TimingFunction.swift in Sources */,
+				73DBB353290552120035EDF5 /* LibraryService.swift in Sources */,
 				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
+				73DBB361290577D40035EDF5 /* MediaCollectionView.swift in Sources */,
 				73D31DBE28FC4AD900A6969D /* Collection+Extensions.swift in Sources */,
 				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
+				73DBB35C2905684B0035EDF5 /* RevealConfiguration.swift in Sources */,
 				73D31DC028FC553F00A6969D /* OutlineMode.swift in Sources */,
 				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
 				73F02EA52903FBC500A81A68 /* StringProtocol+Extensions.swift in Sources */,
 				737FF96228FDCD0C0027F73A /* LabelContainerViewConfiguration.swift in Sources */,
 				73E99B4B28FAA4BD00D83487 /* TextAlignment.swift in Sources */,
+				73DBB35F29056E910035EDF5 /* PickerModuleAssembly.swift in Sources */,
 				73B72C7328F87409006FD9B1 /* Snapshot+Extensions.swift in Sources */,
 				73E99B4728FAA14800D83487 /* Durations.swift in Sources */,
 				737FF96028FDC29F0027F73A /* LabelInputContainerView.swift in Sources */,
@@ -383,8 +576,11 @@
 				73E99B4D28FAD97900D83487 /* Animator.swift in Sources */,
 				73B72C7928F877DC006FD9B1 /* LabelTextViewConfiguration.swift in Sources */,
 				739FB2AF28F72FCF007C1929 /* Functions.swift in Sources */,
+				73DBB3632905861B0035EDF5 /* AssetCell.swift in Sources */,
 				737FF95C28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift in Sources */,
+				73DBB3652905AE960035EDF5 /* LoadedAsset.swift in Sources */,
 				739FB2A728F72EEA007C1929 /* FontItemCell.swift in Sources */,
+				73DBB35A290563240035EDF5 /* RevealingView.swift in Sources */,
 				739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */,
 				739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */,
 				73E99B4328FA9EDC00D83487 /* Shape.swift in Sources */,
@@ -528,6 +724,7 @@
 		};
 		739FB29D28F72920007C1929 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -556,6 +753,7 @@
 		};
 		739FB29E28F72920007C1929 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
