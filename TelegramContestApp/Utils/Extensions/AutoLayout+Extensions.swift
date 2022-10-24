@@ -31,23 +31,23 @@ extension CGFloat {
     /// 1
     static let one: CGFloat = 1
     /// 4
-    static let xxxsSpace: CGFloat = 4
+    static let xxxs: CGFloat = 4
     /// 8
-    static let xxsSpace: CGFloat = 8
+    static let xxs: CGFloat = 8
     /// 12
-    static let xsSpace: CGFloat = 12
+    static let xs: CGFloat = 12
     /// 16
-    static let sSpace: CGFloat = 16
+    static let s: CGFloat = 16
     /// 24
-    static let mSpace: CGFloat = 24
+    static let m: CGFloat = 24
     /// 32
-    static let lSpace: CGFloat = 32
+    static let l: CGFloat = 32
     /// 36
-    static let xlSpace: CGFloat = 36
+    static let xl: CGFloat = 36
     /// 48
-    static let xxlSpace: CGFloat = 48
+    static let xxl: CGFloat = 48
     /// 72
-    static let xxxlSpace: CGFloat = 72
+    static let xxxl: CGFloat = 72
     
     var half: CGFloat {
         return self / 2

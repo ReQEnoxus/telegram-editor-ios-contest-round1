@@ -14,11 +14,13 @@ extension UICollectionView {
         }
     }
     
-    func dequeueCell<CellType: ReusableCell>(of type: CellType.Type, for indexPath: IndexPath, configuredWith object: Any) -> CellType {
+    func dequeueCell<CellType: ReusableCell>(of type: CellType.Type, for indexPath: IndexPath, configuredWith object: Any? = nil) -> CellType {
         guard let cell = dequeueReusableCell(withReuseIdentifier: type.identifier, for: indexPath) as? CellType else {
             fatalError("Cell with type \(type.identifier) is not registered")
         }
-        cell.configure(with: object)
+        if let object = object {
+            cell.configure(with: object)
+        }
         return cell
     }
 }

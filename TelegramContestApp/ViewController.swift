@@ -17,6 +17,8 @@ class ViewController: UIViewController {
         return container.forAutoLayout()
     }()
     
+    private let button = SweepingButton().forAutoLayout()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         commonInit()
@@ -42,6 +44,9 @@ class ViewController: UIViewController {
                 outlineInset: 24
             )
         )
+        button.setTitle("Allow editing", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
     }
     
     private func commonInit() {
@@ -50,6 +55,7 @@ class ViewController: UIViewController {
     }
     
     private func addSubviews() {
+        view.addSubview(button)
         view.addSubview(textView)
     }
     
@@ -62,6 +68,10 @@ class ViewController: UIViewController {
 //                textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
                 textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
 //                textView.heightAnchor.constraint(equalToConstant: 60)
+                
+                button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+                button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
             ]
         )
     }
