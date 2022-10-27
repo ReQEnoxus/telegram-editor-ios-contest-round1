@@ -13,7 +13,10 @@ protocol LibraryServiceProtocol {
     func requestAccess(result: @escaping Consumer<PermissionStatus>)
     
     func fetchAssets() -> PHFetchResult<PHAsset>
-    func fetchImage(from asset: PHAsset, targetSize: CGSize, completion: @escaping Consumer<LoadedAsset>)
+    
+    @discardableResult
+    func fetchImage(from asset: PHAsset, targetSize: CGSize, completion: @escaping Consumer<LoadedAsset>) -> PHImageRequestID
+    func cancelRequest(with id: PHImageRequestID)
 }
 
 struct DefaultLibraryService: LibraryServiceProtocol {
@@ -39,18 +42,31 @@ struct DefaultLibraryService: LibraryServiceProtocol {
         return PHAsset.fetchAssets(with: options)
     }
     
-    func fetchImage(from asset: PHAsset, targetSize: CGSize, completion: @escaping Consumer<LoadedAsset>) {
+    @discardableResult
+    func fetchImage(from asset: PHAsset, targetSize: CGSize, completion: @escaping Consumer<LoadedAsset>) -> PHImageRequestID {
         let requestOptions = PHImageRequestOptions()
-        imageManager.requestImage(
+        requestOptions.resizeMode = .fast
+        requestOptions.deliveryMode = .highQualityFormat
+        requestOptions.isNetworkAccessAllowed = true
+        
+        return imageManager.requestImage(
             for: asset,
                targetSize: targetSize,
                contentMode: .default,
                options: requestOptions
         ) { image, info in
             DispatchQueue.main.async {
-                completion(LoadedAsset(image: image))
+                completion(
+                    LoadedAsset(
+                        image: image
+                    )
+                )
             }
         }
+    }
+    
+    func cancelRequest(with id: PHImageRequestID) {
+        imageManager.cancelImageRequest(id)
     }
     
     func requestAccess(result: @escaping Consumer<PermissionStatus>) {

@@ -8,3 +8,6 @@
 
 "Screens.Permissions.accessPhotosAndVideos" = "Access Your Photos and Videos";
 "Screens.Permissions.accessButtonTitle" = "Allow Access";
+
+"Screens.Editor.Modes.text" = "Text";
+"Screens.Editor.Modes.draw" = "Draw";

@@ -9,13 +9,22 @@ import UIKit
 import PhotosUI
 
 final class PickerViewController: UIViewController {
+    private enum Constants {
+        static let maxPendingUpdatesCount = 30
+    }
+    
     private let libraryService: LibraryServiceProtocol
     private var assets: PHFetchResult<PHAsset>?
     private var permissionsView: RevealingView<PermissionsView>?
     private var mediaCollectionView: RevealingView<MediaCollectionView>?
+    private var selectedIndexPath: IndexPath?
+//    private var pendingUpdates: [IndexPath]
+//    private var debouncer = Debouncer()
     
     init(libraryService: LibraryServiceProtocol) {
         self.libraryService = libraryService
+//        self.pendingUpdates = []
+//        pendingUpdates.reserveCapacity(Constants.maxPendingUpdatesCount)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,31 +97,41 @@ final class PickerViewController: UIViewController {
     }
     
     private func drawCollection() {
+        guard self.mediaCollectionView == nil else { return }
         let mediaCollectionView = RevealingView<MediaCollectionView>().forAutoLayout()
         self.mediaCollectionView = mediaCollectionView
         addConstrainedSubview(mediaCollectionView, bottomToSafeArea: false)
+        mediaCollectionView.wrapped.collectionView.delegate = self
         mediaCollectionView.wrapped.collectionView.dataSource = self
         loadMediaData()
         mediaCollectionView.reveal { [weak self] in
             self?.permissionsView?.wrapped.stopAnimation()
         }
     }
+    
+    // update management
+    
+//    private func enqueueUpdate(for indexPath: IndexPath) {
+//        pendingUpdates.append(indexPath)
+//        if pendingUpdates.count == Constants.maxPendingUpdatesCount {
+//            executePendingUpdates()
+//        } else {
+//            debouncer.debounce { [weak self] in
+//                self?.executePendingUpdates()
+//            }
+//        }
+//    }
+//
+//    private func executePendingUpdates() {
+//        print("!! executing update for \(pendingUpdates)")
+//        mediaCollectionView?.wrapped.collectionView.reloadItems(at: pendingUpdates)
+//        pendingUpdates.removeAll(keepingCapacity: true)
+//    }
 }
 
 extension PickerViewController: PermissionsViewDelegate {
     func didTapPermissionsButton() {
         requestAccess()
-    }
-}
-
-extension PickerViewController: AssetCellDelegate {
-    func didConfigure(with model: AssetCell.Model, size: CGSize, onLoad: Consumer<UIImage?>?) {
-        libraryService.fetchImage(
-            from: model.asset,
-            targetSize: size
-        ) { asset in
-            onLoad?(asset.image)
-        }
     }
 }
 
@@ -126,13 +145,62 @@ extension PickerViewController: UICollectionViewDataSource {
             assertionFailure("No asset for indexPath = \(indexPath)")
             return UICollectionViewCell()
         }
+        
         let cell = collectionView.dequeueCell(
             of: AssetCell.self,
             for: indexPath
         )
-        cell.delegate = self
-        cell.configure(with: AssetCell.Model(asset: asset))
+        
+        if asset.localIdentifier != cell.assetId {
+            
+            cell.assetId = asset.localIdentifier
+            
+            if let cancelId = cell.cancelId {
+                libraryService.cancelRequest(with: cancelId)
+            }
+            
+            cell.configure(
+                with: AssetCell.Model(
+                    duration: asset.mediaType == .video ? asset.formattedDuration : nil,
+                    pixelHeight: asset.pixelHeight,
+                    pixelWidth: asset.pixelWidth
+                )
+            )
+            cell.updateImage(with: nil)
+            cell.cancelId = libraryService.fetchImage(
+                from: asset,
+                targetSize: CGSize(
+                    width: cell.bounds.width * UIScreen.main.scale.doubled,
+                    height: cell.bounds.height * UIScreen.main.scale.doubled
+                ),
+                completion: { loaded in
+                    guard cell.assetId == asset.localIdentifier else { return }
+                    cell.updateImage(with: loaded.image)
+                }
+            )
+        }
         
         return cell
+    }    
+}
+
+extension PickerViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let asset = assets?.object(at: indexPath.item) else { return }
+        selectedIndexPath = indexPath
+        let editor = EditorModuleAssembly().assemble(asset: asset)
+        editor.transitionController.fromDelegate = self
+        editor.transitionController.toDelegate = editor
+        present(editor, animated: true)
+    }
+}
+
+extension PickerViewController: TransitionDelegate {
+    func reference() -> ViewReference? {
+        guard let selectedIndexPath = selectedIndexPath,
+              let cell = mediaCollectionView?.wrapped.collectionView.cellForItem(at: selectedIndexPath) as? AssetCell,
+              let image = cell.imageView.image else { return nil }
+        
+        return ViewReference(view: cell, image: image, frame: view.convert(cell.bounds, from: cell))
     }
 }
