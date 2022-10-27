@@ -8,21 +8,22 @@
 import UIKit
 import Photos
 
-protocol AssetCellDelegate: AnyObject {
-    func didConfigure(with model: AssetCell.Model, size: CGSize, onLoad: Consumer<UIImage?>?)
-}
-
 final class AssetCell: UICollectionViewCell {
-    struct Model: Hashable {
-        let asset: PHAsset
+    private enum Constants {
+        static let scaleMultiplier: CGFloat = 1
     }
     
-    weak var delegate: AssetCellDelegate?
-    private let imageView: UIImageView = UIImageView().forAutoLayout()
+    struct Model: Hashable {
+        let duration: String?
+        let pixelHeight: Int
+        let pixelWidth: Int
+    }
+    
+    var assetId: String?
+    var cancelId: PHImageRequestID?
+    let imageView: UIImageView = UIImageView().forAutoLayout()
     private let durationLabel: UILabel = UILabel().forAutoLayout()
     private var heightConstraint: NSLayoutConstraint?
-    
-    private var model: Model?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,7 +59,7 @@ final class AssetCell: UICollectionViewCell {
             
             durationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             durationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            durationLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            durationLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ].compactMap { $0 }.activate()
     }
     
@@ -77,21 +78,23 @@ extension AssetCell: ReusableCell {
     func configure(with object: Any) {
         guard let model = object as? AssetCell.Model else { return }
         
-        self.model = model
-        if model.asset.mediaType == .video {
-            durationLabel.text = "\(model.asset.duration)"
-        }
+        durationLabel.text = model.duration
         
-        let ratio = CGFloat(model.asset.pixelHeight) / CGFloat(model.asset.pixelWidth)
+        let ratio = CGFloat(model.pixelHeight) / CGFloat(model.pixelWidth)
         let targetSize = CGSize(
-            width: bounds.width * UIScreen.main.scale,
-            height: bounds.width * UIScreen.main.scale * ratio
+            width: bounds.width * UIScreen.main.scale * Constants.scaleMultiplier,
+            height: bounds.width * UIScreen.main.scale * Constants.scaleMultiplier * ratio
         )
         heightConstraint?.constant = targetSize.height
-        
-        delegate?.didConfigure(with: model, size: targetSize, onLoad: { image in
-            guard self.model?.asset.localIdentifier == model.asset.localIdentifier else { return }
+    }
+    
+    func updateImage(with image: UIImage?) {
+        UIView.transition(
+            with: self.imageView,
+            duration: Durations.half,
+            options: [.curveEaseIn, .transitionCrossDissolve]
+        ) {
             self.imageView.image = image
-        })
+        } completion: { _ in }
     }
 }

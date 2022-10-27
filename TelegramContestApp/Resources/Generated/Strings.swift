@@ -12,6 +12,14 @@ import Foundation
 internal enum L10n {
 
   internal enum Screens {
+    internal enum Editor {
+      internal enum Modes {
+        /// Draw
+        internal static let draw = L10n.tr("Localizable", "Screens.Editor.Modes.draw")
+        /// Text
+        internal static let text = L10n.tr("Localizable", "Screens.Editor.Modes.text")
+      }
+    }
     internal enum Permissions {
       /// Allow Access
       internal static let accessButtonTitle = L10n.tr("Localizable", "Screens.Permissions.accessButtonTitle")

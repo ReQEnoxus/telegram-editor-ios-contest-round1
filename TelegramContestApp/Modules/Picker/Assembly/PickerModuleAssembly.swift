@@ -12,7 +12,7 @@ import Photos
 struct PickerModuleAssembly {
     func assemble() -> UIViewController {
         let service = DefaultLibraryService(
-            imageManager: PHCachingImageManager()
+            imageManager: imageManager
         )
         let view = PickerViewController(libraryService: service)
         
