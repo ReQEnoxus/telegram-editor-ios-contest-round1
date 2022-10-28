@@ -88,7 +88,7 @@ final class PermissionsView: UIView {
         var animation: LottieAnimation?
         if let animationUrl = Bundle.main.url(forResource: "duck", withExtension: "json"),
            let animationData = try? Data(contentsOf: animationUrl) {
-            animation = try! .from(data: animationData)
+            animation = try? .from(data: animationData)
         }
         animationView.animation = animation
         animationView.contentMode = .scaleAspectFit

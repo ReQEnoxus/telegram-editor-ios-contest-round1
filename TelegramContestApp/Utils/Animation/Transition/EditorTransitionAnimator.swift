@@ -54,8 +54,8 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
               let fromReference = fromDelegate?.reference()else { return }
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)
+//        containerView.addSubview(fromController.view)
         containerView.addSubview(toController.view)
-        containerView.addSubview(fromController.view)
         toController.view.alpha = .zero
         
         if transitionImageView == nil {
@@ -70,8 +70,9 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         toController.view.frame = finalFrame
         let targetRect = targetRect(for: fromReference.image, in: fromController.view)
         
+        var containerSafeAreaMask: UIView?
         if containerView.safeAreaInsets.top != .zero {
-            let containerSafeAreaMask = UIView(
+            let mask = UIView(
                 frame: CGRect(
                     origin: containerView.frame.origin,
                     size: CGSize(
@@ -80,8 +81,9 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
                     )
                 )
             )
-            containerSafeAreaMask.backgroundColor = .black
-            containerView.addSubview(containerSafeAreaMask)
+            mask.backgroundColor = .black
+            containerView.addSubview(mask)
+            containerSafeAreaMask = mask
         }
         
         UIView.animate(
@@ -95,6 +97,7 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
             fromController.view.alpha = .zero
             toController.view.alpha = .one
         } completion: { _ in
+            containerSafeAreaMask?.removeFromSuperview()
             self.transitionImageView?.removeFromSuperview()
             self.transitionImageView = nil
             toController.view.isHidden = false
@@ -111,12 +114,12 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)
         
-        containerView.addSubview(toController.view)
+        containerView.addSubview(fromController.view)
+//        containerView.addSubview(toController.view)
         toController.view.frame = finalFrame
         toController.view.isHidden = false
         toController.view.alpha = .zero
         toReference.view.isHidden = true
-        containerView.addSubview(fromController.view)
         fromController.view.alpha = .one
         
         if self.transitionImageView == nil {
@@ -130,8 +133,9 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         
         let targetRect = toReference.frame
         
+        var containerSafeAreaMask: UIView?
         if containerView.safeAreaInsets.top != .zero {
-            let containerSafeAreaMask = UIView(
+            let mask = UIView(
                 frame: CGRect(
                     origin: containerView.frame.origin,
                     size: CGSize(
@@ -140,8 +144,9 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
                     )
                 )
             )
-            containerSafeAreaMask.backgroundColor = .black
-            containerView.addSubview(containerSafeAreaMask)
+            mask.backgroundColor = .black
+            containerView.addSubview(mask)
+            containerSafeAreaMask = mask
         }
         
         UIView.animate(
@@ -155,6 +160,7 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
             toController.view.alpha = .one
             fromController.view.alpha = .zero
         } completion: { _ in
+            containerSafeAreaMask?.removeFromSuperview()
             self.transitionImageView?.removeFromSuperview()
             self.transitionImageView = nil
             toController.view.isHidden = false

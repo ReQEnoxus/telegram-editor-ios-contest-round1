@@ -57,14 +57,14 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: .xxxl.half),
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -.xxxl),
+            containerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xxxl),
             
-            exitButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .s),
+            exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: .s),
             exitButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xl),
             exitButton.widthAnchor.constraint(equalToConstant: .l),
             exitButton.heightAnchor.constraint(equalToConstant: .l),
             
-            saveButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -.s),
+            saveButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -.s),
             saveButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xl),
             saveButton.widthAnchor.constraint(equalToConstant: .l),
             saveButton.heightAnchor.constraint(equalToConstant: .l),

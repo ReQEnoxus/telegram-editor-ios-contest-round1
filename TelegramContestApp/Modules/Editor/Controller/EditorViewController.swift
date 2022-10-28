@@ -21,7 +21,8 @@ final class EditorViewController: UIViewController {
         self.asset = asset
         self.service = service
         super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .fullScreen
+        
+        modalPresentationStyle = .overCurrentContext
         transitioningDelegate = transitionController
         editorView.delegate = self
     }
