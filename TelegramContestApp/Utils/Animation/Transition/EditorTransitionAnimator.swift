@@ -11,6 +11,11 @@ import AVFoundation
 
 protocol TransitionDelegate: AnyObject {
     func reference() -> ViewReference?
+    func referenceFrame(for image: UIImage, in rect: CGRect) -> CGRect?
+}
+
+extension TransitionDelegate {
+    func referenceFrame(for image: UIImage, in rect: CGRect) -> CGRect? { return nil }
 }
 
 final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
@@ -51,10 +56,10 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
     private func animateTransitionIn(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromController = transitionContext.viewController(forKey: .from),
               let toController = transitionContext.viewController(forKey: .to),
-              let fromReference = fromDelegate?.reference()else { return }
+              let fromReference = fromDelegate?.reference(),
+              let targetImageRect = toDelegate?.referenceFrame(for: fromReference.image, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)
-//        containerView.addSubview(fromController.view)
         containerView.addSubview(toController.view)
         toController.view.alpha = .zero
         
@@ -68,7 +73,6 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         }
         
         toController.view.frame = finalFrame
-        let targetRect = targetRect(for: fromReference.image, in: fromController.view)
         
         var containerSafeAreaMask: UIView?
         if containerView.safeAreaInsets.top != .zero {
@@ -93,7 +97,7 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
             initialSpringVelocity: Constants.initialSpringVelocity,
             options: []
         ) {
-            self.transitionImageView?.frame = targetRect
+            self.transitionImageView?.frame = targetImageRect
             fromController.view.alpha = .zero
             toController.view.alpha = .one
         } completion: { _ in
@@ -109,13 +113,13 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         guard let toController = transitionContext.viewController(forKey: .to),
             let fromController = transitionContext.viewController(forKey: .from),
             let fromReference = fromDelegate?.reference(),
-            let toReference = toDelegate?.reference() else { return }
+            let toReference = toDelegate?.reference(),
+              let targetImageRect = fromDelegate?.referenceFrame(for: fromReference.image, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
         
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)
         
         containerView.addSubview(fromController.view)
-//        containerView.addSubview(toController.view)
         toController.view.frame = finalFrame
         toController.view.isHidden = false
         toController.view.alpha = .zero
@@ -126,7 +130,7 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
             let imageView = UIImageView(image: fromReference.image)
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
-            imageView.frame = targetRect(for: fromReference.image, in: fromController.view)
+            imageView.frame = targetImageRect
             self.transitionImageView = imageView
             containerView.addSubview(imageView)
         }
@@ -168,27 +172,5 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
 
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
-    }
-    
-    private func targetRect(for image: UIImage, in view: UIView) -> CGRect {
-        // TODO: Horizontal
-        let frame = view.frame.inset(by: view.safeAreaInsets)
-        return AVMakeRect(
-            aspectRatio: image.size,
-            insideRect: CGRect(
-                x: frame.origin.x,
-                y: frame.origin.y + .xxxl.half,
-                width: frame.width,
-                height: frame.height - .xxxl.half - .xxxl
-            )
-        )
-//        let widthFactor = view.frame.width / image.size.width
-//        let targetHeight = min(image.size.height * widthFactor, frame.height - .xxxl.doubled)
-//        return CGRect(
-//            x: .zero,
-//            y: (frame.height - targetHeight).half - .xl + view.safeAreaInsets.top,
-//            width: view.frame.width,
-//            height: targetHeight
-//        )
     }
 }

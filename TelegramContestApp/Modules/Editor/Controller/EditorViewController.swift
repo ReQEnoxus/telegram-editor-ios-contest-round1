@@ -60,7 +60,34 @@ final class EditorViewController: UIViewController {
 extension EditorViewController: TransitionDelegate {
     func reference() -> ViewReference? {
         guard let image = editorView.containerView.imageView.image else { return nil }
-        return ViewReference(view: editorView.containerView, image: image, frame: view.convert(editorView.containerView.bounds, from: editorView.containerView))
+        let initialFrame = view.convert(editorView.containerView.bounds, from: editorView.containerView)
+        let targetFrame = AVMakeRect(
+            aspectRatio: image.size,
+            insideRect: CGRect(
+                x: initialFrame.origin.x,
+                y: initialFrame.origin.y + editorView.topInset,
+                width: initialFrame.width,
+                height: initialFrame.height - editorView.topInset - editorView.bottomInset
+            )
+        )
+        return ViewReference(view: editorView.containerView, image: image, frame: targetFrame)
+    }
+    
+    func referenceFrame(for image: UIImage, in rect: CGRect) -> CGRect? {
+        return AVMakeRect(
+            aspectRatio: image.size,
+            insideRect: CGRect(
+                x: rect.origin.x,
+                y: rect.origin.y + editorView.topInset,
+                width: rect.width,
+                height: rect.height - editorView.topInset - editorView.bottomInset - .l - .m
+            )
+        )
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        editorView.setNeedsUpdateConstraints()
     }
 }
 

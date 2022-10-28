@@ -16,10 +16,19 @@ protocol EditorViewDelegate: AnyObject {
 }
 
 final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelegate {
+    var topInset: CGFloat {
+        return 0.1 * UIScreen.main.bounds.height
+    }
+    var bottomInset: CGFloat {
+        return 0.13 * UIScreen.main.bounds.height
+    }
+    
     let containerView: Container = Container().forAutoLayout()
     private let exitButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let saveButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let segmentedControl: SegmentedControl = SegmentedControl().forAutoLayout()
+    private var canvasTopInsetConstraint: NSLayoutConstraint?
+    private var canvasBottomInsetConstraint: NSLayoutConstraint?
     
     weak var delegate: EditorViewDelegate?
     
@@ -34,6 +43,12 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     
     func updateMedia(with media: Container.Media) {
         containerView.updateMedia(with: media)
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+        canvasTopInsetConstraint?.constant = topInset
+        canvasBottomInsetConstraint?.constant = -bottomInset
     }
     
     private func commonInit() {
@@ -53,26 +68,28 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     }
     
     private func makeConstraints() {
+        canvasTopInsetConstraint = containerView.topAnchor.constraint(equalTo: topAnchor, constant: topInset)
+        canvasBottomInsetConstraint = containerView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -bottomInset)
         [
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: .xxxl.half),
+            canvasTopInsetConstraint,
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xxxl),
+            canvasBottomInsetConstraint,
             
             exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: .s),
-            exitButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xl),
+            exitButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.m),
             exitButton.widthAnchor.constraint(equalToConstant: .l),
             exitButton.heightAnchor.constraint(equalToConstant: .l),
             
             saveButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -.s),
-            saveButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.xl),
+            saveButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.m),
             saveButton.widthAnchor.constraint(equalToConstant: .l),
             saveButton.heightAnchor.constraint(equalToConstant: .l),
             
             segmentedControl.leadingAnchor.constraint(equalTo: exitButton.trailingAnchor, constant: .s),
             segmentedControl.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -.s),
             segmentedControl.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor)
-        ].activate()
+        ].compactMap { $0 }.activate()
     }
     
     private func setupExitButton() {
