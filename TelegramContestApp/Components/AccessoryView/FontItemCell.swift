@@ -9,7 +9,11 @@ import UIKit
 
 final class FontItemCell: UICollectionViewCell, ReusableCell {
     private enum Constants {
-        static let fontSize: CGFloat = 18
+        static let fontSize: CGFloat = 13
+        static let cornerRadius: CGFloat = 9
+        static let borderWidth: CGFloat = 0.33
+        static let selectedBorderWidth: CGFloat = 0.67
+        static let unselectedBorderAlpha: CGFloat = 0.33
     }
     
     private let fontNameLabel: UILabel = UILabel().forAutoLayout()
@@ -50,14 +54,16 @@ final class FontItemCell: UICollectionViewCell, ReusableCell {
     
     private func setupContentBorders() {
         contentView.layer.borderWidth = .one
-        contentView.layer.cornerRadius = .xs
+        contentView.layer.cornerRadius = Constants.cornerRadius
     }
     
     private func setupBorders(for selected: Bool) {
         if selected {
-            contentView.layer.borderColor = UIColor.white.withAlphaComponent(0.9).cgColor
+            contentView.layer.borderColor = UIColor.white.cgColor
+            contentView.layer.borderWidth = Constants.selectedBorderWidth
         } else {
-            contentView.layer.borderColor = UIColor.white.withAlphaComponent(0.45).cgColor
+            contentView.layer.borderColor = UIColor.white.withAlphaComponent(Constants.unselectedBorderAlpha).cgColor
+            contentView.layer.borderWidth = Constants.borderWidth
         }
     }
     

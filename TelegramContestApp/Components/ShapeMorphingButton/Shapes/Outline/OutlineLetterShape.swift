@@ -16,7 +16,7 @@ struct OutlineLetterShape: Shape {
     }
     
     enum WidthMultiplier: CGFloat {
-        case text = 0.1
+        case text = 0.07
         case outline = 0.28
     }
     

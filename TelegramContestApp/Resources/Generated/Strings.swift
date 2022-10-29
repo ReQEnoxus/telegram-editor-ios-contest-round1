@@ -19,6 +19,16 @@ internal enum L10n {
         /// Text
         internal static let text = L10n.tr("Localizable", "Screens.Editor.Modes.text")
       }
+      internal enum Navbar {
+        /// Cancel
+        internal static let cancel = L10n.tr("Localizable", "Screens.Editor.Navbar.cancel")
+        /// Clear All
+        internal static let clearAll = L10n.tr("Localizable", "Screens.Editor.Navbar.clearAll")
+        /// Done
+        internal static let done = L10n.tr("Localizable", "Screens.Editor.Navbar.done")
+        /// Zoom Out
+        internal static let zoomOut = L10n.tr("Localizable", "Screens.Editor.Navbar.zoomOut")
+      }
     }
     internal enum Permissions {
       /// Allow Access

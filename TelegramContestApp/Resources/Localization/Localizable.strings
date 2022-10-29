@@ -11,3 +11,8 @@
 
 "Screens.Editor.Modes.text" = "Text";
 "Screens.Editor.Modes.draw" = "Draw";
+
+"Screens.Editor.Navbar.cancel" = "Cancel";
+"Screens.Editor.Navbar.done" = "Done";
+"Screens.Editor.Navbar.clearAll" = "Clear All";
+"Screens.Editor.Navbar.zoomOut" = "Zoom Out";

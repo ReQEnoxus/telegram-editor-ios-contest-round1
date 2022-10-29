@@ -204,9 +204,10 @@ extension PickerViewController: UICollectionViewDelegate {
         guard let asset = assets?.object(at: indexPath.item) else { return }
         selectedIndexPath = indexPath
         let editor = EditorModuleAssembly().assemble(asset: asset)
-        editor.transitionController.fromDelegate = self
-        editor.transitionController.toDelegate = editor
-        present(editor, animated: true)
+        let navigation = EditorNavigationController(rootViewController: editor)
+        editor.transitionController?.fromDelegate = self
+        editor.transitionController?.toDelegate = editor
+        present(navigation, animated: true)
     }
 }
 

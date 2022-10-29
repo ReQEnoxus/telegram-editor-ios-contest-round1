@@ -1,0 +1,115 @@
+//
+//  Slider.swift
+//  TelegramContestApp
+//
+//  Created by Никита Афанасьев on 29.10.2022.
+//
+
+import Foundation
+import UIKit
+
+protocol SliderDelegate: AnyObject {
+    func valueChanged(to newValue: Float)
+    func didEndTracking(with finalValue: Float)
+    func didStartTracking(with initialValue: Float)
+}
+
+extension SliderDelegate {
+    func didEndTracking(with finalValue: Float) {}
+    func didStartTracking(with initialValue: Float) {}
+}
+
+final class Slider: UISlider {
+    private enum Constants {
+        static let startRadius: CGFloat = 1
+        static let endRadius: CGFloat = 10
+        static let height: CGFloat = 28
+        static let alpha: CGFloat = 0.2
+    }
+    
+    override var value: Float {
+        get {
+            return super.value
+        }
+        set {
+            previouslyEmittedValue = newValue
+            super.value = newValue
+        }
+    }
+    
+    var threshold: Float = 0.00
+    weak var delegate: SliderDelegate?
+    
+    private var previouslyEmittedValue: Float?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        minimumTrackTintColor = .clear
+        maximumTrackTintColor = .clear
+        addTarget(self, action: #selector(handleSliderValueChange), for: .valueChanged)
+        addTarget(self, action: #selector(handleSliderEndTracking), for: [.touchUpInside,.touchUpOutside])
+        addTarget(self, action: #selector(handleSliderStartTracking), for: .touchDown)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        let path = UIBezierPath()
+        path.addArc(
+            withCenter: CGPoint(
+                x: rect.minX + Constants.startRadius,
+                y: rect.midY
+            ),
+            radius: Constants.startRadius,
+            startAngle: 3 * .pi / 2,
+            endAngle: .pi / 2,
+            clockwise: false
+        )
+        path.addLine(
+            to: CGPoint(
+                x: rect.maxX - Constants.endRadius,
+                y: rect.midY + Constants.endRadius
+            )
+        )
+        path.addArc(
+            withCenter: CGPoint(
+                x: rect.maxX - Constants.endRadius,
+                y: rect.midY
+            ),
+            radius: Constants.endRadius,
+            startAngle: .pi / 2,
+            endAngle: 3 * .pi / 2,
+            clockwise: false
+        )
+        path.close()
+        UIColor.white.withAlphaComponent(Constants.alpha).setFill()
+        path.fill()
+    }
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: size.width, height: Constants.height)
+    }
+    
+    @objc private func handleSliderValueChange() {
+        if let previouslyEmittedValue = previouslyEmittedValue {
+            if abs(previouslyEmittedValue - value) > threshold {
+                delegate?.valueChanged(to: value)
+                self.previouslyEmittedValue = value
+            }
+        } else {
+            delegate?.valueChanged(to: value)
+            self.previouslyEmittedValue = value
+        }
+    }
+    
+    @objc private func handleSliderEndTracking() {
+        delegate?.didEndTracking(with: value)
+    }
+    
+    @objc private func handleSliderStartTracking() {
+        delegate?.didStartTracking(with: value)
+    }
+}

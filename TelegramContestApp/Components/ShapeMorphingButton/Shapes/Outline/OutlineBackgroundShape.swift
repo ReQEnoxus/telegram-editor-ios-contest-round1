@@ -9,7 +9,7 @@ import UIKit
 
 struct OutlineBackgroundShape: Shape {
     private enum Constants {
-        static let cornerRadius: CGFloat = 10
+        static let cornerRadius: CGFloat = 6
     }
     
     let outlineMode: OutlineMode
