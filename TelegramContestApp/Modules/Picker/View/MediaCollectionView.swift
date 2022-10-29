@@ -25,9 +25,9 @@ final class MediaCollectionView: UIView {
         return collection.forAutoLayout()
     }()
     
-    private var currentZoomLevel: ZoomLevel = .three {
+    var currentZoomLevel: ZoomLevel = .three {
         didSet {
-            collectionView.setCollectionViewLayout(collectionLayout(for: currentZoomLevel), animated: true)
+            collectionView.setCollectionViewLayout(collectionLayout(for: currentZoomLevel), animated: false)
         }
     }
     

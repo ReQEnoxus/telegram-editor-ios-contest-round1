@@ -23,9 +23,17 @@
 		737FF96228FDCD0C0027F73A /* LabelContainerViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */; };
 		7389501D290981C200DEF575 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7389501C290981C200DEF575 /* ImageManager.swift */; };
 		738950202909A5DC00DEF575 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7389501F2909A5DC00DEF575 /* Debouncer.swift */; };
+		738ED611290D08BF001AACF1 /* Slider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED610290D08BF001AACF1 /* Slider.swift */; };
+		738ED613290D2206001AACF1 /* TextEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED612290D2206001AACF1 /* TextEditingView.swift */; };
+		738ED615290D6C93001AACF1 /* Montserrat.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 738ED614290D6C92001AACF1 /* Montserrat.ttf */; };
+		738ED617290D6CFE001AACF1 /* Ubuntu.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 738ED616290D6CFE001AACF1 /* Ubuntu.ttf */; };
 		738FFE652908352D00C34514 /* EditorTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */; };
 		738FFE67290843AC00C34514 /* ViewReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE66290843AC00C34514 /* ViewReference.swift */; };
 		738FFE6929084D3100C34514 /* EditorTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE6829084D3100C34514 /* EditorTransitionController.swift */; };
+		739B70CF290C223500EEBC6A /* EditorNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70CE290C223500EEBC6A /* EditorNavigationController.swift */; };
+		739B70D2290C360500EEBC6A /* NavbarMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70D1290C360500EEBC6A /* NavbarMode.swift */; };
+		739B70D9290C584F00EEBC6A /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 739B70D8290C584F00EEBC6A /* Roboto.ttf */; };
+		739B70DB290C589400EEBC6A /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70DA290C589400EEBC6A /* Fonts.swift */; };
 		739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28B28F72920007C1929 /* AppDelegate.swift */; };
 		739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28D28F72920007C1929 /* SceneDelegate.swift */; };
 		739FB29028F72920007C1929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28F28F72920007C1929 /* ViewController.swift */; };
@@ -85,7 +93,7 @@
 		29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.debug.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		7354972628F9EA760024F48B /* TimingFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingFunction.swift; sourceTree = "<group>"; };
 		7354972828F9EAB70024F48B /* UnitBezier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitBezier.swift; sourceTree = "<group>"; };
-		737DA12F2907045F0016C0F4 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		737DA12F2907045F0016C0F4 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		737DA131290706420016C0F4 /* PHAsset+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extensions.swift"; sourceTree = "<group>"; };
 		737DA13329070E450016C0F4 /* PhotoContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoContainerView.swift; sourceTree = "<group>"; };
 		737DA13629070E540016C0F4 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
@@ -99,9 +107,17 @@
 		737FF96128FDCD0C0027F73A /* LabelContainerViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelContainerViewConfiguration.swift; sourceTree = "<group>"; };
 		7389501C290981C200DEF575 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		7389501F2909A5DC00DEF575 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		738ED610290D08BF001AACF1 /* Slider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Slider.swift; sourceTree = "<group>"; };
+		738ED612290D2206001AACF1 /* TextEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditingView.swift; sourceTree = "<group>"; };
+		738ED614290D6C92001AACF1 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
+		738ED616290D6CFE001AACF1 /* Ubuntu.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ubuntu.ttf; sourceTree = "<group>"; };
 		738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionAnimator.swift; sourceTree = "<group>"; };
 		738FFE66290843AC00C34514 /* ViewReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReference.swift; sourceTree = "<group>"; };
 		738FFE6829084D3100C34514 /* EditorTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionController.swift; sourceTree = "<group>"; };
+		739B70CE290C223500EEBC6A /* EditorNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorNavigationController.swift; sourceTree = "<group>"; };
+		739B70D1290C360500EEBC6A /* NavbarMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavbarMode.swift; sourceTree = "<group>"; };
+		739B70D8290C584F00EEBC6A /* Roboto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Roboto.ttf; sourceTree = "<group>"; };
+		739B70DA290C589400EEBC6A /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		739FB28828F72920007C1929 /* TelegramContestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramContestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		739FB28B28F72920007C1929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		739FB28D28F72920007C1929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -193,6 +209,7 @@
 		737DA12B290702DC0016C0F4 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
+				739B70D0290C339300EEBC6A /* Models */,
 				737DA12E2907031F0016C0F4 /* Controller */,
 				737DA12D2907031A0016C0F4 /* View */,
 				737DA12C290702FB0016C0F4 /* Assembly */,
@@ -215,6 +232,7 @@
 				737DA13329070E450016C0F4 /* PhotoContainerView.swift */,
 				737DA13629070E540016C0F4 /* ContainerView.swift */,
 				73F9C3E8290AEC2C006368CD /* EditorMode.swift */,
+				738ED612290D2206001AACF1 /* TextEditingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -223,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				737DA13D29072D850016C0F4 /* EditorViewController.swift */,
+				739B70CE290C223500EEBC6A /* EditorNavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -243,6 +262,14 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		738ED60F290D08B3001AACF1 /* Slider */ = {
+			isa = PBXGroup;
+			children = (
+				738ED610290D08BF001AACF1 /* Slider.swift */,
+			);
+			path = Slider;
+			sourceTree = "<group>";
+		};
 		738FFE632908350900C34514 /* Transition */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +278,24 @@
 				738FFE6829084D3100C34514 /* EditorTransitionController.swift */,
 			);
 			path = Transition;
+			sourceTree = "<group>";
+		};
+		739B70D0290C339300EEBC6A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				739B70D1290C360500EEBC6A /* NavbarMode.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		739B70D3290C572900EEBC6A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				738ED616290D6CFE001AACF1 /* Ubuntu.ttf */,
+				738ED614290D6C92001AACF1 /* Montserrat.ttf */,
+				739B70D8290C584F00EEBC6A /* Roboto.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		739FB27F28F72920007C1929 = {
@@ -291,6 +336,7 @@
 		739FB29F28F729B8007C1929 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				738ED60F290D08B3001AACF1 /* Slider */,
 				73F9C3EA290AFC49006368CD /* SegmentedControl */,
 				737DA13829071AD10016C0F4 /* WidthAspectContainer */,
 				73DBB358290562F80035EDF5 /* RevealingView */,
@@ -443,6 +489,7 @@
 		73DBB34129053F1D0035EDF5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				739B70D3290C572900EEBC6A /* Fonts */,
 				73DBB34B2905415D0035EDF5 /* Generated */,
 				73DBB349290540920035EDF5 /* Localization */,
 				73DBB34229053F380035EDF5 /* Animation */,
@@ -474,6 +521,7 @@
 			children = (
 				73DBB34C2905416D0035EDF5 /* Strings.swift */,
 				73F9C3E6290ADF4A006368CD /* Asset.swift */,
+				739B70DA290C589400EEBC6A /* Fonts.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -600,8 +648,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				73DBB348290540880035EDF5 /* Localizable.strings in Resources */,
+				738ED617290D6CFE001AACF1 /* Ubuntu.ttf in Resources */,
 				739FB29828F72920007C1929 /* LaunchScreen.storyboard in Resources */,
+				739B70D9290C584F00EEBC6A /* Roboto.ttf in Resources */,
 				73DBB34429053F450035EDF5 /* duck.json in Resources */,
+				738ED615290D6C93001AACF1 /* Montserrat.ttf in Resources */,
 				739FB29528F72920007C1929 /* Assets.xcassets in Resources */,
 				73DBB3462905405C0035EDF5 /* swiftgen.yml in Resources */,
 			);
@@ -660,6 +711,7 @@
 				73F9C3EE290AFF63006368CD /* SegmentView.swift in Sources */,
 				73D31DC828FC68BD00A6969D /* UIColor+Extensions.swift in Sources */,
 				73DBB3552905522C0035EDF5 /* PermissionStatus.swift in Sources */,
+				739B70D2290C360500EEBC6A /* NavbarMode.swift in Sources */,
 				73B72C8328F88362006FD9B1 /* NSRange+Extensions.swift in Sources */,
 				73DBB34029053EDC0035EDF5 /* PermissionsView.swift in Sources */,
 				73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */,
@@ -679,6 +731,8 @@
 				73D31DBE28FC4AD900A6969D /* Collection+Extensions.swift in Sources */,
 				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
 				73DBB35C2905684B0035EDF5 /* RevealConfiguration.swift in Sources */,
+				738ED613290D2206001AACF1 /* TextEditingView.swift in Sources */,
+				739B70DB290C589400EEBC6A /* Fonts.swift in Sources */,
 				73D31DC028FC553F00A6969D /* OutlineMode.swift in Sources */,
 				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
 				737DA13A29071C610016C0F4 /* WidthAspectContainer.swift in Sources */,
@@ -708,6 +762,8 @@
 				73DBB35A290563240035EDF5 /* RevealingView.swift in Sources */,
 				739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */,
 				737DA132290706420016C0F4 /* PHAsset+Extensions.swift in Sources */,
+				739B70CF290C223500EEBC6A /* EditorNavigationController.swift in Sources */,
+				738ED611290D08BF001AACF1 /* Slider.swift in Sources */,
 				739FB2A428F72D09007C1929 /* AutoLayout+Extensions.swift in Sources */,
 				738FFE67290843AC00C34514 /* ViewReference.swift in Sources */,
 				73E99B4328FA9EDC00D83487 /* Shape.swift in Sources */,

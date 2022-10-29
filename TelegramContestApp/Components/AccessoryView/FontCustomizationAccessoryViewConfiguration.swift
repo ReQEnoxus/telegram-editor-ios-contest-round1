@@ -13,6 +13,12 @@ struct FontCustomizationAccessoryViewConfiguration: Hashable {
         let name: String
         let isSelected: Bool
         
+        init(font: UIFont, name: String, isSelected: Bool = false) {
+            self.font = font
+            self.name = name
+            self.isSelected = isSelected
+        }
+        
         func withToggledSelection() -> FontItem {
             return FontItem(
                 font: font,

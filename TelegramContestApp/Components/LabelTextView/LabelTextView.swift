@@ -34,11 +34,18 @@ final class LabelTextView: UITextView {
         let range: NSRange
     }
     
+    var fontScale: Float = 1 {
+        didSet {
+            updateFontScale()
+        }
+    }
+
     weak var outlineDelegate: OutlineLabelDelegate?
     private var configuration: LabelTextViewConfiguration?
     private weak var customizationView: FontCustomizationAccessoryView?
     private var animator = Animator()
     private var currentTextOutlineAttribute: AttributeInfo<UIColor>?
+    private var currentFontSize: CGFloat = .zero
     
     private var currentAttributeRange: NSRange {
         if selectedRange.length == .zero {
@@ -103,9 +110,9 @@ final class LabelTextView: UITextView {
             with: FontCustomizationAccessoryViewConfiguration(
                 fontItems: configuration.supportedFonts.map { font in
                     FontCustomizationAccessoryViewConfiguration.FontItem(
-                        font: font,
-                        name: font.fontName,
-                        isSelected: (typingAttributes[.font] as? UIFont) == font
+                        font: font.font,
+                        name: font.name,
+                        isSelected: (typingAttributes[.font] as? UIFont) == font.font
                     )
                 },
                 textAlignment: TextAlignment.from(nsTextAlignment: textAlignment)
@@ -131,9 +138,9 @@ final class LabelTextView: UITextView {
         return attrs
     }
     
-    private func addAttribute<T>(attr: AttributeInfo<T>) {
+    private func addAttribute<T>(attr: AttributeInfo<T>, range: NSRange? = nil) {
         preservingSelection {
-            addAttribute(attr: attr.value, for: attr.key, in: attr.range)
+            addAttribute(attr: attr.value, for: attr.key, in: range ?? attr.range)
         }
     }
     
@@ -151,6 +158,20 @@ final class LabelTextView: UITextView {
             mutableString.removeAttribute($0.key, range: $0.range)
         }
         attributedText = mutableString
+    }
+    
+    private func updateFontScale() {
+        guard let currentFont = font else { return }
+        let scaledFont = currentFont.withSize(currentFontSize * CGFloat(fontScale))
+        font = scaledFont
+        typingAttributes[.font] = nil
+        typingAttributes[.font] = scaledFont
+    }
+    
+    private func setFont(_ font: UIFont) {
+        self.font = font
+        currentFontSize = font.pointSize
+        updateFontScale()
     }
     
     func getLineInfo() -> LineInfo {
@@ -195,6 +216,11 @@ extension LabelTextView: Configurable {
     func configure(with object: Any) {
         guard let configuration = object as? LabelTextViewConfiguration else { return }
         self.configuration = configuration
+        if let firstFont = configuration.supportedFonts.first(where: { $0.isSelected }) ?? configuration.supportedFonts.first {
+            let attr = AttributeInfo<CGFloat>(key: .kern, value: .one, range: fullRange)
+            addAttribute(attr: attr)
+            setFont(firstFont.font)
+        }
         if customizationView == nil {
             let view = FontCustomizationAccessoryView()
             inputAccessoryView = view
@@ -215,7 +241,7 @@ extension LabelTextView: UITextViewDelegate {
             textView.text = textView.text.trailingNewlinesTrimmed + "\n"
         }
         if let currentOutline = currentTextOutlineAttribute {
-            addAttribute(attr: currentOutline)
+            addAttribute(attr: currentOutline, range: fullRange)
         }
         outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
     }
@@ -229,16 +255,7 @@ private extension String {
 
 extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {
-        let lastSelectedRange = currentAttributeRange
-        addAttribute(
-            attr: newFont.font,
-            for: .font,
-            in: currentAttributeRange
-        )
-        if lastSelectedRange != fullRange {
-            selectedRange = lastSelectedRange
-        }
-        typingAttributes[.font] = newFont.font
+        setFont(newFont.font)
         outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)
         updateCustomizationViewConfiguration()
     }
@@ -315,6 +332,7 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
             UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
                 self.addAttribute(attr: attribute)
             } completion: { _ in }
+            currentTextOutlineAttribute = attribute
         } else {
             UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
                 self.preservingSelection {
@@ -323,6 +341,7 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
                     self.attributedText = mutableString
                 }
             } completion: { _ in }
+            currentTextOutlineAttribute = nil
         }
     }
     
@@ -331,7 +350,7 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
         case .left:
             return .zero
         case .center:
-            return (containerSize.width - line.rect.width) / 2
+            return (containerSize.width - line.rect.width).half
         case .right:
             return containerSize.width - line.rect.width
         }

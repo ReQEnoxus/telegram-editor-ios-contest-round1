@@ -33,17 +33,17 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemGray5
         
         textView.labelTextView.font = .systemFont(ofSize: 25, weight: .bold)
-        textView.configure(
-            with: LabelContainerViewConfiguration(
-                labelConfiguration: LabelTextViewConfiguration(
-                    supportedFonts: [
-                        textView.labelTextView.font ?? .systemFont(ofSize: 14),
-                        .systemFont(ofSize: 25, weight: .thin),
-                    ]
-                ),
-                outlineInset: 24
-            )
-        )
+//        textView.configure(
+//            with: LabelContainerViewConfiguration(
+//                labelConfiguration: LabelTextViewConfiguration(
+//                    supportedFonts: [
+//                        textView.labelTextView.font ?? .systemFont(ofSize: 14),
+//                        .systemFont(ofSize: 25, weight: .thin),
+//                    ]
+//                ),
+//                outlineInset: 24
+//            )
+//        )
         button.setTitle("Allow editing", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     
     private func addSubviews() {
         view.addSubview(button)
-        view.addSubview(textView)
+//        view.addSubview(textView)
     }
     
     private func makeConstraints() {

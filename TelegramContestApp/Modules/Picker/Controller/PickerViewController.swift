@@ -18,8 +18,7 @@ final class PickerViewController: UIViewController {
     private var permissionsView: RevealingView<PermissionsView>?
     private var mediaCollectionView: RevealingView<MediaCollectionView>?
     private var selectedIndexPath: IndexPath?
-//    private var pendingUpdates: [IndexPath]
-//    private var debouncer = Debouncer()
+    private var currentOrientation: UIDeviceOrientation = UIDevice.current.orientation
     
     init(libraryService: LibraryServiceProtocol) {
         self.libraryService = libraryService
@@ -44,6 +43,22 @@ final class PickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         drawInitialView()
+    }
+    
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+//        let index = collectionView.indexPathForItem(at: .zero)
+//        let width = collectionView.bounds.size.width
+//        let index = round(offset.x / width)
+//        let newOffset = CGPoint(x: index, y: <#T##CGFloat#>)
+//        if UIDevice.current.orientation.isLandscape {
+//            mediaCollectionView?.wrapped.currentZoomLevel = .five
+//        } else {
+//            mediaCollectionView?.wrapped.currentZoomLevel = .three
+//        }
+//        print("!! new orientation: \(UIDevice.current.orientation.rawValue)")
     }
     
     private func drawInitialView() {
@@ -189,9 +204,10 @@ extension PickerViewController: UICollectionViewDelegate {
         guard let asset = assets?.object(at: indexPath.item) else { return }
         selectedIndexPath = indexPath
         let editor = EditorModuleAssembly().assemble(asset: asset)
-        editor.transitionController.fromDelegate = self
-        editor.transitionController.toDelegate = editor
-        present(editor, animated: true)
+        let navigation = EditorNavigationController(rootViewController: editor)
+        editor.transitionController?.fromDelegate = self
+        editor.transitionController?.toDelegate = editor
+        present(navigation, animated: true)
     }
 }
 
@@ -201,6 +217,13 @@ extension PickerViewController: TransitionDelegate {
               let cell = mediaCollectionView?.wrapped.collectionView.cellForItem(at: selectedIndexPath) as? AssetCell,
               let image = cell.imageView.image else { return nil }
         
-        return ViewReference(view: cell, image: image, frame: view.convert(cell.bounds, from: cell))
+        var resultFrame: CGRect
+        if let cellFrame = mediaCollectionView?.wrapped.collectionView.collectionViewLayout.layoutAttributesForItem(at: selectedIndexPath)?.frame {
+            resultFrame = view.convert(cellFrame, from: mediaCollectionView?.wrapped.collectionView)
+        } else {
+            resultFrame = view.convert(cell.bounds, from: cell)
+        }
+        
+        return ViewReference(view: cell, image: image, frame: resultFrame)
     }
 }

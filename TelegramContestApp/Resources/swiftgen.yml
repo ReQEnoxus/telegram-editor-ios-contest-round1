@@ -13,3 +13,8 @@ xcassets:
       params:
         enumName: Asset
 
+fonts:
+  inputs: Fonts
+  outputs:
+    templateName: swift5
+    output: Generated/Fonts.swift

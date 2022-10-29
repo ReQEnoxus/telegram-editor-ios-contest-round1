@@ -21,10 +21,12 @@ extension FontCustomizationAccessoryViewDelegate {
 
 final class FontCustomizationAccessoryView: UIInputView {
     private enum Constants {
-        static let height: CGFloat = 64.0
+        static let height: CGFloat = 48
         static let estimatedWidth: CGFloat = 50
         
-        static let buttonSide: CGFloat = 36
+        static let fadeWidth: Double = 0.04
+        
+        static let buttonSide: CGFloat = 30
     }
     
     weak var delegate: FontCustomizationAccessoryViewDelegate?
@@ -43,6 +45,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         .text(.red)
     ]
     private var currentOutlineIndex: Int = .zero
+    private let fadeLayer: CAGradientLayer = CAGradientLayer()
     
     private lazy var fontCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -51,8 +54,6 @@ final class FontCustomizationAccessoryView: UIInputView {
             width: Constants.estimatedWidth,
             height: Constants.height - .xxs
         )
-        layout.minimumInteritemSpacing = .zero
-        layout.sectionInset = .zero
         layout.minimumLineSpacing = .xxs
         
         let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -61,6 +62,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         collection.delegate = self
         collection.showsHorizontalScrollIndicator = false
         collection.backgroundColor = .clear
+        collection.clipsToBounds = false
         return collection.forAutoLayout()
     }()
     
@@ -150,6 +152,8 @@ final class FontCustomizationAccessoryView: UIInputView {
         return stackView.forAutoLayout()
     }()
     
+    private let collectionContainer: UIView = UIView().forAutoLayout()
+    
     private lazy var dataSource: UICollectionViewDiffableDataSource<Int, FontCustomizationAccessoryViewConfiguration.FontItem> = {
         return UICollectionViewDiffableDataSource<Int, FontCustomizationAccessoryViewConfiguration.FontItem>(collectionView: fontCollectionView) { collectionView, indexPath, model in
             return collectionView.dequeueCell(of: FontItemCell.self, for: indexPath, configuredWith: model)
@@ -170,17 +174,20 @@ final class FontCustomizationAccessoryView: UIInputView {
         super.layoutSubviews()
         guard let superview = self.superview else { return }
         self.frame = CGRect(x: .zero, y: .zero, width: superview.frame.width, height: Constants.height)
+        fadeLayer.frame = collectionContainer.bounds
     }
     
     private func commonInit() {
         autoresizingMask = .flexibleHeight
         addSubviews()
         makeConstraints()
+        setupFadingLayer()
     }
     
     private func addSubviews() {
         addSubview(buttonsStackView)
-        addSubview(fontCollectionView)
+        addSubview(collectionContainer)
+        collectionContainer.addSubview(fontCollectionView)
         buttonsStackView.addArrangedSubview(textOutlineButton)
         buttonsStackView.addArrangedSubview(textAlignmentButton)
     }
@@ -194,11 +201,37 @@ final class FontCustomizationAccessoryView: UIInputView {
             textOutlineButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
             textAlignmentButton.widthAnchor.constraint(equalToConstant: Constants.buttonSide),
 
-            fontCollectionView.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .s),
-            fontCollectionView.topAnchor.constraint(equalTo: topAnchor),
-            fontCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            fontCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            collectionContainer.leadingAnchor.constraint(equalTo: textAlignmentButton.trailingAnchor, constant: .xxxs),
+            collectionContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+            collectionContainer.heightAnchor.constraint(equalToConstant: Constants.height - .xxs),
+            collectionContainer.centerYAnchor.constraint(equalTo: buttonsStackView.centerYAnchor),
+            
+            fontCollectionView.leadingAnchor.constraint(equalTo: collectionContainer.leadingAnchor, constant: .xs),
+            fontCollectionView.topAnchor.constraint(equalTo: collectionContainer.topAnchor),
+            fontCollectionView.trailingAnchor.constraint(equalTo: collectionContainer.trailingAnchor),
+            fontCollectionView.bottomAnchor.constraint(equalTo: collectionContainer.bottomAnchor)
         ].activate()
+    }
+    
+    private func setupFadingLayer() {
+        fadeLayer.colors = [
+            UIColor.clear.cgColor,
+            UIColor.white.cgColor,
+            UIColor.white.cgColor,
+            UIColor.clear.cgColor
+        ]
+        
+        fadeLayer.locations = [
+            NSNumber(floatLiteral: .zero),
+            NSNumber(floatLiteral: Constants.fadeWidth),
+            NSNumber(floatLiteral: 1 - Constants.fadeWidth),
+            NSNumber(floatLiteral: 1)
+        ]
+        
+        fadeLayer.startPoint = CGPoint(x: .zero, y: .one.half)
+        fadeLayer.endPoint = CGPoint(x: .one, y: .one.half)
+        layer.addSublayer(fadeLayer)
+        collectionContainer.layer.mask = fadeLayer
     }
     
     private func updateConfiguration() {
