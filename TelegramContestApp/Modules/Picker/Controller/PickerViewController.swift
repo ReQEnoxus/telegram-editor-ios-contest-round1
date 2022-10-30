@@ -22,9 +22,13 @@ final class PickerViewController: UIViewController {
     
     init(libraryService: LibraryServiceProtocol) {
         self.libraryService = libraryService
-//        self.pendingUpdates = []
-//        pendingUpdates.reserveCapacity(Constants.maxPendingUpdatesCount)
         super.init(nibName: nil, bundle: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleExportFinishEvent),
+            name: .exportFinished,
+            object: nil
+        )
     }
     
     required init?(coder: NSCoder) {
@@ -43,22 +47,6 @@ final class PickerViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         drawInitialView()
-    }
-    
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-//        let index = collectionView.indexPathForItem(at: .zero)
-//        let width = collectionView.bounds.size.width
-//        let index = round(offset.x / width)
-//        let newOffset = CGPoint(x: index, y: <#T##CGFloat#>)
-//        if UIDevice.current.orientation.isLandscape {
-//            mediaCollectionView?.wrapped.currentZoomLevel = .five
-//        } else {
-//            mediaCollectionView?.wrapped.currentZoomLevel = .three
-//        }
-//        print("!! new orientation: \(UIDevice.current.orientation.rawValue)")
     }
     
     private func drawInitialView() {
@@ -124,24 +112,17 @@ final class PickerViewController: UIViewController {
         }
     }
     
-    // update management
-    
-//    private func enqueueUpdate(for indexPath: IndexPath) {
-//        pendingUpdates.append(indexPath)
-//        if pendingUpdates.count == Constants.maxPendingUpdatesCount {
-//            executePendingUpdates()
-//        } else {
-//            debouncer.debounce { [weak self] in
-//                self?.executePendingUpdates()
-//            }
-//        }
-//    }
-//
-//    private func executePendingUpdates() {
-//        print("!! executing update for \(pendingUpdates)")
-//        mediaCollectionView?.wrapped.collectionView.reloadItems(at: pendingUpdates)
-//        pendingUpdates.removeAll(keepingCapacity: true)
-//    }
+    @objc private func handleExportFinishEvent() {
+        let count = self.assets?.count ?? .zero
+        assets = libraryService.fetchAssets()
+        let newCount = self.assets?.count ?? .zero
+        if newCount == count + 1 {
+            mediaCollectionView?.wrapped.collectionView.setContentOffset(.zero, animated: false)
+            mediaCollectionView?.wrapped.collectionView.insertItems(at: [IndexPath(item: .zero, section: .zero)])
+            self.selectedIndexPath = IndexPath(item: .zero, section: .zero)
+        }
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension PickerViewController: PermissionsViewDelegate {
@@ -214,8 +195,7 @@ extension PickerViewController: UICollectionViewDelegate {
 extension PickerViewController: TransitionDelegate {
     func reference() -> ViewReference? {
         guard let selectedIndexPath = selectedIndexPath,
-              let cell = mediaCollectionView?.wrapped.collectionView.cellForItem(at: selectedIndexPath) as? AssetCell,
-              let image = cell.imageView.image else { return nil }
+              let cell = mediaCollectionView?.wrapped.collectionView.cellForItem(at: selectedIndexPath) as? AssetCell else { return nil }
         
         var resultFrame: CGRect
         if let cellFrame = mediaCollectionView?.wrapped.collectionView.collectionViewLayout.layoutAttributesForItem(at: selectedIndexPath)?.frame {
@@ -224,6 +204,6 @@ extension PickerViewController: TransitionDelegate {
             resultFrame = view.convert(cell.bounds, from: cell)
         }
         
-        return ViewReference(view: cell, image: image, frame: resultFrame)
+        return ViewReference(view: cell, image: cell.imageView.image, frame: resultFrame)
     }
 }

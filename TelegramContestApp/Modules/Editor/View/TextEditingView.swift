@@ -71,7 +71,14 @@ final class TextEditingView: UIView {
         [
             labelInputContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
             labelInputContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-            labelInputContainer.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, constant: -.s)
+            labelInputContainer.widthAnchor.constraint(equalTo: widthAnchor, constant: -.s)
         ].activate()
+    }
+}
+
+extension TextEditingView: ExportableView {
+    func prepare() {
+        labelInputContainer.state = .editing
+        labelInputContainer.isUserInteractionEnabled = false
     }
 }

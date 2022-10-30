@@ -27,6 +27,9 @@
 		738ED613290D2206001AACF1 /* TextEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED612290D2206001AACF1 /* TextEditingView.swift */; };
 		738ED615290D6C93001AACF1 /* Montserrat.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 738ED614290D6C92001AACF1 /* Montserrat.ttf */; };
 		738ED617290D6CFE001AACF1 /* Ubuntu.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 738ED616290D6CFE001AACF1 /* Ubuntu.ttf */; };
+		738ED619290DAC90001AACF1 /* ExportableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED618290DAC90001AACF1 /* ExportableView.swift */; };
+		738ED61B290DB970001AACF1 /* RenderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED61A290DB970001AACF1 /* RenderService.swift */; };
+		738ED61D290DC021001AACF1 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738ED61C290DC021001AACF1 /* Notification+Extensions.swift */; };
 		738FFE652908352D00C34514 /* EditorTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */; };
 		738FFE67290843AC00C34514 /* ViewReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE66290843AC00C34514 /* ViewReference.swift */; };
 		738FFE6929084D3100C34514 /* EditorTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE6829084D3100C34514 /* EditorTransitionController.swift */; };
@@ -111,6 +114,9 @@
 		738ED612290D2206001AACF1 /* TextEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditingView.swift; sourceTree = "<group>"; };
 		738ED614290D6C92001AACF1 /* Montserrat.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Montserrat.ttf; sourceTree = "<group>"; };
 		738ED616290D6CFE001AACF1 /* Ubuntu.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ubuntu.ttf; sourceTree = "<group>"; };
+		738ED618290DAC90001AACF1 /* ExportableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportableView.swift; sourceTree = "<group>"; };
+		738ED61A290DB970001AACF1 /* RenderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderService.swift; sourceTree = "<group>"; };
+		738ED61C290DC021001AACF1 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
 		738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionAnimator.swift; sourceTree = "<group>"; };
 		738FFE66290843AC00C34514 /* ViewReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReference.swift; sourceTree = "<group>"; };
 		738FFE6829084D3100C34514 /* EditorTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionController.swift; sourceTree = "<group>"; };
@@ -233,6 +239,7 @@
 				737DA13629070E540016C0F4 /* ContainerView.swift */,
 				73F9C3E8290AEC2C006368CD /* EditorMode.swift */,
 				738ED612290D2206001AACF1 /* TextEditingView.swift */,
+				738ED618290DAC90001AACF1 /* ExportableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -362,6 +369,7 @@
 				73F02EA22903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift */,
 				73F02EA42903FBC500A81A68 /* StringProtocol+Extensions.swift */,
 				737DA131290706420016C0F4 /* PHAsset+Extensions.swift */,
+				738ED61C290DC021001AACF1 /* Notification+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -540,6 +548,7 @@
 				73DBB352290552120035EDF5 /* LibraryService.swift */,
 				73DBB3542905522C0035EDF5 /* PermissionStatus.swift */,
 				73DBB3642905AE960035EDF5 /* LoadedAsset.swift */,
+				738ED61A290DB970001AACF1 /* RenderService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -719,6 +728,7 @@
 				73D31DC228FC55A700A6969D /* OutlineLetterShape.swift in Sources */,
 				73F9C3E7290ADF4A006368CD /* Asset.swift in Sources */,
 				73DBB34D2905416D0035EDF5 /* Strings.swift in Sources */,
+				738ED61D290DC021001AACF1 /* Notification+Extensions.swift in Sources */,
 				73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */,
 				73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				73DBB350290547020035EDF5 /* PickerViewController.swift in Sources */,
@@ -727,6 +737,7 @@
 				7354972728F9EA760024F48B /* TimingFunction.swift in Sources */,
 				73DBB353290552120035EDF5 /* LibraryService.swift in Sources */,
 				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
+				738ED619290DAC90001AACF1 /* ExportableView.swift in Sources */,
 				73DBB361290577D40035EDF5 /* MediaCollectionView.swift in Sources */,
 				73D31DBE28FC4AD900A6969D /* Collection+Extensions.swift in Sources */,
 				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
@@ -777,6 +788,7 @@
 				737DA13C290722760016C0F4 /* TestController.swift in Sources */,
 				737FF95E28FDB3080027F73A /* OutlineLinesShape.swift in Sources */,
 				739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */,
+				738ED61B290DB970001AACF1 /* RenderService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -921,10 +933,11 @@
 				DEVELOPMENT_TEAM = 2QBX756QHJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TelegramContestApp/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To select photos and videos from gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -935,7 +948,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -950,10 +963,11 @@
 				DEVELOPMENT_TEAM = 2QBX756QHJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TelegramContestApp/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "To select photos and videos from gallery";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -964,7 +978,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

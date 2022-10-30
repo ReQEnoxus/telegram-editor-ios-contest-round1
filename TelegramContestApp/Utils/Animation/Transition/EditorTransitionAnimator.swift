@@ -57,7 +57,8 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
         guard let fromController = transitionContext.viewController(forKey: .from),
               let toController = transitionContext.viewController(forKey: .to),
               let fromReference = fromDelegate?.reference(),
-              let targetImageRect = toDelegate?.referenceFrame(for: fromReference.image, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
+              let fromImage = fromReference.image,
+              let targetImageRect = toDelegate?.referenceFrame(for: fromImage, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)
         containerView.addSubview(toController.view)
@@ -114,7 +115,8 @@ final class EditorTransitionAnimator: NSObject, UIViewControllerAnimatedTransiti
             let fromController = transitionContext.viewController(forKey: .from),
             let fromReference = fromDelegate?.reference(),
             let toReference = toDelegate?.reference(),
-              let targetImageRect = fromDelegate?.referenceFrame(for: fromReference.image, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
+              let fromImage = fromReference.image,
+              let targetImageRect = fromDelegate?.referenceFrame(for: fromImage, in: fromController.view.frame.inset(by: fromController.view.safeAreaInsets)) else { return }
         
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toController)

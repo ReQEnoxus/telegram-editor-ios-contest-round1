@@ -17,6 +17,8 @@ protocol LibraryServiceProtocol {
     @discardableResult
     func fetchImage(from asset: PHAsset, targetSize: CGSize, completion: @escaping Consumer<LoadedAsset>) -> PHImageRequestID
     func cancelRequest(with id: PHImageRequestID)
+    
+    func save(image: UIImage, completion: @escaping Consumer<Bool>)
 }
 
 struct DefaultLibraryService: LibraryServiceProtocol {
@@ -83,6 +85,16 @@ struct DefaultLibraryService: LibraryServiceProtocol {
                 }
             }
         }
+    }
+    
+    func save(image: UIImage, completion: @escaping Consumer<Bool>) {
+        PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        } completionHandler: { success, error in
+            print("!! error: \(error)")
+            completion(success)
+        }
+
     }
 }
 

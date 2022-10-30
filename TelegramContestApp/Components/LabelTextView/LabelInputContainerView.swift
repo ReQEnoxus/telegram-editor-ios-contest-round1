@@ -139,8 +139,10 @@ final class LabelInputContainerView: UIView {
         borderLayer.lineCap = .round
         borderLayer.lineWidth = .xxxs.half
         borderLayer.fillColor = UIColor.clear.cgColor
+        borderLayer.needsDisplayOnBoundsChange = true
         
         [leftHandleLayer, rightHandleLayer].forEach {
+            $0.needsDisplayOnBoundsChange = true
             $0.lineWidth = .xxxs.half
             $0.fillColor = UIColor.clear.cgColor
             $0.strokeColor = UIColor.white.cgColor

@@ -10,6 +10,6 @@ import UIKit
 
 struct ViewReference {
     let view: UIView
-    let image: UIImage
+    let image: UIImage?
     let frame: CGRect
 }

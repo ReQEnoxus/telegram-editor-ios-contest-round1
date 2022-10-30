@@ -14,7 +14,12 @@ struct EditorModuleAssembly {
         let service = DefaultLibraryService(
             imageManager: imageManager
         )
-        let view = EditorViewController(asset: asset, service: service)
+        let renderService = DefaultRenderService()
+        let view = EditorViewController(
+            asset: asset,
+            service: service,
+            renderService: renderService
+        )
         return view
     }
 }
