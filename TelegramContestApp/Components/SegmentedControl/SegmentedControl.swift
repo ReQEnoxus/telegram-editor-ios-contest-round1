@@ -32,8 +32,9 @@ final class SegmentedControl: UIView {
     
     weak var delegate: SegmentedControlDelegate?
     private let contentStackView: UIStackView = UIStackView().forAutoLayout()
-    private let selectionView: UIView = UIView().forAutoLayout()
+    let selectionView: UIView = UIView().forAutoLayout()
     private var isTracking: Bool = false
+    private let transparentBackground: Bool
     
     private var model: Model? {
         didSet {
@@ -54,8 +55,9 @@ final class SegmentedControl: UIView {
         movePointer(to: currentIndex, animated: false)
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(transparentBackground: Bool = false) {
+        self.transparentBackground = transparentBackground
+        super.init(frame: .zero)
         commonInit()
     }
     
@@ -87,7 +89,7 @@ final class SegmentedControl: UIView {
     
     private func setupView() {
         layer.masksToBounds = true
-        backgroundColor = Asset.Colors.dark.color
+        backgroundColor = transparentBackground ? .clear : Asset.Colors.dark.color
         let pressGestureRecognizer = UILongPressGestureRecognizer(
             target: self,
             action: #selector(handleLongPressGesture(gestureRecognizer:))

@@ -8,6 +8,13 @@
 import Foundation
 import UIKit
 import Photos
+import PencilKit
+
+extension PKCanvasView: ExportableView {
+    func prepare() {
+        
+    }
+}
 
 protocol EditorViewDelegate: AnyObject {
     func didTapExitButton()
@@ -42,9 +49,10 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             accessoryViewOffsetConstraint?.constant = keyboardHeight == .zero ? -.xxs : -(keyboardHeight - (frame.height - saveButton.frame.minY) - (superview?.safeAreaInsets.bottom ?? .zero))
         }
     }
-    private let exitButton: UIButton = UIButton(type: .custom).forAutoLayout()
+    private let drawingCanvas: PKCanvasView = PKCanvasView().forAutoLayout()
+    private let exitButton: LottieCloseButton = LottieCloseButton().forAutoLayout()
     private let saveButton: UIButton = UIButton(type: .custom).forAutoLayout()
-    private let segmentedControl: SegmentedControl = SegmentedControl().forAutoLayout()
+    private let morphControl: MorphingSlider = MorphingSlider().forAutoLayout()
     private var currentTextEditingView: TextEditingView?
     private var fontSizeSlider: Slider = Slider().forAutoLayout()
     
@@ -54,6 +62,8 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     
     private var initialFontSize: CGFloat = .zero
     private var currentFontSize: CGFloat = .zero
+    
+    private var currentPenWidth: Float = .zero
     
     // Constraints
     
@@ -68,7 +78,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     private let sliderMaxValue: Float = 1.5
     private let sliderInitialValue: Float = 1
     private let sliderHeight: CGFloat = 240
-    private let sliderWidth: CGFloat = 28
+    private let sliderWidth: CGFloat = 32
     
     weak var delegate: EditorViewDelegate?
     
@@ -88,6 +98,27 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     
     func updateMedia(with media: Container.Media) {
         containerView.updateMedia(with: media)
+    }
+    
+    func startDrawing() {
+        guard !canvasView.subviews.contains(drawingCanvas) else { return }
+        canvasView.addSubview(drawingCanvas)
+        [
+            drawingCanvas.leadingAnchor.constraint(equalTo: canvasView.leadingAnchor),
+            drawingCanvas.topAnchor.constraint(equalTo: canvasView.topAnchor),
+            drawingCanvas.trailingAnchor.constraint(equalTo: canvasView.trailingAnchor),
+            drawingCanvas.bottomAnchor.constraint(equalTo: canvasView.bottomAnchor)
+        ].activate()
+        
+        drawingCanvas.isOpaque = false
+        drawingCanvas.drawing = PKDrawing()
+        if #available(iOS 14.0, *) {
+            drawingCanvas.drawingPolicy = .anyInput
+        } else {
+            drawingCanvas.allowsFingerDrawing = true
+        }
+        drawingCanvas.tool = PKInkingTool(.pen, color: UIColor.red, width: 16)
+        drawingCanvas.becomeFirstResponder()
     }
     
     func startEditingText(with config: LabelContainerViewConfiguration) -> LabelTextView? {
@@ -170,7 +201,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         addSubview(canvasView)
         addSubview(exitButton)
         addSubview(saveButton)
-        addSubview(segmentedControl)
+        addSubview(morphControl)
         addSubview(fontSizeSlider)
         addSubview(keyboardAccessory)
     }
@@ -207,13 +238,14 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             saveButton.widthAnchor.constraint(equalToConstant: .l),
             saveButton.heightAnchor.constraint(equalToConstant: .l),
             
-            segmentedControl.leadingAnchor.constraint(equalTo: exitButton.trailingAnchor, constant: .s),
-            segmentedControl.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -.s),
-            segmentedControl.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor)
+            morphControl.leadingAnchor.constraint(equalTo: exitButton.trailingAnchor, constant: .s),
+            morphControl.trailingAnchor.constraint(equalTo: saveButton.leadingAnchor, constant: -.s),
+            morphControl.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor)
         ].compactMap { $0 }.activate()
     }
     
     private func setupExitButton() {
+        exitButton.setMode(.close, animated: false)
         exitButton.addTarget(self, action: #selector(handleExitTap), for: .touchUpInside)
         exitButton.setImage(Asset.Icons.cancel.image, for: .normal)
         exitButton.tintColor = .white
@@ -228,16 +260,19 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     }
     
     private func setupSegmentedControl() {
-        segmentedControl.configure(
-            with: SegmentedControl.Model(
-                items: [
-                    L10n.Screens.Editor.Modes.draw,
-                    L10n.Screens.Editor.Modes.text
-                ],
-                cornerRadius: .s
+        morphControl.configure(
+            with: MorphingSlider.Model(
+                sliderValue: currentPenWidth,
+                segmentedControlModel: SegmentedControl.Model(
+                    items: [
+                        L10n.Screens.Editor.Modes.draw,
+                        L10n.Screens.Editor.Modes.text
+                    ],
+                    cornerRadius: .s
+                )
             )
         )
-        segmentedControl.delegate = self
+        morphControl.segmentedControl.delegate = self
     }
     
     private func setupSlider() {

@@ -23,7 +23,7 @@ final class Slider: UISlider {
     private enum Constants {
         static let startRadius: CGFloat = 1
         static let endRadius: CGFloat = 10
-        static let height: CGFloat = 28
+        static let height: CGFloat = 32
         static let alpha: CGFloat = 0.2
     }
     
@@ -41,9 +41,11 @@ final class Slider: UISlider {
     weak var delegate: SliderDelegate?
     
     private var previouslyEmittedValue: Float?
+    private let transparentBackground: Bool
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(transparentBackground: Bool = false) {
+        self.transparentBackground = transparentBackground
+        super.init(frame: .zero)
         minimumTrackTintColor = .clear
         maximumTrackTintColor = .clear
         addTarget(self, action: #selector(handleSliderValueChange), for: .valueChanged)
@@ -85,8 +87,12 @@ final class Slider: UISlider {
             clockwise: false
         )
         path.close()
-        UIColor.white.withAlphaComponent(Constants.alpha).setFill()
+        UIColor.white.withAlphaComponent(transparentBackground ? .zero : Constants.alpha).setFill()
         path.fill()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: Constants.height)
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {

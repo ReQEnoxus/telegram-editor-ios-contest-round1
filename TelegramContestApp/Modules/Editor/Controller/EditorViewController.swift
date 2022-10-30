@@ -292,6 +292,7 @@ extension EditorViewController: EditorViewDelegate {
         case .draw:
             navbarMode = .regular
             currentEditingField = nil
+            editorView.startDrawing()
         case .text:
             navbarMode = .textEditing
             if currentEditingField == nil {
