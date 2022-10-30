@@ -19,6 +19,9 @@ extension OutlineLabelDelegate {
 }
 
 final class LabelTextView: UITextView {
+    private enum Constants {
+        static let lineHeightMultiple: CGFloat = 1.2
+    }
     struct LineInfo {
         struct Line {
             let rect: CGRect
@@ -95,7 +98,7 @@ final class LabelTextView: UITextView {
         translatesAutoresizingMaskIntoConstraints = false
         keyboardAppearance = .dark
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineHeightMultiple = 1.2
+        paragraph.lineHeightMultiple = Constants.lineHeightMultiple
         
         typingAttributes = [
             .paragraphStyle: paragraph
@@ -190,15 +193,23 @@ final class LabelTextView: UITextView {
         
         lines = lines.enumerated().map { index, line in
             let lineString = self.attributedText.attributedSubstring(from: line.range).withTrimmedWhitespaces
+            let resultLineSize: CGSize
             let lineSize = lineString.boundingRect(
                 with: CGSize(width: .greatestFiniteMagnitude, height: self.bounds.height),
                 options: [.usesFontLeading],
                 context: nil
             ).size
+            if lineString.string.isBlank {
+                let symbolHeight = Constants.lineHeightMultiple * (font?.lineHeight ?? .zero)
+                resultLineSize = CGSize(width: symbolHeight, height: symbolHeight)
+            } else {
+                resultLineSize = lineSize
+            }
+            
             return LineInfo.Line(
                 rect: CGRect(
                     origin: line.rect.origin,
-                    size: lineSize
+                    size: resultLineSize
                 ),
                 range: line.range
             )
@@ -227,6 +238,7 @@ extension LabelTextView: Configurable {
             customizationView = view
             view.delegate = self
         }
+        textColor = configuration.initialTextColor
         updateCustomizationViewConfiguration()
     }
 }
@@ -262,6 +274,12 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
         let lineInfo = getLineInfo()
+        if lineInfo.lines.count == 1 {
+            // Нет нужды анимировать, просто меняем textAlignment
+            textAlignment = new.nsTextAlignment
+            return
+        }
+        
         let oldTintColor = tintColor
         tintColor = .clear
         

@@ -55,7 +55,7 @@ extension CAShapeLayer {
         animation.fromValue = value
         animation.toValue = targetValue
         animation.duration = duration
-        animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
         animation.fillMode = .both
         
         return animation

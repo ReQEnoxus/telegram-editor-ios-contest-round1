@@ -267,6 +267,7 @@ extension EditorViewController: EditorViewDelegate {
             editorView.startEditingText(
                 with: LabelContainerViewConfiguration(
                     labelConfiguration: LabelTextViewConfiguration(
+                        initialTextColor: .black,
                         supportedFonts: [
                             FontCustomizationAccessoryViewConfiguration.FontItem(
                                 font: .systemFont(ofSize: .m),
@@ -290,7 +291,7 @@ extension EditorViewController: EditorViewDelegate {
                             )
                         ]
                     ),
-                    outlineInset: .m
+                    outlineInset: .xxs
                 )
             )
         }

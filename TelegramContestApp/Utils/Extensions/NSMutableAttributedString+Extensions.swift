@@ -13,7 +13,7 @@ extension NSAttributedString {
         let invertedSet = CharacterSet.whitespacesAndNewlines.inverted
         let startRange = string.rangeOfCharacter(from: invertedSet)
         let endRange = string.rangeOfCharacter(from: invertedSet, options: .backwards)
-        let startLocation = startRange?.lowerBound ?? string.startIndex
+        let startLocation = string.startIndex
         let endLocation = endRange?.lowerBound ?? String(string.dropLast()).endIndex
 
         let trimmedRange = startLocation...endLocation
