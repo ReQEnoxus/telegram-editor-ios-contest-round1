@@ -36,13 +36,19 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     // Views
     let containerView: Container = Container().forAutoLayout()
     let canvasView: UIView = UIView().forAutoLayout()
+    let keyboardAccessory = FontCustomizationAccessoryView().forAutoLayout()
+    var keyboardHeight: CGFloat = .zero {
+        didSet {
+            accessoryViewOffsetConstraint?.constant = keyboardHeight == .zero ? -.xxs : -(keyboardHeight - (frame.height - saveButton.frame.minY) - (superview?.safeAreaInsets.bottom ?? .zero))
+        }
+    }
     private let exitButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let saveButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let segmentedControl: SegmentedControl = SegmentedControl().forAutoLayout()
     private var currentTextEditingView: TextEditingView?
     private var fontSizeSlider: Slider = Slider().forAutoLayout()
-    private var fontSliderLeadingOffset: CGFloat = .zero
     
+    private var fontSliderLeadingOffset: CGFloat = .zero
     private var textGestureRecognizers: [UIView: Set<UIGestureRecognizer>] = [:]
     private var textTransforms: [UIView: CGAffineTransform] = [:]
     
@@ -55,6 +61,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     private var canvasBottomInsetConstraint: NSLayoutConstraint?
     private var canvasWidthConstraint: NSLayoutConstraint?
     private var canvasHeightConstraint: NSLayoutConstraint?
+    private var accessoryViewOffsetConstraint: NSLayoutConstraint?
     
     // Constants
     private let sliderMinValue: Float = 0.33
@@ -83,8 +90,8 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         containerView.updateMedia(with: media)
     }
     
-    func startEditingText(with config: LabelContainerViewConfiguration) {
-        guard currentTextEditingView == nil else { return }
+    func startEditingText(with config: LabelContainerViewConfiguration) -> LabelTextView? {
+        guard currentTextEditingView == nil else { return nil }
         let textEditingView = TextEditingView().forAutoLayout()
         textEditingView.labelInputContainer.configure(with: config)
         
@@ -110,6 +117,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         textEditingView.labelInputContainer.labelTextView.becomeFirstResponder()
         
         currentTextEditingView = textEditingView
+        return textEditingView.labelInputContainer.labelTextView
     }
     
     func discardCurrentlyEditingText() {
@@ -164,6 +172,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         addSubview(saveButton)
         addSubview(segmentedControl)
         addSubview(fontSizeSlider)
+        addSubview(keyboardAccessory)
     }
     
     private func makeConstraints() {
@@ -171,6 +180,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         canvasBottomInsetConstraint = containerView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -bottomInset)
         canvasHeightConstraint = canvasView.heightAnchor.constraint(equalToConstant: .zero)
         canvasWidthConstraint = canvasView.widthAnchor.constraint(equalToConstant: .zero)
+        accessoryViewOffsetConstraint = keyboardAccessory.bottomAnchor.constraint(equalTo: exitButton.topAnchor, constant: -.s)
         [
             canvasTopInsetConstraint,
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -181,6 +191,11 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             canvasView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             canvasHeightConstraint,
             canvasWidthConstraint,
+            
+            keyboardAccessory.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: .s),
+            keyboardAccessory.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            keyboardAccessory.heightAnchor.constraint(equalToConstant: .xxl),
+            accessoryViewOffsetConstraint,
             
             exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: .s),
             exitButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.m),

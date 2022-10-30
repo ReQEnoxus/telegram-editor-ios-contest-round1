@@ -31,7 +31,7 @@ final class Animator {
     
     func animateProgress(
         duration: TimeInterval,
-        timingParameters: UICubicTimingParameters = UICubicTimingParameters(animationCurve: .easeOut),
+        timingParameters: UICubicTimingParameters = UICubicTimingParameters(animationCurve: .linear),
         progressBlock: @escaping Consumer<CGFloat>,
         completion: Producer<Void>?
     ) {

@@ -9,5 +9,5 @@ import Foundation
 import UIKit
 
 struct LabelTextViewConfiguration {
-    let supportedFonts: [FontCustomizationAccessoryViewConfiguration.FontItem]
+    let initialTextColor: UIColor
 }

@@ -20,6 +20,10 @@ final class EditorViewController: UIViewController {
     private let renderService: RenderServiceProtocol
     private let editorView = EditorView<PhotoContainerView>().forAutoLayout()
     
+    private var currentFontItems: [FontCustomizationAccessoryViewConfiguration.FontItem] = []
+    private var currentTextAlignment: TextAlignment = .left
+    private var currentEditingField: LabelTextView?
+    
     private var navbarMode: NavbarMode = .regular {
         didSet {
             setupNavbarMode()
@@ -37,6 +41,28 @@ final class EditorViewController: UIViewController {
         self.renderService = renderService
         super.init(nibName: nil, bundle: nil)
         editorView.delegate = self
+        currentFontItems = [
+            FontCustomizationAccessoryViewConfiguration.FontItem(
+                font: .systemFont(ofSize: .m),
+                name: "SF Pro Display",
+                isSelected: true
+            ),
+            FontCustomizationAccessoryViewConfiguration.FontItem(
+                font: FontFamily.Montserrat.regular.font(size: .m),
+                name: "Montserrat",
+                isSelected: false
+            ),
+            FontCustomizationAccessoryViewConfiguration.FontItem(
+                font: FontFamily.Ubuntu.regular.font(size: .m),
+                name: "Ubuntu",
+                isSelected: false
+            ),
+            FontCustomizationAccessoryViewConfiguration.FontItem(
+                font: FontFamily.Roboto.regular.font(size: .m),
+                name: "Roboto",
+                isSelected: false
+            )
+        ]
     }
     
     required init?(coder: NSCoder) {
@@ -168,11 +194,13 @@ final class EditorViewController: UIViewController {
     @objc private func keyboardWillOpen(notification: NSNotification) {
         guard let userInfo = notification.userInfo,
               let keyboardSize: CGSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size else { return }
+        editorView.keyboardHeight = keyboardSize.height
         let imageBottomY = view.frame.height - view.convert(editorView.containerView.bounds, from: editorView.containerView).maxY
         if imageBottomY < keyboardSize.height {
             let duration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             editorView.additionalBottomInset = keyboardSize.height - imageBottomY
             UIView.animate(withDuration: duration) {
+                self.editorView.keyboardAccessory.setBlur(active: true)
                 self.editorView.layoutIfNeeded()
             }
         }
@@ -182,8 +210,9 @@ final class EditorViewController: UIViewController {
         guard let userInfo = notification.userInfo else { return }
         let duration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         editorView.additionalBottomInset = .zero
-        
+        editorView.keyboardHeight = .zero
         UIView.animate(withDuration: duration) {
+            self.editorView.keyboardAccessory.setBlur(active: false)
             self.editorView.layoutIfNeeded()
         }
     }
@@ -262,37 +291,65 @@ extension EditorViewController: EditorViewDelegate {
         switch mode {
         case .draw:
             navbarMode = .regular
+            currentEditingField = nil
         case .text:
             navbarMode = .textEditing
-            editorView.startEditingText(
-                with: LabelContainerViewConfiguration(
-                    labelConfiguration: LabelTextViewConfiguration(
-                        supportedFonts: [
-                            FontCustomizationAccessoryViewConfiguration.FontItem(
-                                font: .systemFont(ofSize: .m),
-                                name: "SF Pro Display",
-                                isSelected: true
-                            ),
-                            FontCustomizationAccessoryViewConfiguration.FontItem(
-                                font: FontFamily.Montserrat.regular.font(size: .m),
-                                name: "Montserrat",
-                                isSelected: false
-                            ),
-                            FontCustomizationAccessoryViewConfiguration.FontItem(
-                                font: FontFamily.Ubuntu.regular.font(size: .m),
-                                name: "Ubuntu",
-                                isSelected: false
-                            ),
-                            FontCustomizationAccessoryViewConfiguration.FontItem(
-                                font: FontFamily.Roboto.regular.font(size: .m),
-                                name: "Roboto",
-                                isSelected: false
-                            )
-                        ]
-                    ),
-                    outlineInset: .m
+            if currentEditingField == nil {
+                editorView.keyboardAccessory.configure(
+                    with: FontCustomizationAccessoryViewConfiguration(
+                        fontItems: currentFontItems,
+                        textAlignment: currentTextAlignment
+                    )
                 )
+                currentEditingField = editorView.startEditingText(
+                    with: LabelContainerViewConfiguration(
+                        labelConfiguration: LabelTextViewConfiguration(
+                            initialTextColor: .black
+                        ),
+                        outlineInset: .xxs
+                    )
+                )
+                if let font = currentFontItems.first(where: { $0.isSelected }) ?? currentFontItems.first {
+                    currentEditingField?.setFont(font.font)
+                }
+                currentEditingField?.textAlignment = editorView.keyboardAccessory.textAlignment.nsTextAlignment
+                currentEditingField?.didChangeOutlineMode(from: editorView.keyboardAccessory.outlineConfig, to: editorView.keyboardAccessory.outlineConfig, shouldAnimate: false)
+                editorView.keyboardAccessory.delegate = self
+                currentEditingField?.accessoryDelegate = self
+            }
+        }
+    }
+}
+
+extension EditorViewController: FontCustomizationAccessoryViewDelegate {
+    func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {
+        currentEditingField?.didChangeFont(newFont)
+    }
+    
+    func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
+        currentEditingField?.didChangeTextAlignment(from: old, to: new)
+    }
+    
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool) {
+        currentEditingField?.didChangeOutlineMode(from: outline, to: targetOutline, shouldAnimate: shouldAnimate)
+    }
+}
+
+extension EditorViewController: AccessoryViewOperatingDelegate {
+    func updateAccessory(selectedFont: UIFont, selectedAlignment: NSTextAlignment) {
+        currentTextAlignment = TextAlignment.from(nsTextAlignment: selectedAlignment)
+        currentFontItems = currentFontItems.map {
+            FontCustomizationAccessoryViewConfiguration.FontItem(
+                font: $0.font,
+                name: $0.name,
+                isSelected: selectedFont == $0.font
             )
         }
+        editorView.keyboardAccessory.configure(
+            with: FontCustomizationAccessoryViewConfiguration(
+                fontItems: currentFontItems,
+                textAlignment: currentTextAlignment
+            )
+        )
     }
 }

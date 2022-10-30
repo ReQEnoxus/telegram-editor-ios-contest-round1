@@ -9,16 +9,23 @@ import Foundation
 import UIKit
 
 protocol OutlineLabelDelegate: AnyObject {
-    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool)
     func didChangeLineInfo(to new: LabelTextView.LineInfo, alignment: TextAlignment?, shouldAnimate: Bool)
 }
 
+protocol AccessoryViewOperatingDelegate: AnyObject {
+    func updateAccessory(selectedFont: UIFont, selectedAlignment: NSTextAlignment)
+}
+
 extension OutlineLabelDelegate {
-    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {}
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool) {}
     func didChangeLineInfo(to new: LabelTextView.LineInfo) {}
 }
 
 final class LabelTextView: UITextView {
+    private enum Constants {
+        static let lineHeightMultiple: CGFloat = 1.2
+    }
     struct LineInfo {
         struct Line {
             let rect: CGRect
@@ -42,7 +49,7 @@ final class LabelTextView: UITextView {
 
     weak var outlineDelegate: OutlineLabelDelegate?
     private var configuration: LabelTextViewConfiguration?
-    private weak var customizationView: FontCustomizationAccessoryView?
+    weak var accessoryDelegate: AccessoryViewOperatingDelegate?
     private var animator = Animator()
     private var currentTextOutlineAttribute: AttributeInfo<UIColor>?
     private var currentFontSize: CGFloat = .zero
@@ -95,7 +102,7 @@ final class LabelTextView: UITextView {
         translatesAutoresizingMaskIntoConstraints = false
         keyboardAppearance = .dark
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineHeightMultiple = 1.2
+        paragraph.lineHeightMultiple = Constants.lineHeightMultiple
         
         typingAttributes = [
             .paragraphStyle: paragraph
@@ -104,20 +111,8 @@ final class LabelTextView: UITextView {
     }
     
     private func updateCustomizationViewConfiguration() {
-        guard let configuration = configuration else { return }
-
-        customizationView?.configure(
-            with: FontCustomizationAccessoryViewConfiguration(
-                fontItems: configuration.supportedFonts.map { font in
-                    FontCustomizationAccessoryViewConfiguration.FontItem(
-                        font: font.font,
-                        name: font.name,
-                        isSelected: (typingAttributes[.font] as? UIFont) == font.font
-                    )
-                },
-                textAlignment: TextAlignment.from(nsTextAlignment: textAlignment)
-            )
-        )
+        guard let selectedFont = typingAttributes[.font] as? UIFont else { return }
+        accessoryDelegate?.updateAccessory(selectedFont: selectedFont, selectedAlignment: textAlignment)
     }
     
     private func contains(font: UIFont, in range: NSRange, exclusively: Bool) -> Bool {
@@ -168,7 +163,7 @@ final class LabelTextView: UITextView {
         typingAttributes[.font] = scaledFont
     }
     
-    private func setFont(_ font: UIFont) {
+    func setFont(_ font: UIFont) {
         self.font = font
         currentFontSize = font.pointSize
         updateFontScale()
@@ -190,15 +185,23 @@ final class LabelTextView: UITextView {
         
         lines = lines.enumerated().map { index, line in
             let lineString = self.attributedText.attributedSubstring(from: line.range).withTrimmedWhitespaces
+            let resultLineSize: CGSize
             let lineSize = lineString.boundingRect(
                 with: CGSize(width: .greatestFiniteMagnitude, height: self.bounds.height),
                 options: [.usesFontLeading],
                 context: nil
             ).size
+            if lineString.string.isBlank {
+                let symbolHeight = Constants.lineHeightMultiple * (font?.lineHeight ?? .zero)
+                resultLineSize = CGSize(width: symbolHeight, height: symbolHeight)
+            } else {
+                resultLineSize = lineSize
+            }
+            
             return LineInfo.Line(
                 rect: CGRect(
                     origin: line.rect.origin,
-                    size: lineSize
+                    size: resultLineSize
                 ),
                 range: line.range
             )
@@ -216,18 +219,7 @@ extension LabelTextView: Configurable {
     func configure(with object: Any) {
         guard let configuration = object as? LabelTextViewConfiguration else { return }
         self.configuration = configuration
-        if let firstFont = configuration.supportedFonts.first(where: { $0.isSelected }) ?? configuration.supportedFonts.first {
-            let attr = AttributeInfo<CGFloat>(key: .kern, value: .one, range: fullRange)
-            addAttribute(attr: attr)
-            setFont(firstFont.font)
-        }
-        if customizationView == nil {
-            let view = FontCustomizationAccessoryView()
-            inputAccessoryView = view
-            customizationView = view
-            view.delegate = self
-        }
-        updateCustomizationViewConfiguration()
+        textColor = configuration.initialTextColor
     }
 }
 
@@ -262,6 +254,12 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
     
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
         let lineInfo = getLineInfo()
+        if lineInfo.lines.count == 1 {
+            // Нет нужды анимировать, просто меняем textAlignment
+            textAlignment = new.nsTextAlignment
+            return
+        }
+        
         let oldTintColor = tintColor
         tintColor = .clear
         
@@ -316,31 +314,42 @@ extension LabelTextView: FontCustomizationAccessoryViewDelegate {
         }
     }
     
-    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool) {
         if case .text = targetOutline {
-            handleTextOutlineChange(to: targetOutline)
+            handleTextOutlineChange(to: targetOutline, animated: shouldAnimate)
         } else if case .text = outline {
-            handleTextOutlineChange(to: targetOutline)
+            handleTextOutlineChange(to: targetOutline, animated: shouldAnimate)
         }
         
-        outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline)
+        outlineDelegate?.didChangeOutlineMode(from: outline, to: targetOutline, shouldAnimate: shouldAnimate)
     }
     
-    private func handleTextOutlineChange(to newMode: OutlineMode) {
+    private func handleTextOutlineChange(to newMode: OutlineMode, animated: Bool) {
         if case .text(let color) = newMode {
             let attribute = AttributeInfo<UIColor>(key: .customOutline, value: color, range: fullRange)
-            UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+            if animated {
+                UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+                    self.addAttribute(attr: attribute)
+                } completion: { _ in }
+            } else {
                 self.addAttribute(attr: attribute)
-            } completion: { _ in }
+            }
             currentTextOutlineAttribute = attribute
         } else {
-            UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+            let remove: () -> Void = {
                 self.preservingSelection {
                     let mutableString = NSMutableAttributedString(attributedString: self.attributedText)
                     mutableString.removeAttribute(.customOutline, range: self.fullRange)
                     self.attributedText = mutableString
                 }
-            } completion: { _ in }
+            }
+            if animated {
+                UIView.transition(with: self, duration: Durations.half, options: [.transitionCrossDissolve]) {
+                    remove()
+                } completion: { _ in }
+            } else {
+                remove()
+            }
             currentTextOutlineAttribute = nil
         }
     }

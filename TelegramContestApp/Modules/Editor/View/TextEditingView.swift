@@ -71,7 +71,7 @@ final class TextEditingView: UIView {
         [
             labelInputContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
             labelInputContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-            labelInputContainer.widthAnchor.constraint(equalTo: widthAnchor, constant: -.s)
+            labelInputContainer.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, constant: -.s)
         ].activate()
     }
 }
