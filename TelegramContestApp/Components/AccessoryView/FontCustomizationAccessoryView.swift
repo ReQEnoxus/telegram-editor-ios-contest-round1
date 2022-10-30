@@ -10,13 +10,13 @@ import UIKit
 protocol FontCustomizationAccessoryViewDelegate: AnyObject {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem)
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment)
-    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode)
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool)
 }
 
 extension FontCustomizationAccessoryViewDelegate {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {}
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {}
-    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode) {}
+    func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool) {}
 }
 
 final class FontCustomizationAccessoryView: UIInputView {
@@ -30,6 +30,25 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     weak var delegate: FontCustomizationAccessoryViewDelegate?
+    
+    var outlineConfig: OutlineMode {
+        get {
+            return outlines[currentOutlineIndex]
+        }
+    }
+    var textAlignment: TextAlignment {
+        get {
+            return currentTextAlignment
+        }
+    }
+    
+    func setBlur(active: Bool) {
+        if active {
+            effectView.effect = blurEffect
+        } else {
+            effectView.effect = nil
+        }
+    }
     
     private var configuration: FontCustomizationAccessoryViewConfiguration? {
         didSet {
@@ -77,6 +96,9 @@ final class FontCustomizationAccessoryView: UIInputView {
         
         return button.forAutoLayout()
     }()
+    
+    private let effectView = UIVisualEffectView(effect: nil).forAutoLayout()
+    private let blurEffect = UIBlurEffect(style: .systemMaterialDark)
     
     private lazy var textOutlineButton: ShapeMorphingButton<OutlineMode> = {
         let button = ShapeMorphingButton<OutlineMode>(type: .system)
@@ -172,8 +194,8 @@ final class FontCustomizationAccessoryView: UIInputView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        guard let superview = self.superview else { return }
-        self.frame = CGRect(x: .zero, y: .zero, width: superview.frame.width, height: Constants.height)
+//        guard let superview = self.superview else { return }
+//        self.frame = CGRect(x: .zero, y: .zero, width: superview.frame.width, height: Constants.height)
         fadeLayer.frame = collectionContainer.bounds
     }
     
@@ -185,6 +207,7 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     private func addSubviews() {
+        addSubview(effectView)
         addSubview(buttonsStackView)
         addSubview(collectionContainer)
         collectionContainer.addSubview(fontCollectionView)
@@ -194,6 +217,11 @@ final class FontCustomizationAccessoryView: UIInputView {
     
     private func makeConstraints() {
         [
+            effectView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            effectView.topAnchor.constraint(equalTo: topAnchor),
+            effectView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            effectView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
             buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .s),
             buttonsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
@@ -258,7 +286,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         let nextOutline = outlines[nextIndex]
         textOutlineButton.setShape(nextOutline, animated: true)
         currentOutlineIndex = nextIndex
-        delegate?.didChangeOutlineMode(from: current, to: nextOutline)
+        delegate?.didChangeOutlineMode(from: current, to: nextOutline, shouldAnimate: true)
     }
 }
 
