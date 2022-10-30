@@ -14,8 +14,10 @@ final class EditorViewController: UIViewController {
         return (navigationController as? EditorNavigationController)?.transitionController
     }
     
+    private var resultImage: UIImage?
     private let asset: PHAsset
     private let service: LibraryServiceProtocol
+    private let renderService: RenderServiceProtocol
     private let editorView = EditorView<PhotoContainerView>().forAutoLayout()
     
     private var navbarMode: NavbarMode = .regular {
@@ -25,11 +27,15 @@ final class EditorViewController: UIViewController {
         }
     }
     
-    init(asset: PHAsset, service: LibraryServiceProtocol) {
+    init(
+        asset: PHAsset,
+        service: LibraryServiceProtocol,
+        renderService: RenderServiceProtocol
+    ) {
         self.asset = asset
         self.service = service
+        self.renderService = renderService
         super.init(nibName: nil, bundle: nil)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "NAZAD", style: .plain, target: nil, action: nil)
         editorView.delegate = self
     }
     
@@ -68,7 +74,10 @@ final class EditorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         service.fetchImage(from: asset, targetSize: PHImageManagerMaximumSize) { [weak self] loaded in
-            self?.editorView.updateMedia(with: loaded.image)
+            guard let self = self, let image = loaded.image else { return }
+            self.editorView.updateMedia(with: loaded.image)
+            let targetImageRect = AVMakeRect(aspectRatio: image.size, insideRect: self.editorView.containerView.bounds)
+            self.editorView.imageSize = targetImageRect.size
         }
     }
     
@@ -182,7 +191,7 @@ final class EditorViewController: UIViewController {
 
 extension EditorViewController: TransitionDelegate {
     func reference() -> ViewReference? {
-        guard let image = editorView.containerView.imageView.image else { return nil }
+        guard let image = resultImage ?? editorView.containerView.imageView.image else { return nil }
         let initialFrame = view.convert(editorView.containerView.bounds, from: editorView.containerView)
         let targetFrame = AVMakeRect(
             aspectRatio: image.size,
@@ -222,7 +231,30 @@ extension EditorViewController: EditorViewDelegate {
     }
     
     func didTapSaveButton() {
-        
+        guard let image = editorView.containerView.imageView.image else { return }
+        editorView.prepare()
+        switch asset.mediaType {
+        case .image:
+            renderService.renderImage(image, canvas: editorView.canvasView.layer) { [weak self] resultImage in
+                self?.service.save(image: resultImage, completion: { success in
+                    DispatchQueue.main.async {
+                        if success {
+                            self?.resultImage = resultImage
+                            NotificationCenter.default.post(name: .exportFinished, object: nil)
+                        } else {
+                            // handle error
+                        }
+                    }
+                })
+            }
+        case .video:
+            renderService.renderVideo(asset, canvas: editorView.canvasView.layer) { tempURL in
+                // save to phimage
+            }
+            
+        default:
+            break
+        }
     }
     
     func didChangeEditorMode(_ mode: EditorMode) {

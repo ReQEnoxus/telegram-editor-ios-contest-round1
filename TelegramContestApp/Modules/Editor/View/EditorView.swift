@@ -28,14 +28,17 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             canvasBottomInsetConstraint?.constant = -bottomInset - additionalBottomInset
         }
     }
+    var imageSize: CGSize = .zero {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
     // Views
     let containerView: Container = Container().forAutoLayout()
     let canvasView: UIView = UIView().forAutoLayout()
     private let exitButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let saveButton: UIButton = UIButton(type: .custom).forAutoLayout()
     private let segmentedControl: SegmentedControl = SegmentedControl().forAutoLayout()
-    private var canvasTopInsetConstraint: NSLayoutConstraint?
-    private var canvasBottomInsetConstraint: NSLayoutConstraint?
     private var currentTextEditingView: TextEditingView?
     private var fontSizeSlider: Slider = Slider().forAutoLayout()
     private var fontSliderLeadingOffset: CGFloat = .zero
@@ -45,6 +48,13 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     
     private var initialFontSize: CGFloat = .zero
     private var currentFontSize: CGFloat = .zero
+    
+    // Constraints
+    
+    private var canvasTopInsetConstraint: NSLayoutConstraint?
+    private var canvasBottomInsetConstraint: NSLayoutConstraint?
+    private var canvasWidthConstraint: NSLayoutConstraint?
+    private var canvasHeightConstraint: NSLayoutConstraint?
     
     // Constants
     private let sliderMinValue: Float = 0.33
@@ -132,10 +142,13 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         super.updateConstraints()
         canvasTopInsetConstraint?.constant = topInset - additionalBottomInset
         canvasBottomInsetConstraint?.constant = -bottomInset - additionalBottomInset
+        canvasWidthConstraint?.constant = imageSize.width
+        canvasHeightConstraint?.constant = imageSize.height
     }
     
     private func commonInit() {
         backgroundColor = .black
+        canvasView.clipsToBounds = true
         addSubviews()
         makeConstraints()
         setupExitButton()
@@ -156,16 +169,18 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     private func makeConstraints() {
         canvasTopInsetConstraint = containerView.topAnchor.constraint(equalTo: topAnchor, constant: topInset)
         canvasBottomInsetConstraint = containerView.bottomAnchor.constraint(equalTo: saveButton.topAnchor, constant: -bottomInset)
+        canvasHeightConstraint = canvasView.heightAnchor.constraint(equalToConstant: .zero)
+        canvasWidthConstraint = canvasView.widthAnchor.constraint(equalToConstant: .zero)
         [
             canvasTopInsetConstraint,
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             canvasBottomInsetConstraint,
             
-            canvasView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            canvasView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            canvasView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            canvasView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            canvasView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+            canvasView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            canvasHeightConstraint,
+            canvasWidthConstraint,
             
             exitButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: .s),
             exitButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -.m),
@@ -222,8 +237,8 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
     
     private func updateSliderFrame() {
         fontSizeSlider.frame = CGRect(
-            x: canvasView.frame.minX + fontSliderLeadingOffset,
-            y: canvasView.frame.minY + (canvasView.frame.height - sliderHeight).half,
+            x: containerView.frame.minX + fontSliderLeadingOffset,
+            y: containerView.frame.minY + (containerView.frame.height - sliderHeight).half,
             width: sliderWidth,
             height: sliderHeight
         )
@@ -350,6 +365,20 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
             }
         default:
             break
+        }
+    }
+}
+
+extension EditorView: ExportableView {
+    func prepare() {
+        canvasView.subviews.forEach {
+            if let exportableView = $0 as? ExportableView {
+                exportableView.prepare()
+                exportableView.contentScaleFactor = UIScreen.main.scale
+            } else {
+                $0.isHidden = true
+            }
+        
         }
     }
 }
