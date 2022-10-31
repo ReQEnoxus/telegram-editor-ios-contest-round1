@@ -19,6 +19,7 @@ protocol LibraryServiceProtocol {
     func cancelRequest(with id: PHImageRequestID)
     
     func save(image: UIImage, completion: @escaping Consumer<Bool>)
+    func save(video at: URL, completion: @escaping Consumer<Bool>)
 }
 
 struct DefaultLibraryService: LibraryServiceProtocol {
@@ -90,6 +91,16 @@ struct DefaultLibraryService: LibraryServiceProtocol {
     func save(image: UIImage, completion: @escaping Consumer<Bool>) {
         PHPhotoLibrary.shared().performChanges {
             PHAssetChangeRequest.creationRequestForAsset(from: image)
+        } completionHandler: { success, error in
+            print("!! error: \(error)")
+            completion(success)
+        }
+
+    }
+    
+    func save(video at: URL, completion: @escaping Consumer<Bool>) {
+        PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: at)
         } completionHandler: { success, error in
             print("!! error: \(error)")
             completion(success)

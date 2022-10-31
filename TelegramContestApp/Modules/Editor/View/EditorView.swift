@@ -181,6 +181,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         }
         
         canvasView.addSubview(drawingCanvas)
+        drawingCanvas.overrideUserInterfaceStyle = .light
         [
             drawingCanvas.leadingAnchor.constraint(equalTo: canvasView.leadingAnchor),
             drawingCanvas.topAnchor.constraint(equalTo: canvasView.topAnchor),
@@ -189,7 +190,7 @@ final class EditorView<Container: ContainerView>: UIView, SegmentedControlDelega
         ].activate()
         
         drawingCanvas.isOpaque = false
-        drawingCanvas.backgroundColor = .clear
+//        drawingCanvas.backgroundColor = .clear
         drawingCanvas.drawing = PKDrawing()
         if #available(iOS 14.0, *) {
             drawingCanvas.drawingPolicy = .anyInput

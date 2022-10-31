@@ -18,6 +18,8 @@ internal enum L10n {
         internal static let cancel = L10n.tr("Localizable", "Screens.Editor.Alert.cancel")
         /// Clear Painting
         internal static let clearAll = L10n.tr("Localizable", "Screens.Editor.Alert.clearAll")
+        /// Delete unsaved changes
+        internal static let scrapAll = L10n.tr("Localizable", "Screens.Editor.Alert.scrapAll")
       }
       internal enum Modes {
         /// Draw

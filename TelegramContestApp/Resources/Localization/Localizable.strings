@@ -19,3 +19,4 @@
 
 "Screens.Editor.Alert.clearAll" = "Clear Painting";
 "Screens.Editor.Alert.cancel" = "Cancel";
+"Screens.Editor.Alert.scrapAll" = "Delete unsaved changes";
