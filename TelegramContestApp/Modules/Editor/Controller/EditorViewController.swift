@@ -395,6 +395,9 @@ extension EditorViewController: EditorViewDelegate {
                 
                 temporaryIgnoreKeyboardEvents = true
                 present(alert, animated: true, completion: nil)
+            } else {
+                dismiss(animated: true, completion: nil)
+                editorView.containerView.alpha = .zero
             }
         }
     }
