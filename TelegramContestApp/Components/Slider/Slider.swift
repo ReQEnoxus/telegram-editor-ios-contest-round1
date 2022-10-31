@@ -9,14 +9,14 @@ import Foundation
 import UIKit
 
 protocol SliderDelegate: AnyObject {
-    func valueChanged(to newValue: Float)
-    func didEndTracking(with finalValue: Float)
-    func didStartTracking(with initialValue: Float)
+    func valueChanged(_ slider: Slider, to newValue: Float)
+    func didEndTracking(_ slider: Slider, with finalValue: Float)
+    func didStartTracking(_ slider: Slider, with initialValue: Float)
 }
 
 extension SliderDelegate {
-    func didEndTracking(with finalValue: Float) {}
-    func didStartTracking(with initialValue: Float) {}
+    func didEndTracking(_ slider: Slider, with finalValue: Float) {}
+    func didStartTracking(_ slider: Slider, with initialValue: Float) {}
 }
 
 final class Slider: UISlider {
@@ -102,20 +102,20 @@ final class Slider: UISlider {
     @objc private func handleSliderValueChange() {
         if let previouslyEmittedValue = previouslyEmittedValue {
             if abs(previouslyEmittedValue - value) > threshold {
-                delegate?.valueChanged(to: value)
+                delegate?.valueChanged(self, to: value)
                 self.previouslyEmittedValue = value
             }
         } else {
-            delegate?.valueChanged(to: value)
+            delegate?.valueChanged(self, to: value)
             self.previouslyEmittedValue = value
         }
     }
     
     @objc private func handleSliderEndTracking() {
-        delegate?.didEndTracking(with: value)
+        delegate?.didEndTracking(self, with: value)
     }
     
     @objc private func handleSliderStartTracking() {
-        delegate?.didStartTracking(with: value)
+        delegate?.didStartTracking(self, with: value)
     }
 }

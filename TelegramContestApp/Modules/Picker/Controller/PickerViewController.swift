@@ -184,7 +184,8 @@ extension PickerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let asset = assets?.object(at: indexPath.item) else { return }
         selectedIndexPath = indexPath
-        let editor = EditorModuleAssembly().assemble(asset: asset)
+        let image = (mediaCollectionView?.wrapped.collectionView.cellForItem(at: indexPath) as? AssetCell)?.imageView.image
+        let editor = EditorModuleAssembly().assemble(asset: asset, initialImage: image)
         let navigation = EditorNavigationController(rootViewController: editor)
         editor.transitionController?.fromDelegate = self
         editor.transitionController?.toDelegate = editor

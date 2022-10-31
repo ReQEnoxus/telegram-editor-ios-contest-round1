@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-// офигеть, я это сделал)
+// офигеть, я это сделал o_O
 final class MorphingSlider: UIView {
     private enum Constants {
         static let sliderStartRadius: CGFloat = 1

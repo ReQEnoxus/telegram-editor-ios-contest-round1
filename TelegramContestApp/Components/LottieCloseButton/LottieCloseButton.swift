@@ -42,7 +42,7 @@ final class LottieCloseButton: UIButton {
                     completion: nil
                 )
             } else {
-                animationView.currentProgress = 1
+                animationView.currentProgress = 0.5
             }
         }
     }

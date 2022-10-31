@@ -17,6 +17,7 @@ final class LabelInputContainerView: UIView {
     enum State {
         case editing
         case `static`
+        case inactive
     }
     
     var fontScale: Float {
@@ -208,6 +209,11 @@ final class LabelInputContainerView: UIView {
             borderLayer.isHidden = false
             leftHandleLayer.isHidden = false
             rightHandleLayer.isHidden = false
+        case .inactive:
+            labelTextView.isEditable = false
+            borderLayer.isHidden = true
+            leftHandleLayer.isHidden = true
+            rightHandleLayer.isHidden = true
         }
     }
 }

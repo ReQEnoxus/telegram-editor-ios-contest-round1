@@ -16,3 +16,6 @@
 "Screens.Editor.Navbar.done" = "Done";
 "Screens.Editor.Navbar.clearAll" = "Clear All";
 "Screens.Editor.Navbar.zoomOut" = "Zoom Out";
+
+"Screens.Editor.Alert.clearAll" = "Clear Painting";
+"Screens.Editor.Alert.cancel" = "Cancel";
