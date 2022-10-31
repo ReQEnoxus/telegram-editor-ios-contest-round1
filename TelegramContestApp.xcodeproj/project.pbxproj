@@ -17,8 +17,6 @@
 		737DA132290706420016C0F4 /* PHAsset+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA131290706420016C0F4 /* PHAsset+Extensions.swift */; };
 		737DA13429070E450016C0F4 /* PhotoContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13329070E450016C0F4 /* PhotoContainerView.swift */; };
 		737DA13729070E540016C0F4 /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13629070E540016C0F4 /* ContainerView.swift */; };
-		737DA13A29071C610016C0F4 /* WidthAspectContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13929071C610016C0F4 /* WidthAspectContainer.swift */; };
-		737DA13C290722760016C0F4 /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13B290722760016C0F4 /* TestController.swift */; };
 		737DA13E29072D850016C0F4 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13D29072D850016C0F4 /* EditorViewController.swift */; };
 		737DA14029072F120016C0F4 /* EditorModuleAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA13F29072F120016C0F4 /* EditorModuleAssembly.swift */; };
 		737FF95C28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */; };
@@ -48,7 +46,6 @@
 		739B70DB290C589400EEBC6A /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70DA290C589400EEBC6A /* Fonts.swift */; };
 		739FB28C28F72920007C1929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28B28F72920007C1929 /* AppDelegate.swift */; };
 		739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28D28F72920007C1929 /* SceneDelegate.swift */; };
-		739FB29028F72920007C1929 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB28F28F72920007C1929 /* ViewController.swift */; };
 		739FB29528F72920007C1929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 739FB29428F72920007C1929 /* Assets.xcassets */; };
 		739FB29828F72920007C1929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739FB29628F72920007C1929 /* LaunchScreen.storyboard */; };
 		739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739FB2A028F72BA1007C1929 /* FontCustomizationAccessoryView.swift */; };
@@ -68,6 +65,7 @@
 		73D31DC228FC55A700A6969D /* OutlineLetterShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D31DC128FC55A700A6969D /* OutlineLetterShape.swift */; };
 		73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D31DC328FC55B200A6969D /* OutlineBackgroundShape.swift */; };
 		73D31DC828FC68BD00A6969D /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D31DC728FC68BD00A6969D /* UIColor+Extensions.swift */; };
+		73DB95C7291054CC0069259F /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 73DB95C6291054CC0069259F /* Lottie */; };
 		73DBB33B290529280035EDF5 /* SweepingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB33A290529280035EDF5 /* SweepingButton.swift */; };
 		73DBB34029053EDC0035EDF5 /* PermissionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBB33F29053EDC0035EDF5 /* PermissionsView.swift */; };
 		73DBB34429053F450035EDF5 /* duck.json in Resources */ = {isa = PBXBuildFile; fileRef = 73DBB34329053F450035EDF5 /* duck.json */; };
@@ -97,12 +95,9 @@
 		73F9C3E9290AEC2C006368CD /* EditorMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F9C3E8290AEC2C006368CD /* EditorMode.swift */; };
 		73F9C3EC290AFC5D006368CD /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F9C3EB290AFC5D006368CD /* SegmentedControl.swift */; };
 		73F9C3EE290AFF63006368CD /* SegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73F9C3ED290AFF63006368CD /* SegmentView.swift */; };
-		C75A515239F67543E075FB5F /* Pods_TelegramContestApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.release.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.release.xcconfig"; sourceTree = "<group>"; };
-		29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.debug.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.debug.xcconfig"; sourceTree = "<group>"; };
 		73078642290EC27300A18324 /* LottieCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieCloseButton.swift; sourceTree = "<group>"; };
 		73078644290EC2F900A18324 /* backToCancel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backToCancel.json; sourceTree = "<group>"; };
 		73078647290ECC4800A18324 /* MorphingSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphingSlider.swift; sourceTree = "<group>"; };
@@ -113,8 +108,6 @@
 		737DA131290706420016C0F4 /* PHAsset+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHAsset+Extensions.swift"; sourceTree = "<group>"; };
 		737DA13329070E450016C0F4 /* PhotoContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoContainerView.swift; sourceTree = "<group>"; };
 		737DA13629070E540016C0F4 /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
-		737DA13929071C610016C0F4 /* WidthAspectContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidthAspectContainer.swift; sourceTree = "<group>"; };
-		737DA13B290722760016C0F4 /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		737DA13D29072D850016C0F4 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		737DA13F29072F120016C0F4 /* EditorModuleAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleAssembly.swift; sourceTree = "<group>"; };
 		737FF95B28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAShapeLayer+Extensions.swift"; sourceTree = "<group>"; };
@@ -145,7 +138,6 @@
 		739FB28828F72920007C1929 /* TelegramContestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelegramContestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		739FB28B28F72920007C1929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		739FB28D28F72920007C1929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		739FB28F28F72920007C1929 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		739FB29428F72920007C1929 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		739FB29728F72920007C1929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		739FB29928F72920007C1929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -195,7 +187,6 @@
 		73F9C3E8290AEC2C006368CD /* EditorMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorMode.swift; sourceTree = "<group>"; };
 		73F9C3EB290AFC5D006368CD /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		73F9C3ED290AFF63006368CD /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
-		76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TelegramContestApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,22 +194,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C75A515239F67543E075FB5F /* Pods_TelegramContestApp.framework in Frameworks */,
+				73DB95C7291054CC0069259F /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C0F704D929FDAEFA54CA0E7 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */,
-				01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		73078641290EC26500A18324 /* LottieCloseButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,14 +279,6 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
-		737DA13829071AD10016C0F4 /* WidthAspectContainer */ = {
-			isa = PBXGroup;
-			children = (
-				737DA13929071C610016C0F4 /* WidthAspectContainer.swift */,
-			);
-			path = WidthAspectContainer;
-			sourceTree = "<group>";
-		};
 		7389501E2909A5CA00DEF575 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -378,8 +352,6 @@
 			children = (
 				739FB28A28F72920007C1929 /* TelegramContestApp */,
 				739FB28928F72920007C1929 /* Products */,
-				3C0F704D929FDAEFA54CA0E7 /* Pods */,
-				A4046CF31CA13C95E72F7EDF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -401,9 +373,7 @@
 				739FB29F28F729B8007C1929 /* Components */,
 				739FB28B28F72920007C1929 /* AppDelegate.swift */,
 				739FB28D28F72920007C1929 /* SceneDelegate.swift */,
-				739FB28F28F72920007C1929 /* ViewController.swift */,
 				739FB29928F72920007C1929 /* Info.plist */,
-				737DA13B290722760016C0F4 /* TestController.swift */,
 			);
 			path = TelegramContestApp;
 			sourceTree = "<group>";
@@ -419,7 +389,6 @@
 				73078641290EC26500A18324 /* LottieCloseButton */,
 				738ED60F290D08B3001AACF1 /* Slider */,
 				73F9C3EA290AFC49006368CD /* SegmentedControl */,
-				737DA13829071AD10016C0F4 /* WidthAspectContainer */,
 				73DBB358290562F80035EDF5 /* RevealingView */,
 				73DBB3392905291B0035EDF5 /* SweepingButton */,
 				73E99B4028FA9DB400D83487 /* ShapeMorphingButton */,
@@ -663,14 +632,6 @@
 			path = SegmentedControl;
 			sourceTree = "<group>";
 		};
-		A4046CF31CA13C95E72F7EDF /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				76D62AD285A183812AB68D8F /* Pods_TelegramContestApp.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -678,17 +639,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 739FB29C28F72920007C1929 /* Build configuration list for PBXNativeTarget "TelegramContestApp" */;
 			buildPhases = (
-				88BC56CE9C64D88844D058E7 /* [CP] Check Pods Manifest.lock */,
 				739FB28428F72920007C1929 /* Sources */,
 				739FB28528F72920007C1929 /* Frameworks */,
 				739FB28628F72920007C1929 /* Resources */,
-				86A1342B1284E7F9E19F2BC7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TelegramContestApp;
+			packageProductDependencies = (
+				73DB95C6291054CC0069259F /* Lottie */,
+			);
 			productName = TelegramContestApp;
 			productReference = 739FB28828F72920007C1929 /* TelegramContestApp.app */;
 			productType = "com.apple.product-type.application";
@@ -717,6 +679,9 @@
 				Base,
 			);
 			mainGroup = 739FB27F28F72920007C1929;
+			packageReferences = (
+				73DB95C5291054CC0069259F /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 739FB28928F72920007C1929 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -745,48 +710,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		86A1342B1284E7F9E19F2BC7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		88BC56CE9C64D88844D058E7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TelegramContestApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		739FB28428F72920007C1929 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -811,7 +734,6 @@
 				73F02EA7290459F000A81A68 /* CustomOutlineLayoutManager.swift in Sources */,
 				73F02EA32903F6CA00A81A68 /* NSMutableAttributedString+Extensions.swift in Sources */,
 				73DBB350290547020035EDF5 /* PickerViewController.swift in Sources */,
-				739FB29028F72920007C1929 /* ViewController.swift in Sources */,
 				73D31DC428FC55B200A6969D /* OutlineBackgroundShape.swift in Sources */,
 				7354972728F9EA760024F48B /* TimingFunction.swift in Sources */,
 				73DBB353290552120035EDF5 /* LibraryService.swift in Sources */,
@@ -826,7 +748,6 @@
 				739B70DB290C589400EEBC6A /* Fonts.swift in Sources */,
 				73D31DC028FC553F00A6969D /* OutlineMode.swift in Sources */,
 				739FB2A928F72F02007C1929 /* FontCustomizationAccessoryViewConfiguration.swift in Sources */,
-				737DA13A29071C610016C0F4 /* WidthAspectContainer.swift in Sources */,
 				73F02EA52903FBC500A81A68 /* StringProtocol+Extensions.swift in Sources */,
 				737FF96228FDCD0C0027F73A /* LabelContainerViewConfiguration.swift in Sources */,
 				737DA13429070E450016C0F4 /* PhotoContainerView.swift in Sources */,
@@ -869,7 +790,6 @@
 				739FB2A128F72BA1007C1929 /* FontCustomizationAccessoryView.swift in Sources */,
 				738FFE652908352D00C34514 /* EditorTransitionAnimator.swift in Sources */,
 				73F9C3E9290AEC2C006368CD /* EditorMode.swift in Sources */,
-				737DA13C290722760016C0F4 /* TestController.swift in Sources */,
 				737FF95E28FDB3080027F73A /* OutlineLinesShape.swift in Sources */,
 				739FB28E28F72920007C1929 /* SceneDelegate.swift in Sources */,
 				738ED61B290DB970001AACF1 /* RenderService.swift in Sources */,
@@ -1008,7 +928,6 @@
 		};
 		739FB29D28F72920007C1929 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1038,7 +957,6 @@
 		};
 		739FB29E28F72920007C1929 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1088,6 +1006,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		73DB95C5291054CC0069259F /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		73DB95C6291054CC0069259F /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 73DB95C5291054CC0069259F /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 739FB28028F72920007C1929 /* Project object */;
 }
