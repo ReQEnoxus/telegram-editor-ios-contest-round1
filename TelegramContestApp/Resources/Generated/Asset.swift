@@ -28,6 +28,8 @@ internal enum Asset {
   }
   internal enum Icons {
     internal static let cancel = ImageAsset(name: "icons/cancel")
+    internal static let pen = ImageAsset(name: "icons/pen")
+    internal static let picker = ImageAsset(name: "icons/picker")
     internal static let save = ImageAsset(name: "icons/save")
     internal static let undo = ImageAsset(name: "icons/undo")
     internal static let zoomOut = ImageAsset(name: "icons/zoomOut")

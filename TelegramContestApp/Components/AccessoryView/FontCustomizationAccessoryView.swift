@@ -11,6 +11,7 @@ protocol FontCustomizationAccessoryViewDelegate: AnyObject {
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem)
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment)
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool)
+    func didChangeGlobalColor(to color: UIColor, usingCustomOutline: Bool)
 }
 
 extension FontCustomizationAccessoryViewDelegate {
@@ -42,11 +43,9 @@ final class FontCustomizationAccessoryView: UIInputView {
         }
     }
     
-    func setBlur(active: Bool) {
-        if active {
-            effectView.effect = blurEffect
-        } else {
-            effectView.effect = nil
+    var globalColor: UIColor = .white {
+        didSet {
+            updateGlobalColor()
         }
     }
     
@@ -61,7 +60,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         .none,
         .solid(.white),
         .transparent(.white),
-        .text(.red)
+        .text(.white)
     ]
     private var currentOutlineIndex: Int = .zero
     private let fadeLayer: CAGradientLayer = CAGradientLayer()
@@ -96,9 +95,6 @@ final class FontCustomizationAccessoryView: UIInputView {
         
         return button.forAutoLayout()
     }()
-    
-    private let effectView = UIVisualEffectView(effect: nil).forAutoLayout()
-    private let blurEffect = UIBlurEffect(style: .systemMaterialDark)
     
     private lazy var textOutlineButton: ShapeMorphingButton<OutlineMode> = {
         let button = ShapeMorphingButton<OutlineMode>(type: .system)
@@ -194,8 +190,6 @@ final class FontCustomizationAccessoryView: UIInputView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-//        guard let superview = self.superview else { return }
-//        self.frame = CGRect(x: .zero, y: .zero, width: superview.frame.width, height: Constants.height)
         fadeLayer.frame = collectionContainer.bounds
     }
     
@@ -207,7 +201,6 @@ final class FontCustomizationAccessoryView: UIInputView {
     }
     
     private func addSubviews() {
-        addSubview(effectView)
         addSubview(buttonsStackView)
         addSubview(collectionContainer)
         collectionContainer.addSubview(fontCollectionView)
@@ -217,12 +210,7 @@ final class FontCustomizationAccessoryView: UIInputView {
     
     private func makeConstraints() {
         [
-            effectView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            effectView.topAnchor.constraint(equalTo: topAnchor),
-            effectView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            effectView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            
-            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: .s),
+            buttonsStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             buttonsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
             buttonsStackView.heightAnchor.constraint(equalToConstant: Constants.buttonSide),
             
@@ -272,6 +260,84 @@ final class FontCustomizationAccessoryView: UIInputView {
         textAlignmentButton.setShape(configuration.textAlignment, animated: false)
     }
     
+    private func updateGlobalColor() {
+        outlines = outlines.map { outline -> OutlineMode in
+            switch outline {
+            case .none:
+                return .none
+            case .solid:
+                return .solid(globalColor)
+            case .text:
+                return .text(globalColor)
+            case .transparent(_, let alphaComponent):
+                return .transparent(globalColor, alphaComponent: alphaComponent)
+            }
+        }
+        updateButtonShapes()
+        delegate?.didChangeGlobalColor(to: globalColor, usingCustomOutline: outlines[currentOutlineIndex] != .none)
+        delegate?.didChangeOutlineMode(from: outlines[currentOutlineIndex], to: outlines[currentOutlineIndex], shouldAnimate: false)
+    }
+    
+    private func updateButtonShapes() {
+        textOutlineButton.updateColors(
+            shapes: [
+                outlines[0]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[0]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[0]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[0]
+                    )
+                ],
+                outlines[1]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[1]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[1]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[1]
+                    )
+                ],
+                outlines[2]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[2]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[2]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[2]
+                    )
+                ],
+                outlines[3]: [
+                    OutlineBackgroundShape(
+                        outlineMode: outlines[3]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .outline,
+                        outlineMode: outlines[3]
+                    ),
+                    OutlineLetterShape(
+                        widthMultiplier: .text,
+                        outlineMode: outlines[3]
+                    )
+                ]
+            ],
+            current: outlines[currentOutlineIndex]
+        )
+    }
+    
     @objc private func didTapTextAlignmentButton() {
         guard let current = textAlignmentButton.currentShape else { return }
         let nextAlignmentRawValue = (current.rawValue + 1) % TextAlignment.allCases.count
@@ -287,6 +353,7 @@ final class FontCustomizationAccessoryView: UIInputView {
         textOutlineButton.setShape(nextOutline, animated: true)
         currentOutlineIndex = nextIndex
         delegate?.didChangeOutlineMode(from: current, to: nextOutline, shouldAnimate: true)
+        delegate?.didChangeGlobalColor(to: globalColor, usingCustomOutline: outlines[currentOutlineIndex] != .none)
     }
 }
 

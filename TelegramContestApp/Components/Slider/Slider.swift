@@ -9,21 +9,21 @@ import Foundation
 import UIKit
 
 protocol SliderDelegate: AnyObject {
-    func valueChanged(to newValue: Float)
-    func didEndTracking(with finalValue: Float)
-    func didStartTracking(with initialValue: Float)
+    func valueChanged(_ slider: Slider, to newValue: Float)
+    func didEndTracking(_ slider: Slider, with finalValue: Float)
+    func didStartTracking(_ slider: Slider, with initialValue: Float)
 }
 
 extension SliderDelegate {
-    func didEndTracking(with finalValue: Float) {}
-    func didStartTracking(with initialValue: Float) {}
+    func didEndTracking(_ slider: Slider, with finalValue: Float) {}
+    func didStartTracking(_ slider: Slider, with initialValue: Float) {}
 }
 
 final class Slider: UISlider {
     private enum Constants {
         static let startRadius: CGFloat = 1
         static let endRadius: CGFloat = 10
-        static let height: CGFloat = 28
+        static let height: CGFloat = 32
         static let alpha: CGFloat = 0.2
     }
     
@@ -41,9 +41,11 @@ final class Slider: UISlider {
     weak var delegate: SliderDelegate?
     
     private var previouslyEmittedValue: Float?
+    private let transparentBackground: Bool
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(transparentBackground: Bool = false) {
+        self.transparentBackground = transparentBackground
+        super.init(frame: .zero)
         minimumTrackTintColor = .clear
         maximumTrackTintColor = .clear
         addTarget(self, action: #selector(handleSliderValueChange), for: .valueChanged)
@@ -85,8 +87,12 @@ final class Slider: UISlider {
             clockwise: false
         )
         path.close()
-        UIColor.white.withAlphaComponent(Constants.alpha).setFill()
+        UIColor.white.withAlphaComponent(transparentBackground ? .zero : Constants.alpha).setFill()
         path.fill()
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIView.noIntrinsicMetric, height: Constants.height)
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
@@ -96,20 +102,20 @@ final class Slider: UISlider {
     @objc private func handleSliderValueChange() {
         if let previouslyEmittedValue = previouslyEmittedValue {
             if abs(previouslyEmittedValue - value) > threshold {
-                delegate?.valueChanged(to: value)
+                delegate?.valueChanged(self, to: value)
                 self.previouslyEmittedValue = value
             }
         } else {
-            delegate?.valueChanged(to: value)
+            delegate?.valueChanged(self, to: value)
             self.previouslyEmittedValue = value
         }
     }
     
     @objc private func handleSliderEndTracking() {
-        delegate?.didEndTracking(with: value)
+        delegate?.didEndTracking(self, with: value)
     }
     
     @objc private func handleSliderStartTracking() {
-        delegate?.didStartTracking(with: value)
+        delegate?.didStartTracking(self, with: value)
     }
 }

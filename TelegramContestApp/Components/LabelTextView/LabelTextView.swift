@@ -246,6 +246,18 @@ private extension String {
 }
 
 extension LabelTextView: FontCustomizationAccessoryViewDelegate {
+    func didChangeGlobalColor(to color: UIColor, usingCustomOutline: Bool) {
+        if usingCustomOutline {
+            if color.isLight() == true {
+                textColor = .black
+            } else {
+                textColor = .white
+            }
+        } else {
+            textColor = color
+        }
+    }
+    
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {
         setFont(newFont.font)
         outlineDelegate?.didChangeLineInfo(to: getLineInfo(), alignment: TextAlignment.from(nsTextAlignment: textAlignment), shouldAnimate: false)

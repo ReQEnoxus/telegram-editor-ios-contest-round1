@@ -17,6 +17,7 @@ final class ShapeMorphingButton<ShapeKey: Hashable>: UIButton {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard !shapeLayers.allSatisfy({ $0.frame == bounds }) else { return }
         shapeLayers.forEach { $0.frame = bounds }
         guard let currentShape = currentShape else { return }
         morph(to: currentShape, animated: false)
@@ -27,6 +28,15 @@ final class ShapeMorphingButton<ShapeKey: Hashable>: UIButton {
         updateLayers(for: Array(shapes.values))
         morph(to: initial, animated: false)
         currentShape = initial
+    }
+    
+    func updateColors(shapes: [ShapeKey: [Shape]], current: ShapeKey) {
+        self.shapes = shapes
+        guard let targetShape = shapes[current], shapeLayers.count == targetShape.count else { return }
+        shapeLayers.enumerated().forEach { index, layer in
+            layer.fillColor = targetShape[safe: index]?.fillColor
+            layer.strokeColor = targetShape[safe: index]?.strokeColor
+        }
     }
     
     func setShape(_ shape: ShapeKey, animated: Bool) {

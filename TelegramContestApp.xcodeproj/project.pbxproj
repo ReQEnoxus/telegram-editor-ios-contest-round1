@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		73078643290EC27300A18324 /* LottieCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73078642290EC27300A18324 /* LottieCloseButton.swift */; };
+		73078645290EC2F900A18324 /* backToCancel.json in Resources */ = {isa = PBXBuildFile; fileRef = 73078644290EC2F900A18324 /* backToCancel.json */; };
+		73078648290ECC4800A18324 /* MorphingSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73078647290ECC4800A18324 /* MorphingSlider.swift */; };
+		7307864B290F137B00A18324 /* PenToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7307864A290F137B00A18324 /* PenToolView.swift */; };
 		7354972728F9EA760024F48B /* TimingFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972628F9EA760024F48B /* TimingFunction.swift */; };
 		7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7354972828F9EAB70024F48B /* UnitBezier.swift */; };
 		737DA1302907045F0016C0F4 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 737DA12F2907045F0016C0F4 /* EditorView.swift */; };
@@ -33,6 +37,11 @@
 		738FFE652908352D00C34514 /* EditorTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */; };
 		738FFE67290843AC00C34514 /* ViewReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE66290843AC00C34514 /* ViewReference.swift */; };
 		738FFE6929084D3100C34514 /* EditorTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738FFE6829084D3100C34514 /* EditorTransitionController.swift */; };
+		7390F5BB290F880800A54DF9 /* GradientBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7390F5BA290F880800A54DF9 /* GradientBackgroundView.swift */; };
+		7390F5BE290F979800A54DF9 /* ColorPickerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7390F5BD290F979800A54DF9 /* ColorPickerButton.swift */; };
+		7390F5C1290FA1D600A54DF9 /* LegacyColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7390F5C0290FA1D600A54DF9 /* LegacyColorPicker.swift */; };
+		7390F5C3290FFFBC00A54DF9 /* LegacyColorPickerHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7390F5C2290FFFBC00A54DF9 /* LegacyColorPickerHolderView.swift */; };
+		7390F5C529100E5B00A54DF9 /* EditingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7390F5C429100E5B00A54DF9 /* EditingAction.swift */; };
 		739B70CF290C223500EEBC6A /* EditorNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70CE290C223500EEBC6A /* EditorNavigationController.swift */; };
 		739B70D2290C360500EEBC6A /* NavbarMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B70D1290C360500EEBC6A /* NavbarMode.swift */; };
 		739B70D9290C584F00EEBC6A /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 739B70D8290C584F00EEBC6A /* Roboto.ttf */; };
@@ -94,6 +103,10 @@
 /* Begin PBXFileReference section */
 		01D04487774E7A519921940F /* Pods-TelegramContestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.release.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.release.xcconfig"; sourceTree = "<group>"; };
 		29ABC0DF71E1943E8BB2D8D0 /* Pods-TelegramContestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TelegramContestApp.debug.xcconfig"; path = "Target Support Files/Pods-TelegramContestApp/Pods-TelegramContestApp.debug.xcconfig"; sourceTree = "<group>"; };
+		73078642290EC27300A18324 /* LottieCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieCloseButton.swift; sourceTree = "<group>"; };
+		73078644290EC2F900A18324 /* backToCancel.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = backToCancel.json; sourceTree = "<group>"; };
+		73078647290ECC4800A18324 /* MorphingSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphingSlider.swift; sourceTree = "<group>"; };
+		7307864A290F137B00A18324 /* PenToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PenToolView.swift; sourceTree = "<group>"; };
 		7354972628F9EA760024F48B /* TimingFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimingFunction.swift; sourceTree = "<group>"; };
 		7354972828F9EAB70024F48B /* UnitBezier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitBezier.swift; sourceTree = "<group>"; };
 		737DA12F2907045F0016C0F4 /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; wrapsLines = 1; };
@@ -120,6 +133,11 @@
 		738FFE642908352D00C34514 /* EditorTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionAnimator.swift; sourceTree = "<group>"; };
 		738FFE66290843AC00C34514 /* ViewReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewReference.swift; sourceTree = "<group>"; };
 		738FFE6829084D3100C34514 /* EditorTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTransitionController.swift; sourceTree = "<group>"; };
+		7390F5BA290F880800A54DF9 /* GradientBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientBackgroundView.swift; sourceTree = "<group>"; };
+		7390F5BD290F979800A54DF9 /* ColorPickerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerButton.swift; sourceTree = "<group>"; };
+		7390F5C0290FA1D600A54DF9 /* LegacyColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyColorPicker.swift; sourceTree = "<group>"; };
+		7390F5C2290FFFBC00A54DF9 /* LegacyColorPickerHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyColorPickerHolderView.swift; sourceTree = "<group>"; };
+		7390F5C429100E5B00A54DF9 /* EditingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingAction.swift; sourceTree = "<group>"; };
 		739B70CE290C223500EEBC6A /* EditorNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorNavigationController.swift; sourceTree = "<group>"; };
 		739B70D1290C360500EEBC6A /* NavbarMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavbarMode.swift; sourceTree = "<group>"; };
 		739B70D8290C584F00EEBC6A /* Roboto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Roboto.ttf; sourceTree = "<group>"; };
@@ -201,6 +219,30 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		73078641290EC26500A18324 /* LottieCloseButton */ = {
+			isa = PBXGroup;
+			children = (
+				73078642290EC27300A18324 /* LottieCloseButton.swift */,
+			);
+			path = LottieCloseButton;
+			sourceTree = "<group>";
+		};
+		73078646290ECB5600A18324 /* MorphingSlider */ = {
+			isa = PBXGroup;
+			children = (
+				73078647290ECC4800A18324 /* MorphingSlider.swift */,
+			);
+			path = MorphingSlider;
+			sourceTree = "<group>";
+		};
+		73078649290F133D00A18324 /* Toolbox */ = {
+			isa = PBXGroup;
+			children = (
+				7307864A290F137B00A18324 /* PenToolView.swift */,
+			);
+			path = Toolbox;
+			sourceTree = "<group>";
+		};
 		7354972528F9EA4B0024F48B /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +282,7 @@
 				73F9C3E8290AEC2C006368CD /* EditorMode.swift */,
 				738ED612290D2206001AACF1 /* TextEditingView.swift */,
 				738ED618290DAC90001AACF1 /* ExportableView.swift */,
+				7390F5C2290FFFBC00A54DF9 /* LegacyColorPickerHolderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -249,6 +292,7 @@
 			children = (
 				737DA13D29072D850016C0F4 /* EditorViewController.swift */,
 				739B70CE290C223500EEBC6A /* EditorNavigationController.swift */,
+				7390F5C429100E5B00A54DF9 /* EditingAction.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -285,6 +329,30 @@
 				738FFE6829084D3100C34514 /* EditorTransitionController.swift */,
 			);
 			path = Transition;
+			sourceTree = "<group>";
+		};
+		7390F5B9290F87F500A54DF9 /* GradientBackground */ = {
+			isa = PBXGroup;
+			children = (
+				7390F5BA290F880800A54DF9 /* GradientBackgroundView.swift */,
+			);
+			path = GradientBackground;
+			sourceTree = "<group>";
+		};
+		7390F5BC290F978C00A54DF9 /* ColorPickerButton */ = {
+			isa = PBXGroup;
+			children = (
+				7390F5BD290F979800A54DF9 /* ColorPickerButton.swift */,
+			);
+			path = ColorPickerButton;
+			sourceTree = "<group>";
+		};
+		7390F5BF290FA1C800A54DF9 /* LegacyColorPicker */ = {
+			isa = PBXGroup;
+			children = (
+				7390F5C0290FA1D600A54DF9 /* LegacyColorPicker.swift */,
+			);
+			path = LegacyColorPicker;
 			sourceTree = "<group>";
 		};
 		739B70D0290C339300EEBC6A /* Models */ = {
@@ -343,6 +411,12 @@
 		739FB29F28F729B8007C1929 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				7390F5BF290FA1C800A54DF9 /* LegacyColorPicker */,
+				7390F5BC290F978C00A54DF9 /* ColorPickerButton */,
+				7390F5B9290F87F500A54DF9 /* GradientBackground */,
+				73078649290F133D00A18324 /* Toolbox */,
+				73078646290ECB5600A18324 /* MorphingSlider */,
+				73078641290EC26500A18324 /* LottieCloseButton */,
 				738ED60F290D08B3001AACF1 /* Slider */,
 				73F9C3EA290AFC49006368CD /* SegmentedControl */,
 				737DA13829071AD10016C0F4 /* WidthAspectContainer */,
@@ -511,6 +585,7 @@
 		73DBB34229053F380035EDF5 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
+				73078644290EC2F900A18324 /* backToCancel.json */,
 				73DBB34329053F450035EDF5 /* duck.json */,
 			);
 			path = Animation;
@@ -663,6 +738,7 @@
 				73DBB34429053F450035EDF5 /* duck.json in Resources */,
 				738ED615290D6C93001AACF1 /* Montserrat.ttf in Resources */,
 				739FB29528F72920007C1929 /* Assets.xcassets in Resources */,
+				73078645290EC2F900A18324 /* backToCancel.json in Resources */,
 				73DBB3462905405C0035EDF5 /* swiftgen.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -719,9 +795,12 @@
 				7354972928F9EAB70024F48B /* UnitBezier.swift in Sources */,
 				73F9C3EE290AFF63006368CD /* SegmentView.swift in Sources */,
 				73D31DC828FC68BD00A6969D /* UIColor+Extensions.swift in Sources */,
+				73078643290EC27300A18324 /* LottieCloseButton.swift in Sources */,
 				73DBB3552905522C0035EDF5 /* PermissionStatus.swift in Sources */,
+				7390F5C3290FFFBC00A54DF9 /* LegacyColorPickerHolderView.swift in Sources */,
 				739B70D2290C360500EEBC6A /* NavbarMode.swift in Sources */,
 				73B72C8328F88362006FD9B1 /* NSRange+Extensions.swift in Sources */,
+				73078648290ECC4800A18324 /* MorphingSlider.swift in Sources */,
 				73DBB34029053EDC0035EDF5 /* PermissionsView.swift in Sources */,
 				73B72C7628F87781006FD9B1 /* LabelTextView.swift in Sources */,
 				73E99B5328FAEE1900D83487 /* NSAttributedStringKey+Extensions.swift in Sources */,
@@ -738,6 +817,7 @@
 				73DBB353290552120035EDF5 /* LibraryService.swift in Sources */,
 				739FB2B628F7310B007C1929 /* ReusableCell.swift in Sources */,
 				738ED619290DAC90001AACF1 /* ExportableView.swift in Sources */,
+				7307864B290F137B00A18324 /* PenToolView.swift in Sources */,
 				73DBB361290577D40035EDF5 /* MediaCollectionView.swift in Sources */,
 				73D31DBE28FC4AD900A6969D /* Collection+Extensions.swift in Sources */,
 				73E99B4928FAA49A00D83487 /* TextAlignmentShape.swift in Sources */,
@@ -752,6 +832,8 @@
 				737DA13429070E450016C0F4 /* PhotoContainerView.swift in Sources */,
 				73E99B4B28FAA4BD00D83487 /* TextAlignment.swift in Sources */,
 				73DBB35F29056E910035EDF5 /* PickerModuleAssembly.swift in Sources */,
+				7390F5C1290FA1D600A54DF9 /* LegacyColorPicker.swift in Sources */,
+				7390F5BE290F979800A54DF9 /* ColorPickerButton.swift in Sources */,
 				73B72C7328F87409006FD9B1 /* Snapshot+Extensions.swift in Sources */,
 				73E99B4728FAA14800D83487 /* Durations.swift in Sources */,
 				737FF96028FDC29F0027F73A /* LabelInputContainerView.swift in Sources */,
@@ -765,6 +847,8 @@
 				738FFE6929084D3100C34514 /* EditorTransitionController.swift in Sources */,
 				73DBB3632905861B0035EDF5 /* AssetCell.swift in Sources */,
 				737FF95C28FDB1BB0027F73A /* CAShapeLayer+Extensions.swift in Sources */,
+				7390F5C529100E5B00A54DF9 /* EditingAction.swift in Sources */,
+				7390F5BB290F880800A54DF9 /* GradientBackgroundView.swift in Sources */,
 				73DBB3652905AE960035EDF5 /* LoadedAsset.swift in Sources */,
 				737DA1302907045F0016C0F4 /* EditorView.swift in Sources */,
 				737DA14029072F120016C0F4 /* EditorModuleAssembly.swift in Sources */,

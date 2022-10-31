@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Photos
+import PencilKit
 
 final class EditorViewController: UIViewController {
     var transitionController: EditorTransitionController? {
@@ -18,11 +19,14 @@ final class EditorViewController: UIViewController {
     private let asset: PHAsset
     private let service: LibraryServiceProtocol
     private let renderService: RenderServiceProtocol
+    private let initialImage: UIImage?
+    
     private let editorView = EditorView<PhotoContainerView>().forAutoLayout()
     
     private var currentFontItems: [FontCustomizationAccessoryViewConfiguration.FontItem] = []
     private var currentTextAlignment: TextAlignment = .left
-    private var currentEditingField: LabelTextView?
+    private var currentEditingField: TextEditingView?
+    private var temporaryIgnoreKeyboardEvents: Bool = false
     
     private var navbarMode: NavbarMode = .regular {
         didSet {
@@ -31,14 +35,33 @@ final class EditorViewController: UIViewController {
         }
     }
     
+    private var currentEditorMode: EditorMode = .draw
+    
+    private var showsLegacyPickerView: Bool = false
+    
+    // Undo/Clear
+    private var actionTypes: [EditingAction] = [] {
+        didSet {
+            updateNavbar()
+        }
+    }
+    private var drawingSteps: [PKDrawing] = []
+    private var editedLabels: [UIView] = []
+    
+    private var lastAction: EditingAction? {
+        return actionTypes.last
+    }
+    
     init(
         asset: PHAsset,
         service: LibraryServiceProtocol,
-        renderService: RenderServiceProtocol
+        renderService: RenderServiceProtocol,
+        initialImage: UIImage?
     ) {
         self.asset = asset
         self.service = service
         self.renderService = renderService
+        self.initialImage = initialImage
         super.init(nibName: nil, bundle: nil)
         editorView.delegate = self
         currentFontItems = [
@@ -95,21 +118,36 @@ final class EditorViewController: UIViewController {
             name: UIResponder.keyboardWillHideNotification,
             object: nil
         )
+        
+        editorView.drawingCanvas.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        service.fetchImage(from: asset, targetSize: PHImageManagerMaximumSize) { [weak self] loaded in
-            guard let self = self, let image = loaded.image else { return }
-            self.editorView.updateMedia(with: loaded.image)
-            let targetImageRect = AVMakeRect(aspectRatio: image.size, insideRect: self.editorView.containerView.bounds)
-            self.editorView.imageSize = targetImageRect.size
-        }
+        updateMedia(with: initialImage)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         editorView.containerView.alpha = .one
+        setupInitialToolset()
+        service.fetchImage(from: asset, targetSize: PHImageManagerMaximumSize) { [weak self] loaded in
+            self?.updateMedia(with: loaded.image)
+        }
+        
+        setupForCurrentMode()
+    }
+    
+    private func updateMedia(with image: UIImage?) {
+        guard let image = image else { return }
+        editorView.updateMedia(with: image)
+        let targetImageRect = AVMakeRect(aspectRatio: image.size, insideRect: editorView.containerView.bounds)
+        editorView.imageSize = targetImageRect.size
+    }
+    
+    private func setupInitialToolset() {
+        
+        editorView.setupView(for: .draw)
     }
     
     // MARK: - Navbar
@@ -157,41 +195,39 @@ final class EditorViewController: UIViewController {
     private func updateNavbar() {
         switch navbarMode {
         case .regular:
-            navigationItem.leftBarButtonItem?.isEnabled = !editorView.canvasView.subviews.isEmpty
-            navigationItem.rightBarButtonItem?.isEnabled = !editorView.canvasView.subviews.isEmpty
+            navigationItem.leftBarButtonItem?.isEnabled = !actionTypes.isEmpty
+            navigationItem.rightBarButtonItem?.isEnabled = !actionTypes.isEmpty
+            editorView.saveButton.isEnabled = !actionTypes.isEmpty
+            
         case .textEditing:
             navigationItem.leftBarButtonItem?.isEnabled = true
-            navigationItem.rightBarButtonItem?.isEnabled = true
+            navigationItem.rightBarButtonItem?.isEnabled = currentEditingField?.labelInputContainer.labelTextView.text.isEmpty == false
         }
     }
     
     @objc private func handleLeftButtonTap() {
         switch navbarMode {
         case .regular:
-            // TODO: undo
-            break
+            performUndo()
         case .textEditing:
             editorView.discardCurrentlyEditingText()
             navbarMode = .regular
         }
     }
     
-    @objc private func handleMiddleButtonTap() {
-        
-    }
-    
     @objc private func handleRightButtonTap() {
         switch navbarMode {
         case .regular:
-            // TODO: undo all
-            break
+            clearAll()
         case .textEditing:
-            editorView.saveCurrentlyEditingText()
+            saveText(currentEditingField)
             navbarMode = .regular
+            editorView.saveCurrentlyEditingText()
         }
     }
     
     @objc private func keyboardWillOpen(notification: NSNotification) {
+        guard !temporaryIgnoreKeyboardEvents else { return }
         guard let userInfo = notification.userInfo,
               let keyboardSize: CGSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size else { return }
         editorView.keyboardHeight = keyboardSize.height
@@ -200,21 +236,62 @@ final class EditorViewController: UIViewController {
             let duration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             editorView.additionalBottomInset = keyboardSize.height - imageBottomY
             UIView.animate(withDuration: duration) {
-                self.editorView.keyboardAccessory.setBlur(active: true)
                 self.editorView.layoutIfNeeded()
             }
         }
     }
     
     @objc private func keyboardWillClose(notification: NSNotification) {
+        guard !temporaryIgnoreKeyboardEvents else { return }
         guard let userInfo = notification.userInfo else { return }
         let duration: TimeInterval = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
         editorView.additionalBottomInset = .zero
         editorView.keyboardHeight = .zero
         UIView.animate(withDuration: duration) {
-            self.editorView.keyboardAccessory.setBlur(active: false)
             self.editorView.layoutIfNeeded()
         }
+    }
+    
+    private func setupForCurrentMode() {
+        switch currentEditorMode {
+        case .draw:
+            navbarMode = .regular
+            currentEditingField = nil
+            editorView.drawingCanvas.isUserInteractionEnabled = true
+            editorView.moveTextViewsToInactiveStatus()
+            editorView.startDrawing()
+        case .text:
+            editorView.drawingCanvas.isUserInteractionEnabled = false
+            editorView.moveTextViewsToActiveStatus()
+            if currentEditingField == nil && editedLabels.isEmpty {
+                startNewEditing()
+            }
+        }
+    }
+    
+    private func startNewEditing() {
+        navbarMode = .textEditing
+        editorView.keyboardAccessory.configure(
+            with: FontCustomizationAccessoryViewConfiguration(
+                fontItems: currentFontItems,
+                textAlignment: currentTextAlignment
+            )
+        )
+        currentEditingField = editorView.startEditingText(
+            with: LabelContainerViewConfiguration(
+                labelConfiguration: LabelTextViewConfiguration(
+                    initialTextColor: editorView.keyboardAccessory.globalColor
+                ),
+                outlineInset: .xxs
+            )
+        )
+        if let font = currentFontItems.first(where: { $0.isSelected }) ?? currentFontItems.first {
+            currentEditingField?.labelInputContainer.labelTextView.setFont(font.font)
+        }
+        currentEditingField?.labelInputContainer.labelTextView.textAlignment = editorView.keyboardAccessory.textAlignment.nsTextAlignment
+        currentEditingField?.labelInputContainer.labelTextView.didChangeOutlineMode(from: editorView.keyboardAccessory.outlineConfig, to: editorView.keyboardAccessory.outlineConfig, shouldAnimate: false)
+        editorView.keyboardAccessory.delegate = self
+        currentEditingField?.labelInputContainer.labelTextView.accessoryDelegate = self
     }
 }
 
@@ -251,12 +328,37 @@ extension EditorViewController: TransitionDelegate {
         super.viewWillTransition(to: size, with: coordinator)
         editorView.setNeedsUpdateConstraints()
     }
+    
+    @available(iOS 14, *)
+    private func showModernColorPicker() {
+        let colorPickerController = UIColorPickerViewController()
+        colorPickerController.selectedColor = editorView.currentColor
+        colorPickerController.view.tintColor = .white
+        colorPickerController.overrideUserInterfaceStyle = .dark
+        colorPickerController.supportsAlpha = false // to match legacy picker
+        colorPickerController.delegate = self
+        temporaryIgnoreKeyboardEvents = true
+        navigationController?.present(colorPickerController, animated: true, completion: nil)
+    }
+    
+    private func showLegacyColorPicker() {
+        let picker = editorView.showLegacyPicker()
+        picker?.delegate = self
+    }
 }
 
 extension EditorViewController: EditorViewDelegate {
+    func requestStartEditing() {
+        startNewEditing()
+    }
+    
     func didTapExitButton() {
-        dismiss(animated: true, completion: nil)
-        editorView.containerView.alpha = .zero
+        if editorView.isAdjustingPenWidth {
+            editorView.deselectPenTool()
+        } else {
+            dismiss(animated: true, completion: nil)
+            editorView.containerView.alpha = .zero
+        }
     }
     
     func didTapSaveButton() {
@@ -287,56 +389,48 @@ extension EditorViewController: EditorViewDelegate {
     }
     
     func didChangeEditorMode(_ mode: EditorMode) {
+        currentEditorMode = mode
         updateNavbar()
-        switch mode {
-        case .draw:
-            navbarMode = .regular
-            currentEditingField = nil
-        case .text:
-            navbarMode = .textEditing
-            if currentEditingField == nil {
-                editorView.keyboardAccessory.configure(
-                    with: FontCustomizationAccessoryViewConfiguration(
-                        fontItems: currentFontItems,
-                        textAlignment: currentTextAlignment
-                    )
-                )
-                currentEditingField = editorView.startEditingText(
-                    with: LabelContainerViewConfiguration(
-                        labelConfiguration: LabelTextViewConfiguration(
-                            initialTextColor: .black
-                        ),
-                        outlineInset: .xxs
-                    )
-                )
-                if let font = currentFontItems.first(where: { $0.isSelected }) ?? currentFontItems.first {
-                    currentEditingField?.setFont(font.font)
-                }
-                currentEditingField?.textAlignment = editorView.keyboardAccessory.textAlignment.nsTextAlignment
-                currentEditingField?.didChangeOutlineMode(from: editorView.keyboardAccessory.outlineConfig, to: editorView.keyboardAccessory.outlineConfig, shouldAnimate: false)
-                editorView.keyboardAccessory.delegate = self
-                currentEditingField?.accessoryDelegate = self
+        editorView.setupView(for: mode)
+        setupForCurrentMode()
+    }
+    
+    func didTapColorPickerButton(_ button: ColorPickerButton) {
+        // picker
+        if #available(iOS 14, *) {
+            showModernColorPicker()
+        } else {
+            if showsLegacyPickerView {
+                editorView.hideLegacyPicker()
+            } else {
+                showLegacyColorPicker()
             }
+            showsLegacyPickerView.toggle()
         }
     }
 }
 
 extension EditorViewController: FontCustomizationAccessoryViewDelegate {
+    func didChangeGlobalColor(to color: UIColor, usingCustomOutline: Bool) {
+        currentEditingField?.labelInputContainer.labelTextView.didChangeGlobalColor(to: color, usingCustomOutline: usingCustomOutline)
+    }
+    
     func didChangeFont(_ newFont: FontCustomizationAccessoryViewConfiguration.FontItem) {
-        currentEditingField?.didChangeFont(newFont)
+        currentEditingField?.labelInputContainer.labelTextView.didChangeFont(newFont)
     }
     
     func didChangeTextAlignment(from old: TextAlignment, to new: TextAlignment) {
-        currentEditingField?.didChangeTextAlignment(from: old, to: new)
+        currentEditingField?.labelInputContainer.labelTextView.didChangeTextAlignment(from: old, to: new)
     }
     
     func didChangeOutlineMode(from outline: OutlineMode, to targetOutline: OutlineMode, shouldAnimate: Bool) {
-        currentEditingField?.didChangeOutlineMode(from: outline, to: targetOutline, shouldAnimate: shouldAnimate)
+        currentEditingField?.labelInputContainer.labelTextView.didChangeOutlineMode(from: outline, to: targetOutline, shouldAnimate: shouldAnimate)
     }
 }
 
 extension EditorViewController: AccessoryViewOperatingDelegate {
     func updateAccessory(selectedFont: UIFont, selectedAlignment: NSTextAlignment) {
+        updateNavbar()
         currentTextAlignment = TextAlignment.from(nsTextAlignment: selectedAlignment)
         currentFontItems = currentFontItems.map {
             FontCustomizationAccessoryViewConfiguration.FontItem(
@@ -351,5 +445,98 @@ extension EditorViewController: AccessoryViewOperatingDelegate {
                 textAlignment: currentTextAlignment
             )
         )
+    }
+}
+
+extension EditorViewController: PKCanvasViewDelegate {
+    func canvasViewDidEndUsingTool(_ canvasView: PKCanvasView) {
+        let newDrawing = canvasView.drawing
+        saveDrawing(newDrawing)
+    }
+}
+
+@available(iOS 14.0, *)
+extension EditorViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
+        editorView.currentColor = viewController.selectedColor
+    }
+    
+    func colorPickerViewController(_ viewController: UIColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+        editorView.currentColor = color
+    }
+    
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        temporaryIgnoreKeyboardEvents = false
+    }
+}
+
+extension EditorViewController: LegacyColorPickerDelegate {
+    
+    func legacyColorPicker(_ picker: LegacyColorPicker, didSelect color: UIColor) {
+        editorView.currentColor = color
+    }
+    
+    func legacyColorPickerDidDismiss(_ picker: LegacyColorPicker) {
+        showsLegacyPickerView = false
+        if currentEditorMode == .draw {
+            editorView.startDrawing()
+        }
+    }
+}
+
+extension EditorViewController {
+    // undo redo logic
+    func saveDrawing(_ drawing: PKDrawing) {
+        drawingSteps.append(drawing)
+        actionTypes.append(.draw)
+    }
+    
+    func saveText(_ view: UIView?) {
+        guard let view = view else { return }
+        editedLabels.append(view)
+        actionTypes.append(.text)
+    }
+    
+    func performUndo() {
+        guard let lastAction = lastAction else { return }
+        switch lastAction {
+        case .draw:
+            editorView.setDrawing(drawingSteps.popLast() ?? PKDrawing())
+        case .text:
+            let lastEdited = editedLabels.popLast()
+            lastEdited?.removeFromSuperview()
+        }
+        _ = actionTypes.popLast()
+    }
+    
+    func clearAll() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.Screens.Editor.Alert.clearAll,
+                style: .destructive,
+                handler: { _ in
+                    self.drawingSteps.removeAll()
+                    self.editedLabels.forEach { $0.removeFromSuperview() }
+                    self.editedLabels.removeAll()
+                    self.editorView.drawingCanvas.drawing = PKDrawing()
+                    self.actionTypes.removeAll()
+                    self.temporaryIgnoreKeyboardEvents = false
+                }
+            )
+        )
+        alert.addAction(
+            UIAlertAction(
+                title: L10n.Screens.Editor.Alert.cancel,
+                style: .cancel,
+                handler: { _ in
+                    self.temporaryIgnoreKeyboardEvents = false
+                }
+            )
+        )
+        alert.overrideUserInterfaceStyle = .dark
+        
+        temporaryIgnoreKeyboardEvents = true
+        present(alert, animated: true, completion: nil)
     }
 }
