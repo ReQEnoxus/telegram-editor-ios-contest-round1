@@ -27,6 +27,7 @@ final class EditorViewController: UIViewController {
     private var currentTextAlignment: TextAlignment = .left
     private var currentEditingField: TextEditingView?
     private var temporaryIgnoreKeyboardEvents: Bool = false
+    private let acitvityIndicator = UIActivityIndicatorView(style: .large).forAutoLayout()
     
     private var navbarMode: NavbarMode = .regular {
         didSet {
@@ -119,6 +120,14 @@ final class EditorViewController: UIViewController {
             object: nil
         )
         
+        view.addSubview(acitvityIndicator)
+        [
+            acitvityIndicator.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            acitvityIndicator.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            acitvityIndicator.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            acitvityIndicator.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ].activate()
+        acitvityIndicator.isHidden = true
         editorView.drawingCanvas.delegate = self
     }
     
@@ -356,20 +365,53 @@ extension EditorViewController: EditorViewDelegate {
         if editorView.isAdjustingPenWidth {
             editorView.deselectPenTool()
         } else {
-            dismiss(animated: true, completion: nil)
-            editorView.containerView.alpha = .zero
+            if !actionTypes.isEmpty {
+                let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                alert.addAction(
+                    UIAlertAction(
+                        title: L10n.Screens.Editor.Alert.scrapAll,
+                        style: .destructive,
+                        handler: { _ in
+                            self.drawingSteps.removeAll()
+                            self.editedLabels.forEach { $0.removeFromSuperview() }
+                            self.editedLabels.removeAll()
+                            self.editorView.drawingCanvas.drawing = PKDrawing()
+                            self.actionTypes.removeAll()
+                            self.dismiss(animated: true, completion: nil)
+                            self.editorView.containerView.alpha = .zero
+                        }
+                    )
+                )
+                alert.addAction(
+                    UIAlertAction(
+                        title: L10n.Screens.Editor.Alert.cancel,
+                        style: .cancel,
+                        handler: { _ in
+                            self.temporaryIgnoreKeyboardEvents = false
+                        }
+                    )
+                )
+                alert.overrideUserInterfaceStyle = .dark
+                
+                temporaryIgnoreKeyboardEvents = true
+                present(alert, animated: true, completion: nil)
+            }
         }
     }
     
     func didTapSaveButton() {
         guard let image = editorView.containerView.imageView.image else { return }
         editorView.prepare()
+        acitvityIndicator.isHidden = false
+        acitvityIndicator.startAnimating()
         switch asset.mediaType {
         case .image:
             renderService.renderImage(image, canvas: editorView.canvasView.layer) { [weak self] resultImage in
                 self?.service.save(image: resultImage, completion: { success in
                     DispatchQueue.main.async {
                         if success {
+                            self?.acitvityIndicator.isHidden = true
+                            self?.acitvityIndicator.stopAnimating()
                             self?.resultImage = resultImage
                             NotificationCenter.default.post(name: .exportFinished, object: nil)
                         } else {
@@ -379,8 +421,19 @@ extension EditorViewController: EditorViewDelegate {
                 })
             }
         case .video:
-            renderService.renderVideo(asset, canvas: editorView.canvasView.layer) { tempURL in
+            renderService.renderVideo(asset, refImage: image, canvas: editorView.canvasView.layer) { [weak self] tempURL in
                 // save to phimage
+                self?.service.save(video: tempURL, completion: { success in
+                    DispatchQueue.main.async {
+                        self?.acitvityIndicator.isHidden = true
+                        self?.acitvityIndicator.stopAnimating()
+                        if success {
+                            NotificationCenter.default.post(name: .exportFinished, object: nil)
+                        } else {
+                            // handle error
+                        }
+                    }
+                })
             }
             
         default:
